@@ -1,0 +1,23 @@
+package com.zzlbe.dao.mapper;
+
+import com.zzlbe.dao.entity.UserEntity;
+import com.zzlbe.dao.search.UserSearch;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Repository
+public interface UserMapper {
+    UserEntity userLogin(String name,String password);
+
+    void insert(UserEntity userEntity);
+
+    UserEntity selectById(Long id);
+
+    UserEntity selectByPhoneNo(String phoneNo);
+
+    List<UserEntity> selectByPage(UserSearch userSearch);
+
+}

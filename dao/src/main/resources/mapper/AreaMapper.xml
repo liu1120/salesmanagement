@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzlbe.dao.mapper.AreaMapper">
+
+    <resultMap id="BaseMap" type="com.zzlbe.dao.entity.AreaEntity">
+        <result column="ar_id" property="id"/>
+        <result column="ar_provincecode" property="provincecode"/>
+        <result column="ar_provincename" property="provincename"/>
+        <result column="ar_citycode" property="citycode"/>
+        <result column="ar_cityname" property="cityname"/>
+        <result column="ar_countycode" property="countycode"/>
+        <result column="ar_countyname" property="countyname"/>
+        <result column="ar_towncode" property="towncode"/>
+        <result column="ar_townname" property="townname"/>
+        <result column="ar_sp_id" property="spid"/>
+    </resultMap>
+
+    <sql id="tableName">tb_area</sql>
+
+    <sql id="columns">
+        ar_id,
+        ar_provincecode,
+        ar_provincename,
+        ar_citycode,
+        ar_cityname,
+        ar_countycode,
+        ar_countyname,
+        ar_towncode,
+        townname,
+        spid
+    </sql>
+    <select id="selectBySpid" resultMap="BaseMap">
+        SELECT * FROM tb_area WHERE ar_sp_id =#{spid}
+    </select>
+
+    <select id="selectById" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE u_id = #{id}
+    </select>
+
+
+</mapper>
