@@ -1,8 +1,9 @@
 package com.zzlbe.web.controller;
 
 import com.zzlbe.core.util.IpUtil;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,12 +14,12 @@ import javax.servlet.http.HttpServletRequest;
  * @author duGraceful
  * @date 2019/3/26
  */
-@RestController
+@Controller
 public class HelloController {
 
-    @GetMapping("/")
-    public String hello() {
-        return "Hello Sales Management!";
+    @RequestMapping("/temp")
+    public String temp() {
+        return "temp";
     }
 
     /**

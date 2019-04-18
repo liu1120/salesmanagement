@@ -38,7 +38,7 @@
         <include refid="columns"/>
         FROM
         <include refid="tableName"/>
-        WHERE u_id = #{id}
+        WHERE ar_sp_id = #{id}
     </select>
 
 
