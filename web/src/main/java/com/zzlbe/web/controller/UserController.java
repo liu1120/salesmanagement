@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 @RequestMapping("user")
 public class UserController {
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     @Resource
     private UserBusiness userBusiness;

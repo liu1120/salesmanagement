@@ -1,13 +1,13 @@
-package com.zzlbe.controller;
+package com.zzlbe.web.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * PROJECT: demo
+ * PROJECT: Sales
  * DESCRIPTION: 出差相关Controller
  *
- * @author amos
+ * @author duGraceful
  * @date 2019/4/2
  */
 @RestController

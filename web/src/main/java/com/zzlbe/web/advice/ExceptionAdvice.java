@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * PROJECT: demo
+ * PROJECT: Sales
  * DESCRIPTION: note
  *
- * @author Daoyuan
+ * @author duGraceful
  * @date 2019/3/26
  */
 @ControllerAdvice

@@ -6,10 +6,10 @@ import lombok.experimental.Accessors;
 import java.util.List;
 
 /**
- * PROJECT: demo
+ * PROJECT: Sales
  * DESCRIPTION: 分页响应
  *
- * @author amos
+ * @author duGraceful
  * @date 2019/4/2
  */
 @Data

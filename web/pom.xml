@@ -5,40 +5,18 @@
     <parent>
         <artifactId>salesmanagement</artifactId>
         <groupId>com.zzlbe</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
-    <groupId>com.zzlbe</groupId>
     <artifactId>web</artifactId>
     <name>web</name>
-    <description>Demo project for Spring Boot</description>
-
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.zzlbe</groupId>
             <artifactId>core</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.zzlbe</groupId>
-            <artifactId>dao</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web-services</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
+
     <build>
         <finalName>manage</finalName>
         <plugins>
@@ -48,4 +26,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

@@ -15,10 +15,10 @@
     </parent>
     <groupId>com.zzlbe</groupId>
     <artifactId>salesmanagement</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>salesmanagement</name>
+    <version>1.0.0</version>
+    <name>base</name>
     <packaging>pom</packaging>
-    <description>Demo project for Spring Boot</description>
+    <description>Sales project for Spring Boot</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -93,6 +93,7 @@
         </dependency>
 
     </dependencies>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -100,22 +101,12 @@
                 <artifactId>core</artifactId>
                 <version>1.0.0</version>
             </dependency>
-
             <dependency>
                 <groupId>com.zzlbe</groupId>
-                <artifactId>core</artifactId>
-                <version>1.0.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.zzlbe</groupId>
-                <artifactId>web</artifactId>
-                <version>1.0.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.zzlbe</groupId>
-                <artifactId>web</artifactId>
+                <artifactId>dao</artifactId>
                 <version>1.0.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
+
 </project>
