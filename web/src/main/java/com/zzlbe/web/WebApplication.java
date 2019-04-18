@@ -9,7 +9,6 @@ import org.springframework.web.WebApplicationInitializer;
 
 @SpringBootApplication(scanBasePackages = "com.zzlbe.*")
 @MapperScan(basePackages = {"com.zzlbe.dao.mapper"})
-
 public class WebApplication  extends SpringBootServletInitializer implements WebApplicationInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
@@ -19,4 +18,3 @@ public class WebApplication  extends SpringBootServletInitializer implements Web
         SpringApplication.run(WebApplication.class, args);
     }
 }
-

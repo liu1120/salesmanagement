@@ -74,7 +74,6 @@ public class UserBusinessImpl implements UserBusiness {
      */
     private UserInfoVO generateUserInfo(UserEntity userEntity) {
         String token = UserUtils.getUserToken(userEntity.getId());
-
         UserInfoVO userInfoVO = new UserInfoVO();
         userInfoVO.setToken(token);
         BeanUtils.copyProperties(userEntity,userInfoVO);

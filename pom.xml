@@ -17,7 +17,7 @@
     <artifactId>salesmanagement</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>salesmanagement</name>
-    <packaging>war</packaging>
+    <packaging>pom</packaging>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -95,14 +95,9 @@
     </dependencies>
     <dependencyManagement>
         <dependencies>
-            <!-- 引入 thymeleaf 模板依赖 -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-thymeleaf</artifactId>
-            </dependency>
             <dependency>
                 <groupId>com.zzlbe</groupId>
-                <artifactId>dao</artifactId>
+                <artifactId>core</artifactId>
                 <version>1.0.0</version>
             </dependency>
 
@@ -116,21 +111,11 @@
                 <artifactId>web</artifactId>
                 <version>1.0.0</version>
             </dependency>
+            <dependency>
+                <groupId>com.zzlbe</groupId>
+                <artifactId>web</artifactId>
+                <version>1.0.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <warName>demo</warName>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>

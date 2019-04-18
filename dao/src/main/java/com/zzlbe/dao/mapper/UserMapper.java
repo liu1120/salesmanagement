@@ -2,9 +2,7 @@ package com.zzlbe.dao.mapper;
 
 import com.zzlbe.dao.entity.UserEntity;
 import com.zzlbe.dao.search.UserSearch;
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
