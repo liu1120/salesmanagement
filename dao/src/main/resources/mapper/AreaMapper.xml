@@ -26,14 +26,14 @@
         ar_countycode,
         ar_countyname,
         ar_towncode,
-        townname,
-        spid
+        ar_townname,
+        ar_sp_id
     </sql>
-    <select id="selectBySpid" resultMap="BaseMap">
+    <select id="" resultMap="BaseMap">
         SELECT * FROM tb_area WHERE ar_sp_id =#{spid}
     </select>
 
-    <select id="selectById" resultMap="BaseMap">
+    <select id="selectBySpid" resultMap="BaseMap">
         SELECT
         <include refid="columns"/>
         FROM

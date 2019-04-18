@@ -17,16 +17,22 @@ import javax.annotation.Resource;
 @RequestMapping("user")
 public class UserController {
     @Autowired
-    private UserMapper userMapper;
+    UserMapper userMapper;
 
     @Resource
     private UserBusiness userBusiness;
     //依赖注入
 
-    @RequestMapping(value = "userLogin")
-    public UserEntity userLogin() {
+    @GetMapping(value = "login")
+    public UserEntity login(@RequestParam("username") String username,@RequestParam("password") String password) {
         //调用dao层
-        UserEntity userEntity = userMapper.userLogin("amos1","123456");
+        UserEntity userEntity = userMapper.userLogin(username,password);
+        return userEntity;
+    }
+    @PostMapping(value = "login")
+    public UserEntity postLogin(@RequestParam("username") String username,@RequestParam("password") String password) {
+        //调用dao层
+        UserEntity userEntity = userMapper.userLogin(username,password);
         return userEntity;
     }
 
