@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzlbe.dao.mapper.TripMapper">
+
+    <resultMap id="BaseMap" type="com.zzlbe.dao.entity.TripEntity">
+        <result column="tr_id" property="trId"/>
+        <result column="tr_city" property="trCity"/>
+        <result column="tr_to_city" property="trToCity"/>
+        <result column="tr_type" property="trType"/>
+        <result column="tr_intent" property="trIntent"/>
+        <result column="tr_start" property="trStart"/>
+        <result column="tr_stop" property="trStop"/>
+        <result column="tr_seller_id" property="trSellerId"/>
+        <result column="tr_state" property="trState"/>
+        <result column="tr_reason" property="trReason"/>
+    </resultMap>
+
+    <sql id="tableName">tb_trip</sql>
+
+    <sql id="columns">
+        tr_id,
+        tr_city,
+        tr_to_city,
+        tr_type,
+        tr_intent,
+        tr_start,
+        tr_stop,
+        tr_seller_id,
+        tr_state,
+        tr_reason
+    </sql>
+
+    <sql id="condition">
+        <where>
+            <if test="trCity != null">
+                AND tr_city = #{trCity}
+            </if>
+            <if test="trToCity != null">
+                AND tr_to_city = #{trToCity}
+            </if>
+            <if test="trType != null">
+                AND tr_type = #{trType}
+            </if>
+            <if test="trIntent != null">
+                AND tr_intent = #{trIntent}
+            </if>
+            <if test="trStartStr != null">
+                AND tr_start <![CDATA[ >= ]]> #{trStartStr}
+            </if>
+            <if test="trStopStr != null">
+                AND tr_stop <![CDATA[ <= ]]> #{trStopStr}
+            </if>
+            <if test="trSellerId != null">
+                AND tr_seller_id = #{trSellerId}
+            </if>
+            <if test="trState != null">
+                AND tr_state = #{trState}
+            </if>
+            <if test="trReason != null">
+                AND tr_reason = #{trReason}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
+    <select id="selectByPageTotal" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+    </select>
+
+    <select id="selectById" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE tr_id = #{id}
+    </select>
+
+    <update id="update">
+        UPDATE
+        <include refid="tableName"/>
+        <set>
+            <if test="trState != null">
+                tr_state = #{trState},
+            </if>
+            <if test="trReason != null">
+                tr_reason = #{trReason},
+            </if>
+        </set>
+        WHERE
+        tr_id = #{trId}
+    </update>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="trId">
+        INSERT INTO
+        <include refid="tableName"/>
+        (
+        <include refid="columns"/>
+        )
+        VALUES
+        (
+        #{trId},
+        #{trCity},
+        #{trToCity},
+        #{trType},
+        #{trIntent},
+        #{trStart},
+        #{trStop},
+        #{trSellerId},
+        #{trState},
+        #{trReason}
+        )
+    </insert>
+
+</mapper>

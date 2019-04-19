@@ -18,6 +18,8 @@ public class PageResponse<T> {
 
     private Integer size;
 
+    private Integer total;
+
     private List<T> list;
 
 }

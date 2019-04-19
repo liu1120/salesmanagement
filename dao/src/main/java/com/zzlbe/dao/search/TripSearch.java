@@ -1,25 +1,22 @@
-package com.zzlbe.dao.entity;
+package com.zzlbe.dao.search;
 
+import com.zzlbe.dao.page.BasePageRequest;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-
-import java.util.Date;
 
 /**
  * PROJECT: Sales
- * DESCRIPTION: 考勤出差表
+ * DESCRIPTION: 考勤出差查询
  *
- * @author duGraceful
- * @date 2019/4/13
+ * @author amos
+ * @date 2019/4/14
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class TripEntity {
+public class TripSearch extends BasePageRequest {
 
-    /**
-     * 自增ID
-     */
-    private Long trId;
     /**
      * 出发城市
      */
@@ -39,11 +36,11 @@ public class TripEntity {
     /**
      * 出差开始时间
      */
-    private Date trStart;
+    private String trStartStr;
     /**
      * 出差结束时间
      */
-    private Date trStop;
+    private String trStopStr;
     /**
      * 销售员编号
      */

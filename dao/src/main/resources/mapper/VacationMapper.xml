@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzlbe.dao.mapper.VacationMapper">
+
+    <resultMap id="BaseMap" type="com.zzlbe.dao.entity.VacationEntity">
+        <result column="va_id" property="vaId"/>
+        <result column="va_seller_id" property="vaSellerId"/>
+        <result column="va_start" property="vaStart"/>
+        <result column="va_end" property="vaEnd"/>
+        <result column="va_days" property="vaDays"/>
+        <result column="va_reason" property="vaReason"/>
+        <result column="va_type" property="vaType"/>
+        <result column="va_status" property="vaStatus"/>
+        <result column="va_notes" property="vaNotes"/>
+    </resultMap>
+
+    <sql id="tableName">tb_vacation</sql>
+
+    <sql id="columns">
+        va_id,
+        va_seller_id,
+        va_start,
+        va_end,
+        va_days,
+        va_reason,
+        va_type,
+        va_status,
+        va_notes
+    </sql>
+
+    <sql id="condition">
+        <where>
+            <if test="vaSellerId != null">
+                AND va_seller_id = #{vaSellerId}
+            </if>
+            <if test="vaStartStr != null">
+                AND va_start <![CDATA[ >= ]]> #{vaStartStr}
+            </if>
+            <if test="vaEndStr != null">
+                AND va_end <![CDATA[ <= ]]> #{vaEndStr}
+            </if>
+            <if test="vaDays != null">
+                AND va_days = #{vaDays}
+            </if>
+            <if test="vaReason != null">
+                AND va_reason = #{vaReason}
+            </if>
+            <if test="vaType != null">
+                AND va_type = #{vaType}
+            </if>
+            <if test="vaStatus != null">
+                AND va_status = #{vaStatus}
+            </if>
+            <if test="vaNotes != null">
+                AND va_notes = #{vaNotes}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
+    <select id="selectByPageTotal" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+    </select>
+
+    <select id="selectById" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE va_id = #{id}
+    </select>
+
+    <update id="update">
+        UPDATE
+        <include refid="tableName"/>
+        <set>
+            <if test="vaType != null">
+                va_type = #{vaType},
+            </if>
+            <if test="vaStatus != null">
+                va_status = #{vaStatus},
+            </if>
+            <if test="vaNotes != null">
+                va_notes = #{vaNotes},
+            </if>
+        </set>
+        WHERE
+        va_id = #{vaId}
+    </update>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="vaId">
+        INSERT INTO
+        <include refid="tableName"/>
+        (
+        <include refid="columns"/>
+        )
+        VALUES
+        (
+        #{vaId},
+        #{vaSellerId},
+        #{vaStart},
+        #{vaEnd},
+        #{vaDays},
+        #{vaReason},
+        #{vaType},
+        #{vaStatus},
+        #{vaNotes}
+        )
+    </insert>
+
+</mapper>

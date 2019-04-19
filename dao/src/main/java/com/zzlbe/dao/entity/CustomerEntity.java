@@ -1,21 +1,61 @@
 package com.zzlbe.dao.entity;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
-
+import java.math.BigDecimal;
 import java.util.Date;
 
-@Data
-@Accessors(chain = true)
+/**
+ * PROJECT: Sales
+ * DESCRIPTION: 订单退换货表
+ *
+ * @author duGraceful
+ * @date 2019/4/13
+ */
+@SuppressWarnings("ALL")
 public class CustomerEntity {
-    private long orid;
-    private long uid;
-    private long spid;
-    private long goid;
-    private long goodsnum;
-    private int reason;
-    private int type;
-    private Date time;
-    private long descrition;
-    private double money;
+
+    /**
+     * 自增ID
+     */
+    private Long cuId;
+    /**
+     * 订单编号
+     */
+    private Long cuOrderId;
+    /**
+     * 用户编号
+     */
+    private Long cuUserId;
+    /**
+     * 销售员编号
+     */
+    private Long cuSellerId;
+    /**
+     * 商品ID
+     */
+    private Long cuGoodsId;
+    /**
+     * 商品数量
+     */
+    private Long cuGoodsCount;
+    /**
+     * 1退货
+     */
+    private Integer cuReason;
+    /**
+     * 操作类型：1业务操作人员申请提交、2业务操作人员审核通过、3业务操作人员审核拒绝
+     */
+    private Integer cuType;
+    /**
+     * 操作时间
+     */
+    private Date cuTime;
+    /**
+     * 业务操作描述（客服拒绝原因）
+     */
+    private String cuDescription;
+    /**
+     * 退款金额
+     */
+    private BigDecimal cuMoney;
+
 }

@@ -2,6 +2,13 @@ package com.zzlbe.core.common;
 
 import java.io.Serializable;
 
+/**
+ * PROJECT: Sales
+ * DESCRIPTION: note
+ *
+ * @author duGraceful
+ * @date 2018/12/12
+ */
 public class GenericResponse<T> implements Serializable {
 
     private static final long serialVersionUID = 3051339409110000405L;
@@ -34,23 +41,27 @@ public class GenericResponse<T> implements Serializable {
         return code;
     }
 
-    public void setCode(String code) {
+    public GenericResponse setCode(String code) {
         this.code = code;
+        return this;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public GenericResponse setMessage(String message) {
         this.message = message;
+        return this;
     }
 
     public T getBody() {
         return body;
     }
 
-    public void setBody(T body) {
+    public GenericResponse setBody(T body) {
         this.body = body;
+        return this;
     }
+
 }

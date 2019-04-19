@@ -25,14 +25,8 @@
         u_address,
         u_credit
     </sql>
-    <select id="userLogin" resultMap="BaseMap">
-        SELECT * FROM tb_user WHERE u_name = #{name} AND u_password =#{password}
-    </select>
-    <select id="selectByPage" resultMap="BaseMap">
-        SELECT
-        <include refid="columns"/>
-        FROM
-        <include refid="tableName"/>
+
+    <sql id="condition">
         <where>
             <if test="name != null">
                 AND u_name = #{name}
@@ -47,7 +41,27 @@
                 AND u_realname = #{realname}
             </if>
         </where>
+    </sql>
+
+    <select id="userLogin" resultMap="BaseMap">
+        SELECT * FROM tb_user WHERE u_name = #{name} AND u_password =#{password}
+    </select>
+
+    <select id="selectByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
         LIMIT #{firstIndex}, #{size}
+    </select>
+
+    <select id="selectByPageTotal" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
     </select>
 
     <select id="selectById" resultMap="BaseMap">

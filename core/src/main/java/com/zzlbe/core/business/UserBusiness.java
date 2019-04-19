@@ -2,12 +2,19 @@ package com.zzlbe.core.business;
 
 import com.zzlbe.core.UserInfoDTO;
 import com.zzlbe.core.common.GenericResponse;
+import com.zzlbe.core.request.LoginForm;
 import com.zzlbe.core.request.RegisterForm;
 import com.zzlbe.dao.search.UserSearch;
-import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
 public interface UserBusiness {
+
+    /**
+     * 用户登录
+     *
+     * @param loginForm LoginForm
+     * @return UserInfoVO
+     */
+    GenericResponse login(LoginForm loginForm);
 
     /**
      * 用户注册

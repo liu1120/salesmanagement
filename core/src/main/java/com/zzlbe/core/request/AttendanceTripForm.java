@@ -1,20 +1,18 @@
-package com.zzlbe.dao.entity;
+package com.zzlbe.core.request;
 
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.util.Date;
 
 /**
  * PROJECT: Sales
- * DESCRIPTION: 考勤出差表
+ * DESCRIPTION: 出差
  *
- * @author duGraceful
- * @date 2019/4/13
+ * @author amos
+ * @date 2019/4/14
  */
 @Data
-@Accessors(chain = true)
-public class TripEntity {
+public class AttendanceTripForm {
 
     /**
      * 自增ID
@@ -44,6 +42,14 @@ public class TripEntity {
      * 出差结束时间
      */
     private Date trStop;
+    /**
+     * 出差开始时间
+     */
+    private String trStartStr;
+    /**
+     * 出差结束时间
+     */
+    private String trStopStr;
     /**
      * 销售员编号
      */

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzlbe.dao.mapper.AttendanceMapper">
+
+    <resultMap id="BaseMap" type="com.zzlbe.dao.entity.AttendanceEntity">
+        <result column="at_id" property="atId"/>
+        <result column="at_seller_id" property="atSellerId"/>
+        <result column="at_day" property="atDay"/>
+        <result column="at_type" property="atType"/>
+        <result column="at_start" property="atStart"/>
+        <result column="at_start_type" property="atStartType"/>
+        <result column="at_end" property="atEnd"/>
+        <result column="at_end_type" property="atEndType"/>
+    </resultMap>
+
+    <sql id="tableName">tb_attendance</sql>
+
+    <sql id="columns">
+        at_id,
+        at_seller_id,
+        at_day,
+        at_type,
+        at_start,
+        at_start_type,
+        at_end,
+        at_end_type
+    </sql>
+    
+    <sql id="condition">
+        <where>
+            <if test="atSellerId != null">
+                AND at_seller_id = #{atSellerId}
+            </if>
+            <if test="atDay != null">
+                AND at_day = #{atDay}
+            </if>
+            <if test="atDayByMonth != null">
+                AND at_day REGEXP #{atDayByMonth}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
+    <select id="selectByPageTotal" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+    </select>
+
+    <select id="selectById" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE at_id = #{id}
+    </select>
+
+    <select id="selectByExample" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <where>
+            <if test="atSellerId != null">
+                AND at_seller_id = #{atSellerId}
+            </if>
+            <if test="atDay != null">
+                AND at_day = #{atDay}
+            </if>
+        </where>
+        LIMIT 1
+    </select>
+
+    <update id="update">
+        UPDATE
+        <include refid="tableName"/>
+        <set>
+            <if test="atType != null">
+                at_type = #{atType},
+            </if>
+            <if test="atStart != null">
+                at_start = #{atStart},
+            </if>
+            <if test="atStartType != null">
+                at_start_type = #{atStartType},
+            </if>
+            <if test="atEnd != null">
+                at_end = #{atEnd},
+            </if>
+            <if test="atEndType != null">
+                at_end_type = #{atEndType},
+            </if>
+        </set>
+        WHERE
+        at_id = #{atId}
+    </update>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="atId">
+        INSERT INTO
+        <include refid="tableName"/>
+        (
+        <include refid="columns"/>
+        )
+        VALUES
+        (
+        #{atId},
+        #{atSellerId},
+        #{atDay},
+        #{atType},
+        #{atStart},
+        #{atStartType},
+        #{atEnd},
+        #{atEndType}
+        )
+    </insert>
+
+</mapper>

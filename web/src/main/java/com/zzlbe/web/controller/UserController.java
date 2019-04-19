@@ -3,15 +3,20 @@ package com.zzlbe.web.controller;
 import com.zzlbe.core.UserInfoDTO;
 import com.zzlbe.core.business.UserBusiness;
 import com.zzlbe.core.common.GenericResponse;
+import com.zzlbe.core.request.LoginForm;
 import com.zzlbe.core.request.RegisterForm;
 import com.zzlbe.dao.entity.UserEntity;
 import com.zzlbe.dao.mapper.UserMapper;
 import com.zzlbe.dao.search.UserSearch;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("user")
@@ -37,15 +42,27 @@ public class UserController {
         return userEntity;
     }
 
-    @PostMapping("register")
-    public GenericResponse register(@RequestBody RegisterForm registerForm) {
-        if (registerForm == null ||
-                StringUtils.isAnyBlank(
-                        registerForm.getName(),
-                        registerForm.getPhone(),
-                        registerForm.getPassword())) {
-            return GenericResponse.ERROR;
+    /**
+     * @PostMapping("login")
+     */
+    public GenericResponse login(@RequestBody @Valid LoginForm loginForm, BindingResult bindingResult) {
+        // 参数校验
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> list = bindingResult.getAllErrors();
+            return GenericResponse.ERROR.setMessage(list.get(0).getDefaultMessage());
         }
+
+        return userBusiness.login(loginForm);
+    }
+
+    @PostMapping("register")
+    public GenericResponse register(@RequestBody @Valid RegisterForm registerForm, BindingResult bindingResult) {
+        // 参数校验
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> list = bindingResult.getAllErrors();
+            return GenericResponse.ERROR.setMessage(list.get(0).getDefaultMessage());
+        }
+
         return userBusiness.register(registerForm);
     }
 

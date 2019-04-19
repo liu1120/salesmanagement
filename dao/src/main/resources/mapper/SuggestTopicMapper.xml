@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzlbe.dao.mapper.SuggestTopicMapper">
+
+    <resultMap id="BaseMap" type="com.zzlbe.dao.entity.SuggestTopicEntity">
+        <result column="to_id" property="toId"/>
+        <result column="to_seller_id" property="toSellerId"/>
+        <result column="to_time" property="toTime"/>
+        <result column="to_content" property="toContent"/>
+        <result column="to_user_id" property="toUserId"/>
+        <result column="to_user_name" property="toUserName"/>
+    </resultMap>
+
+    <sql id="tableName">tb_suggest_topic</sql>
+
+    <sql id="columns">
+        to_id,
+        to_seller_id,
+        to_time,
+        to_content,
+        to_user_id,
+        to_user_name
+    </sql>
+
+    <select id="selectByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <where>
+            <if test="name != null">
+                AND u_name = #{name}
+            </if>
+        </where>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
+    <select id="selectById" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE toId = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="toId">
+        INSERT INTO
+        <include refid="tableName"/>
+        (
+        <include refid="columns"/>
+        )
+        VALUES
+        (
+        #{toId},
+        #{toSellerId},
+        #{toTime},
+        #{toContent},
+        #{toUserId},
+        #{toUserName}
+        )
+    </insert>
+
+</mapper>

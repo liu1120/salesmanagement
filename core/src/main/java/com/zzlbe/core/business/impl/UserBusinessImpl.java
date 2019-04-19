@@ -3,8 +3,10 @@ package com.zzlbe.core.business.impl;
 import com.zzlbe.core.UserInfoDTO;
 import com.zzlbe.core.business.UserBusiness;
 import com.zzlbe.core.common.GenericResponse;
+import com.zzlbe.core.request.LoginForm;
 import com.zzlbe.core.request.RegisterForm;
 import com.zzlbe.core.response.UserInfoVO;
+import com.zzlbe.core.util.CheckUtil;
 import com.zzlbe.core.util.UserUtils;
 import com.zzlbe.dao.entity.UserEntity;
 import com.zzlbe.dao.mapper.UserMapper;
@@ -25,9 +27,35 @@ public class UserBusinessImpl implements UserBusiness {
 
     @Override
     public GenericResponse register(RegisterForm registerForm) {
-        UserEntity userEntity = new UserEntity();
+        if (!CheckUtil.isPhoneNo(registerForm.getPhone())) {
+            return new GenericResponse("2001", "手机号格式错误!");
+        }
+
+        UserEntity userEntity = userMapper.selectByPhoneNo(registerForm.getPhone());
+        if (userEntity != null) {
+            return new GenericResponse("2002", "该手机号已注册");
+        }
+
+        userEntity = new UserEntity();
         BeanUtils.copyProperties(registerForm, userEntity);
         userMapper.insert(userEntity);
+
+        return new GenericResponse<>(generateUserInfo(userEntity));
+    }
+
+    @Override
+    public GenericResponse login(LoginForm loginForm) {
+        if (!CheckUtil.isPhoneNo(loginForm.getPhone())) {
+            return new GenericResponse("2001", "手机号格式错误!");
+        }
+
+        UserEntity userEntity = userMapper.selectByPhoneNo(loginForm.getPhone());
+        if (userEntity == null) {
+            return new GenericResponse("2003", "用户未注册");
+        }
+        if (!userEntity.getPassword().equals(loginForm.getPassword())) {
+            return new GenericResponse("2004", "密码错误");
+        }
 
         return new GenericResponse<>(generateUserInfo(userEntity));
     }
@@ -44,7 +72,7 @@ public class UserBusinessImpl implements UserBusiness {
         }
 
         if (userEntity == null) {
-            return new GenericResponse("2002", "手机号未注册!");
+            return new GenericResponse("2003", "手机号未注册!");
         }
 
         return new GenericResponse<>(generateUserInfo(userEntity));
@@ -54,14 +82,14 @@ public class UserBusinessImpl implements UserBusiness {
     public GenericResponse userAll(UserSearch userSearch) {
         List<UserInfoVO> userInfoVOS = new ArrayList<>();
         List<UserEntity> userEntities = userMapper.selectByPage(userSearch);
+        Integer total = userMapper.selectByPageTotal(userSearch);
         if (userEntities != null) {
-            userEntities.forEach(userEntity -> {
-                userInfoVOS.add(generateUserInfo(userEntity));
-            });
+            userEntities.forEach(userEntity -> userInfoVOS.add(generateUserInfo(userEntity)));
         }
         PageResponse<UserInfoVO> pageResponse = new PageResponse<>();
         pageResponse.setSize(userInfoVOS.size());
         pageResponse.setList(userInfoVOS);
+        pageResponse.setTotal(total);
 
         return new GenericResponse<>(pageResponse);
     }
@@ -74,9 +102,11 @@ public class UserBusinessImpl implements UserBusiness {
      */
     private UserInfoVO generateUserInfo(UserEntity userEntity) {
         String token = UserUtils.getUserToken(userEntity.getId());
+
         UserInfoVO userInfoVO = new UserInfoVO();
         userInfoVO.setToken(token);
-        BeanUtils.copyProperties(userEntity,userInfoVO);
+        BeanUtils.copyProperties(userEntity, userInfoVO);
+
         return userInfoVO;
     }
 }

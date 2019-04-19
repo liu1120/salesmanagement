@@ -4,9 +4,7 @@ import com.zzlbe.core.UserInfoDTO;
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.request.RegisterForm;
 import com.zzlbe.dao.search.UserSearch;
-import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
 public interface SellerBusiness {
 
     GenericResponse register(RegisterForm registerForm);

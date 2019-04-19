@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzlbe.dao.mapper.OrderMapper">
+
+    <resultMap id="BaseMap" type="com.zzlbe.dao.entity.OrderEntity">
+        <result column="or_id" property="orId"/>
+        <result column="or_goods_id" property="orGoodsId"/>
+        <result column="or_count" property="orCount"/>
+        <result column="or_price" property="orPrice"/>
+        <result column="or_say" property="orSay"/>
+        <result column="or_total_amount" property="orTotalAmount"/>
+        <result column="or_datetime" property="orDatetime"/>
+        <result column="or_seller_id" property="orSellerId"/>
+        <result column="or_user_id" property="orUserId"/>
+        <result column="or_type" property="orType"/>
+        <result column="or_logistics" property="orLogistics"/>
+        <result column="or_address" property="orAddress"/>
+        <result column="or_status" property="orStatus"/>
+        <result column="or_words" property="orWords"/>
+        <result column="or_refuse" property="orRefuse"/>
+    </resultMap>
+
+    <sql id="tableName">tb_order</sql>
+
+    <sql id="columns">
+        or_id,
+        or_goods_id,
+        or_count,
+        or_price,
+        or_say,
+        or_total_amount,
+        or_datetime,
+        or_seller_id,
+        or_user_id,
+        or_type,
+        or_logistics,
+        or_address,
+        or_status,
+        or_words,
+        or_refuse
+    </sql>
+
+    <select id="selectByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <where>
+            <if test="name != null">
+                AND u_name = #{name}
+            </if>
+        </where>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
+    <select id="selectById" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE orId = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="orId">
+        INSERT INTO
+        <include refid="tableName"/>
+        (
+        <include refid="columns"/>
+        )
+        VALUES
+        (
+        #{orId},
+        #{orGoodsId},
+        #{orCount},
+        #{orPrice},
+        #{orSay},
+        #{orTotalAmount},
+        #{orDatetime},
+        #{orSellerId},
+        #{orUserId},
+        #{orType},
+        #{orLogistics},
+        #{orAddress},
+        #{orStatus},
+        #{orWords},
+        #{orRefuse}
+        )
+    </insert>
+
+</mapper>

@@ -8,7 +8,8 @@ import java.util.List;
 
 @Repository
 public interface UserMapper {
-    UserEntity userLogin(String name,String password);
+
+    UserEntity userLogin(String name, String password);
 
     void insert(UserEntity userEntity);
 
@@ -17,5 +18,7 @@ public interface UserMapper {
     UserEntity selectByPhoneNo(String phoneNo);
 
     List<UserEntity> selectByPage(UserSearch userSearch);
+
+    Integer selectByPageTotal(UserSearch search);
 
 }
