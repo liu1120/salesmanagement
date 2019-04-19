@@ -1,9 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>仪表盘</title>
     <link rel="stylesheet" href="/vendor/simple-line-icons/css/simple-line-icons.css">
@@ -45,7 +46,7 @@
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">
                     <img src="/imgs/avatar-1.png" class="avatar avatar-sm" alt="logo">
-                    <span class="small ml-1 d-md-down-none">liu</span>
+                    <span class="small ml-1 d-md-down-none"></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">
@@ -274,8 +275,8 @@
                                                     <tr class="gradeA even">
                                                         <td class="sorting_1">1</td>
                                                         <td class=" ">12345678944</td>
-                                                        <td class=" ">张三</td>
-                                                        <td class=" ">除草剂</td>
+                                                        <td class=" ">${msg }</td>
+                                                        <td class=" "><%=request.getAttribute("msg")%></td>
                                                         <td class=" ">1</td>
                                                         <td class=" ">8999</td>
                                                         <td class=" ">买多了</td>
@@ -349,7 +350,19 @@
                             </div>
                         </div>
 
-
+                        <table width="100%" border="1" cellspacing="1" cellpadding="0">
+                            <tr>
+                                <td>作者</td>
+                                <td>教程名称</td>
+                                <td>地址</td>
+                            </tr>
+                            <!--/*@thymesVar id="learnList" type=""*/-->
+                            <tr th:each="learn : ${learnList}">
+                                <td th:text="${learn.id}">嘟嘟MD</td>
+                                <td th:text="${learn.name}">SPringBoot干货系列</td>
+                                <td><a th:href="${learn.age}" target="_blank">点我</a></td>
+                            </tr>
+                        </table>
                         <!--模板开始22222-->
                     </div>
                 </div>

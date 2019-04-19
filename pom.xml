@@ -57,7 +57,7 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web-services</artifactId>
+            <artifactId>spring-boot--services</artifactId>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>

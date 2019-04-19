@@ -1,11 +1,15 @@
 package com.zzlbe.web.controller;
 
 import com.zzlbe.core.util.IpUtil;
+import com.zzlbe.dao.entity.UserEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * PROJECT: Sales
@@ -19,7 +23,17 @@ public class HelloController {
 
     @RequestMapping("/temp")
     public String temp() {
-        return "temp";
+        List<UserEntity> learnList =new ArrayList<UserEntity>();
+        UserEntity bean =new UserEntity();
+        learnList.add(bean);
+
+        bean =new UserEntity();
+        learnList.add(bean);
+
+        ModelAndView modelAndView = new ModelAndView("admin/temp");
+        modelAndView.addObject("learnList", learnList);
+
+        return "admin/temp";
     }
 
     /**
