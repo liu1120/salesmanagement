@@ -30,10 +30,9 @@ public class HelloController {
         bean =new UserEntity();
         learnList.add(bean);
 
-        ModelAndView modelAndView = new ModelAndView("admin/temp");
+        ModelAndView modelAndView = new ModelAndView("admin/z_login");
         modelAndView.addObject("learnList", learnList);
-
-        return "admin/temp";
+        return "admin/z_login";
     }
 
     /**

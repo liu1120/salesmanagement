@@ -29,6 +29,7 @@ public class UserController {
         UserEntity userEntity = userMapper.userLogin(username,password);
         return userEntity;
     }
+
     @PostMapping(value = "login")
     public UserEntity postLogin(@RequestParam("username") String username,@RequestParam("password") String password) {
         //调用dao层

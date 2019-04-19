@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzlbe.dao.mapper.SellerMapper">
+
+    <resultMap id="BaseMap" type="com.zzlbe.dao.entity.SellerEntity">
+        <result column="sp_id" property="id"/>
+        <result column="sp_name" property="name"/>
+        <result column="sp_password" property="password"/>
+        <result column="sp_img" property="img"/>
+        <result column="sp_wechat" property="wechat"/>
+        <result column="sp_phone" property="phone"/>
+        <result column="sp_realname" property="realname"/>
+        <result column="sp_rank" property="rank"/>
+        <result column="sp_post" property="post"/>
+        <result column="sp_position" property="position"/>
+        <result column="sp_number" property="number"/>
+    </resultMap>
+
+    <sql id="tableName">tb_user</sql>
+
+    <sql id="columns">
+        sp_id,
+        sp_name,
+        sp_password,
+        sp_img,
+        sp_wechat,
+        sp_phone,
+        sp_realname,
+        sp_rank,
+        sp_post,
+        sp_position,
+        sp_number
+    </sql>
+    <select id="unique" resultMap="BaseMap">
+        SELECT count(1) FROM tb_seller WHERE sp_name = #{username}
+    </select>
+
+    <select id="selectSeller" resultMap="BaseMap">
+        SELECT * FROM tb_seller WHERE sp_name = #{username}
+    </select>
+    <select id="selectByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <where>
+            <if test="name != null">
+                AND sp_name = #{name}
+            </if>
+            <if test="wechat != null">
+                AND sp_wechat = #{wechat}
+            </if>
+            <if test="phone != null">
+                AND sp_phone = #{phone}
+            </if>
+            <if test="realname != null">
+                AND sp_realname = #{realname}
+            </if>
+        </where>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
+    <select id="selectById" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE sp_id = #{id}
+    </select>
+
+    <select id="selectByPhoneNo" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE sp_phone = #{phoneNo}
+        LIMIT 1
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+        <include refid="tableName"/>
+        (
+        <include refid="columns"/>
+        )
+        VALUES
+        (
+        #{id},
+        #{name},
+        #{password},
+        #{img},
+        #{wechat},
+        #{phone},
+        #{realname},
+        #{rank},
+        #{post},
+        #{position},
+        #{number}
+        )
+    </insert>
+
+</mapper>
