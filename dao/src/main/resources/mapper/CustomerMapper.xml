@@ -32,18 +32,13 @@
         cu_money
     </sql>
 
-    <select id="selectByPage" resultMap="BaseMap">
-        SELECT
-        <include refid="columns"/>
-        FROM
-        <include refid="tableName"/>
+    <sql id="condition">
         <where>
             <if test="name != null">
                 AND u_name = #{name}
             </if>
         </where>
-        LIMIT #{firstIndex}, #{size}
-    </select>
+    </sql>
 
     <select id="selectById" resultMap="BaseMap">
         SELECT
@@ -52,6 +47,62 @@
         <include refid="tableName"/>
         WHERE cuId = #{id}
     </select>
+
+    <select id="selectByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
+    <select id="selectByPageTotal" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+    </select>
+
+    <update id="update">
+        UPDATE
+        <include refid="tableName"/>
+        <set>
+            <if test="cuOrderId != null">
+                cu_order_id = #{cuOrderId},
+            </if>
+            <if test="cuUserId != null">
+                cu_user_id = #{cuUserId},
+            </if>
+            <if test="cuSellerId != null">
+                cu_seller_id = #{cuSellerId},
+            </if>
+            <if test="cuGoodsId != null">
+                cu_goods_id = #{cuGoodsId},
+            </if>
+            <if test="cuGoodsCount != null">
+                cu_goods_count = #{cuGoodsCount},
+            </if>
+            <if test="cuReason != null">
+                cu_reason = #{cuReason},
+            </if>
+            <if test="cuType != null">
+                cu_type = #{cuType},
+            </if>
+            <if test="cuTime != null">
+                cu_time = #{cuTime},
+            </if>
+            <if test="cuDescription != null">
+                cu_description = #{cuDescription},
+            </if>
+            <if test="cuMoney != null">
+                cu_money = #{cuMoney},
+            </if>
+        </set>
+        WHERE
+        cu_id = #{cuId}
+    </update>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="cuId">
         INSERT INTO

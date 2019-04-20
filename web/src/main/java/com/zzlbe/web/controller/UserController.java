@@ -1,6 +1,6 @@
 package com.zzlbe.web.controller;
 
-import com.zzlbe.core.UserInfoDTO;
+import com.zzlbe.core.dto.UserInfoDTO;
 import com.zzlbe.core.business.UserBusiness;
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.request.LoginForm;
@@ -8,7 +8,6 @@ import com.zzlbe.core.request.RegisterForm;
 import com.zzlbe.dao.entity.UserEntity;
 import com.zzlbe.dao.mapper.UserMapper;
 import com.zzlbe.dao.search.UserSearch;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;

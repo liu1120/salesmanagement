@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzlbe.dao.mapper.GoodsMapper">
+
+    <resultMap id="BaseMap" type="com.zzlbe.dao.entity.GoodsEntity">
+        <result column="go_id" property="id"/>
+        <result column="go_name" property="name"/>
+        <result column="go_sort" property="sort"/>
+        <result column="go_version" property="version"/>
+        <result column="go_price" property="price"/>
+        <result column="go_minprice" property="minPrice"/>
+        <result column="go_introduce" property="introduce"/>
+        <result column="go_newimgpath" property="newImgPath"/>
+        <result column="go_point" property="point"/>
+        <result column="go_updatetime" property="updateTime"/>
+        <result column="go_isshow" property="isShow"/>
+        <result column="go_num" property="num"/>
+        <result column="go_credit" property="credit"/>
+    </resultMap>
+
+    <sql id="tableName">tb_goods</sql>
+
+    <sql id="columns">
+        go_id,
+        go_name,
+        go_sort,
+        go_version,
+        go_price,
+        go_minprice,
+        go_introduce,
+        go_newimgpath,
+        go_point,
+        go_updatetime,
+        go_isshow,
+        go_num,
+        go_credit
+    </sql>
+
+    <sql id="condition">
+        <where>
+            <if test="name != null">
+                AND go_name = #{name}
+            </if>
+            <if test="version != null">
+                AND go_version = #{version}
+            </if>
+            <if test="point != null">
+                AND go_point = #{point}
+            </if>
+            <if test="isShow != null">
+                AND go_isshow = #{isShow}
+            </if>
+            <if test="num != null">
+                AND go_num = #{num}
+            </if>
+            <if test="credit != null">
+                AND go_credit = #{credit}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
+    <select id="selectByPageTotal" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+    </select>
+
+    <select id="selectById" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE go_id = #{id}
+    </select>
+
+    <select id="selectByExample" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+        LIMIT 1
+    </select>
+
+    <update id="update">
+        UPDATE
+        <include refid="tableName"/>
+        <set>
+            <if test="name != null">
+                go_name = #{name},
+            </if>
+            <if test="sort != null">
+                go_sort = #{sort},
+            </if>
+            <if test="version != null">
+                go_version = #{version},
+            </if>
+            <if test="price != null">
+                go_price = #{price},
+            </if>
+            <if test="minPrice != null">
+                go_minprice = #{minPrice},
+            </if>
+            <if test="introduce != null">
+                go_introduce = #{introduce},
+            </if>
+            <if test="newImgPath != null">
+                go_newimgpath = #{newImgPath},
+            </if>
+            <if test="point != null">
+                go_point = #{point},
+            </if>
+            <if test="updateTime != null">
+                go_updatetime = #{updateTime},
+            </if>
+            <if test="isShow != null">
+                go_isshow = #{isShow},
+            </if>
+            <if test="num != null">
+                go_num = #{num},
+            </if>
+            <if test="credit != null">
+                go_credit = #{credit},
+            </if>
+        </set>
+        WHERE
+        go_id = #{id}
+    </update>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+        <include refid="tableName"/>
+        (
+        <include refid="columns"/>
+        )
+        VALUES
+        (
+        #{id},
+        #{name},
+        #{sort},
+        #{version},
+        #{price},
+        #{minPrice},
+        #{introduce},
+        #{newImgPath},
+        #{point},
+        #{updateTime},
+        #{isShow},
+        #{num},
+        #{credit}
+        )
+    </insert>
+
+</mapper>

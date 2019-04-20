@@ -1,26 +1,23 @@
-package com.zzlbe.dao.entity;
+package com.zzlbe.core.request;
 
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
- * PROJECT: Sales
- * DESCRIPTION: 订单表
+ * PROJECT: sales
+ * DESCRIPTION: 订单相关FORM
  *
- * @author duGraceful
- * @date 2019/4/13
+ * @author amos
+ * @date 2019/4/20
  */
 @Data
-@Accessors(chain = true)
-public class OrderEntity {
+public class OrderForm {
 
     /**
      * 订单编号
      */
-    private Integer orId;
+    private Long orId;
     /**
      * 农化产品id
      */
@@ -42,10 +39,6 @@ public class OrderEntity {
      */
     private BigDecimal orTotalAmount;
     /**
-     * 交易时间
-     */
-    private Date orDatetime;
-    /**
      * 销售员编号
      */
     private Long orSellerId;
@@ -66,7 +59,7 @@ public class OrderEntity {
      */
     private Integer orAddress;
     /**
-     * 订单状态：0未付款,1已付款，2待发货,3已发货,4已签收,5退货中,6已退货，7完成交易
+     * 0未付款,1已付款，2待发货,3已发货,4已签收,5退货中,6已退货，7完成交易
      */
     private Integer orStatus;
     /**

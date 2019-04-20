@@ -1,4 +1,4 @@
-package com.zzlbe.core;
+package com.zzlbe.core.dto;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
