@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 public abstract class BasePageRequest {
 
-    private Integer size = 20;
+    private Integer size = 10;
 
     private Integer page = 1;
 

@@ -112,10 +112,11 @@ public class AttendanceBusinessImpl implements AttendanceBusiness {
         return new GenericResponse<>(getPageResponseByEntities(attendanceEntities, total));
     }
 
+
     @Override
-    public GenericResponse trip(AttendanceTripForm punchForm) {
+    public GenericResponse trip(AttendanceTripForm form) {
         TripEntity tripEntity = new TripEntity();
-        BeanUtils.copyProperties(punchForm, tripEntity);
+        BeanUtils.copyProperties(form, tripEntity);
         tripEntity.setTrState(1);
         tripMapper.insert(tripEntity);
 
@@ -134,7 +135,7 @@ public class AttendanceBusinessImpl implements AttendanceBusiness {
     public GenericResponse tripVerify(AttendanceTripForm tripForm) {
         TripEntity tripEntity = tripMapper.selectById(tripForm.getTrId());
         if (tripEntity == null) {
-            return GenericResponse.SUCCESS;
+            return GenericResponse.ERROR;
         }
 
         tripEntity.setTrState(tripForm.getTrState());
@@ -145,9 +146,45 @@ public class AttendanceBusinessImpl implements AttendanceBusiness {
     }
 
     @Override
-    public GenericResponse vacation(AttendanceVacationForm punchForm) {
+    public GenericResponse tripModify(AttendanceTripForm tripForm) {
+        TripEntity tripEntity = tripMapper.selectById(tripForm.getTrId());
+        if (tripEntity == null) {
+            return GenericResponse.ERROR;
+        }
+        if (tripEntity.getTrState() != 1) {
+            return new GenericResponse("3000", "当前状态不允许修改");
+        }
+
+        tripEntity.setTrCity(tripForm.getTrCity());
+        tripEntity.setTrToCity(tripForm.getTrToCity());
+        tripEntity.setTrType(tripForm.getTrType());
+        tripEntity.setTrIntent(tripForm.getTrIntent());
+        tripEntity.setTrStart(tripForm.getTrStart());
+        tripEntity.setTrStop(tripForm.getTrStop());
+        tripMapper.update(tripEntity);
+
+        return GenericResponse.SUCCESS;
+    }
+
+    @Override
+    public GenericResponse tripRemove(AttendanceTripForm tripForm) {
+        TripEntity tripEntity = tripMapper.selectById(tripForm.getTrId());
+        if (tripEntity == null) {
+            return GenericResponse.ERROR;
+        }
+        if (tripEntity.getTrState() != 1) {
+            return new GenericResponse("3000", "当前状态不允许删除");
+        }
+
+        tripMapper.delete(tripForm.getTrId());
+
+        return GenericResponse.SUCCESS;
+    }
+
+    @Override
+    public GenericResponse vacation(AttendanceVacationForm form) {
         VacationEntity vacationEntity = new VacationEntity();
-        BeanUtils.copyProperties(punchForm, vacationEntity);
+        BeanUtils.copyProperties(form, vacationEntity);
         vacationEntity.setVaStatus(0);
         vacationMapper.insert(vacationEntity);
 
@@ -171,16 +208,51 @@ public class AttendanceBusinessImpl implements AttendanceBusiness {
     }
 
     @Override
-    public GenericResponse vacationVerify(AttendanceVacationForm punchForm) {
-        VacationEntity vacationEntity = vacationMapper.selectById(punchForm.getVaId());
+    public GenericResponse vacationVerify(AttendanceVacationForm form) {
+        VacationEntity vacationEntity = vacationMapper.selectById(form.getVaId());
         if (vacationEntity == null) {
-            return GenericResponse.SUCCESS;
+            return GenericResponse.ERROR;
         }
 
-        vacationEntity.setVaType(punchForm.getVaType());
-        vacationEntity.setVaStatus(punchForm.getVaStatus());
-        vacationEntity.setVaNotes(punchForm.getVaNotes());
+        vacationEntity.setVaType(form.getVaType());
+        vacationEntity.setVaStatus(form.getVaStatus());
+        vacationEntity.setVaNotes(form.getVaNotes());
         vacationMapper.update(vacationEntity);
+
+        return GenericResponse.SUCCESS;
+    }
+
+    @Override
+    public GenericResponse vacationModify(AttendanceVacationForm form) {
+        VacationEntity vacationEntity = vacationMapper.selectById(form.getVaId());
+        if (vacationEntity == null) {
+            return GenericResponse.ERROR;
+        }
+        if (vacationEntity.getVaStatus() != 0) {
+            return new GenericResponse("3000", "当前状态不允许修改");
+        }
+
+        vacationEntity.setVaStart(form.getVaStart());
+        vacationEntity.setVaEnd(form.getVaEnd());
+        vacationEntity.setVaDays(form.getVaDays());
+        vacationEntity.setVaReason(form.getVaReason());
+        vacationEntity.setVaType(form.getVaType());
+        vacationMapper.update(vacationEntity);
+
+        return GenericResponse.SUCCESS;
+    }
+
+    @Override
+    public GenericResponse vacationRemove(AttendanceVacationForm form) {
+        VacationEntity vacationEntity = vacationMapper.selectById(form.getVaId());
+        if (vacationEntity == null) {
+            return GenericResponse.ERROR;
+        }
+        if (vacationEntity.getVaStatus() != 0) {
+            return new GenericResponse("3000", "当前状态不允许刪除");
+        }
+
+        vacationMapper.delete(form.getVaId());
 
         return GenericResponse.SUCCESS;
     }

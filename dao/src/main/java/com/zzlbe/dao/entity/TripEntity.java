@@ -50,7 +50,7 @@ public class TripEntity {
     private Long trSellerId;
     /**
      * 出差申请状态（可以修改）
-     * 1申请中待办，2同意，3拒绝
+     * 1待处理，2同意，3拒绝
      */
     private Integer trState;
     /**

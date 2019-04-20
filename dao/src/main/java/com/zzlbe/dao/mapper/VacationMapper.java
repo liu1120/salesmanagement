@@ -20,6 +20,8 @@ public interface VacationMapper {
 
     void update(VacationEntity userEntity);
 
+    void delete(Long id);
+
     VacationEntity selectById(Long id);
 
     List<VacationEntity> selectByPage(VacationSearch vacationSearch);
