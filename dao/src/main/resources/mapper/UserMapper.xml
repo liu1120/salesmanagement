@@ -64,6 +64,12 @@
         <include refid="condition"/>
     </select>
 
+
+    <select id="userCount" resultType="int">
+        SELECT COUNT(1)
+        FROM tb_user
+    </select>
+
     <select id="selectById" resultMap="BaseMap">
         SELECT
         <include refid="columns"/>

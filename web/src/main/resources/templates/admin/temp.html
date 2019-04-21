@@ -11,6 +11,22 @@
     <link rel="stylesheet" href="/vendor/font-awesome/css/fontawesome-all.min.css">
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/stylesOA.css">
+    <link href="window/window.css" rel="stylesheet" />
+    <script src="js/jquery-1.7.1.min.js"></script>
+    <script src="window/window.js"></script>
+
+    <script type="text/javascript">
+        function _alert() {
+            win.alert('系统提示', '这是alert效果！');
+        }
+
+        function _confirm() {
+            win.confirm('系统提示', '确定这是confirm效果吗？', function (r) {
+                win.alertEx('结果：' + (r ? "是" : "不是"))
+            });
+        }
+    </script>
+
 </head>
 <body class="sidebar-fixed header-fixed">
 <div class="page-wrapper">
