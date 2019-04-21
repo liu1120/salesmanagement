@@ -13,7 +13,6 @@ import com.zzlbe.dao.entity.VacationEntity;
 import com.zzlbe.dao.mapper.AttendanceMapper;
 import com.zzlbe.dao.mapper.TripMapper;
 import com.zzlbe.dao.mapper.VacationMapper;
-import com.zzlbe.dao.page.PageResponse;
 import com.zzlbe.dao.search.AttendanceSearch;
 import com.zzlbe.dao.search.TripSearch;
 import com.zzlbe.dao.search.VacationSearch;
@@ -33,7 +32,7 @@ import java.util.List;
  * @date 2019/4/14
  */
 @Component("attendanceBusiness")
-public class AttendanceBusinessImpl implements AttendanceBusiness {
+public class AttendanceBusinessImpl extends BaseBusinessImpl implements AttendanceBusiness {
 
     /**
      * 上班时间 && 下班时间 && 加班开始时间
@@ -106,10 +105,10 @@ public class AttendanceBusinessImpl implements AttendanceBusiness {
 
     @Override
     public GenericResponse punchList(AttendanceSearch attendanceSearch) {
-        List<AttendanceEntity> attendanceEntities = attendanceMapper.selectByPage(attendanceSearch);
+        List<AttendanceEntity> entities = attendanceMapper.selectByPage(attendanceSearch);
         Integer total = attendanceMapper.selectByPageTotal(attendanceSearch);
 
-        return new GenericResponse<>(getPageResponseByEntities(attendanceEntities, total));
+        return genericPageResponse(entities, total);
     }
 
 
@@ -125,10 +124,10 @@ public class AttendanceBusinessImpl implements AttendanceBusiness {
 
     @Override
     public GenericResponse tripList(TripSearch tripSearch) {
-        List<TripEntity> tripEntities = tripMapper.selectByPage(tripSearch);
+        List<TripEntity> entities = tripMapper.selectByPage(tripSearch);
         Integer total = tripMapper.selectByPageTotal(tripSearch);
 
-        return new GenericResponse<>(getPageResponseByEntities(tripEntities, total));
+        return genericPageResponse(entities, total);
     }
 
     @Override
@@ -193,18 +192,10 @@ public class AttendanceBusinessImpl implements AttendanceBusiness {
 
     @Override
     public GenericResponse vacationList(VacationSearch vacationSearch) {
-        List<VacationEntity> vacationEntities = vacationMapper.selectByPage(vacationSearch);
+        List<VacationEntity> entities = vacationMapper.selectByPage(vacationSearch);
         Integer total = vacationMapper.selectByPageTotal(vacationSearch);
 
-        return new GenericResponse<>(getPageResponseByEntities(vacationEntities, total));
-    }
-
-    private <T> PageResponse<T> getPageResponseByEntities(List<T> entities, Integer total) {
-        PageResponse<T> pageResponse = new PageResponse<>();
-        pageResponse.setSize(entities.size());
-        pageResponse.setList(entities);
-        pageResponse.setTotal(total);
-        return pageResponse;
+        return genericPageResponse(entities, total);
     }
 
     @Override

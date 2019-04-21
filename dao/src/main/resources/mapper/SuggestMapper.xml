@@ -3,15 +3,16 @@
 <mapper namespace="com.zzlbe.dao.mapper.SuggestMapper">
 
     <resultMap id="BaseMap" type="com.zzlbe.dao.entity.SuggestEntity">
-        <result column="su_id" property="suId"/>
-        <result column="su_type" property="suType"/>
-        <result column="su_title" property="suTitle"/>
-        <result column="su_content" property="suContent"/>
-        <result column="su_u_id" property="suUserId"/>
-        <result column="su_goods_name" property="suGoodsName"/>
-        <result column="su_seller_id" property="suSellerId"/>
-        <result column="su_time" property="suTime"/>
-        <result column="su_is_ok" property="suIsOk"/>
+        <result column="su_id" property="id"/>
+        <result column="su_type" property="type"/>
+        <result column="su_title" property="title"/>
+        <result column="su_content" property="content"/>
+        <result column="su_user_id" property="userId"/>
+        <result column="su_goods_name" property="goodsName"/>
+        <result column="su_seller_id" property="sellerId"/>
+        <result column="su_status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
     </resultMap>
 
     <sql id="tableName">tb_suggest</sql>
@@ -21,35 +22,81 @@
         su_type,
         su_title,
         su_content,
-        su_u_id,
+        su_user_id,
         su_goods_name,
         su_seller_id,
-        su_time,
-        su_is_ok
+        su_status,
+        create_time,
+        update_time
     </sql>
 
-    <select id="selectByPage" resultMap="BaseMap">
-        SELECT
-        <include refid="columns"/>
-        FROM
-        <include refid="tableName"/>
+    <sql id="condition">
         <where>
-            <if test="name != null">
-                AND u_name = #{name}
+            <if test="type != null">
+                AND su_type = #{type}
+            </if>
+            <if test="title != null">
+                AND su_title REGEXP #{title}
+            </if>
+            <if test="content != null">
+                AND su_content REGEXP #{content}
+            </if>
+            <if test="goodsName != null">
+                AND su_goods_name = #{goodsName}
+            </if>
+            <if test="sellerId != null">
+                AND su_seller_id = #{sellerId}
+            </if>
+            <if test="status != null">
+                AND su_status = #{status}
             </if>
         </where>
-        LIMIT #{firstIndex}, #{size}
-    </select>
+        <if test="sortDesc">
+            ORDER BY create_time DESC
+        </if>
+    </sql>
 
     <select id="selectById" resultMap="BaseMap">
         SELECT
         <include refid="columns"/>
         FROM
         <include refid="tableName"/>
-        WHERE suId = #{id}
+        WHERE su_id = #{id}
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="suId">
+    <select id="selectByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
+    <select id="selectByPageTotal" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+    </select>
+
+    <update id="update">
+        UPDATE
+        <include refid="tableName"/>
+        <set>
+            <if test="status != null">
+                su_status = #{status},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        WHERE
+        su_id = #{id}
+    </update>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
         <include refid="tableName"/>
         (
@@ -57,15 +104,16 @@
         )
         VALUES
         (
-        #{suId},
-        #{suType},
-        #{suTitle},
-        #{suContent},
-        #{suUserId},
-        #{suGoodsName},
-        #{suSellerId},
-        #{suTime},
-        #{suIsOk}
+        #{id},
+        #{type},
+        #{title},
+        #{content},
+        #{userId},
+        #{goodsName},
+        #{sellerId},
+        #{status},
+        #{createTime},
+        #{updateTime}
         )
     </insert>
 
