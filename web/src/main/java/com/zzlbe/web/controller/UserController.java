@@ -1,10 +1,12 @@
 package com.zzlbe.web.controller;
 
-import com.zzlbe.core.dto.UserInfoDTO;
 import com.zzlbe.core.business.UserBusiness;
 import com.zzlbe.core.common.GenericResponse;
+import com.zzlbe.core.dto.UserInfoDTO;
 import com.zzlbe.core.request.LoginForm;
 import com.zzlbe.core.request.RegisterForm;
+import com.zzlbe.core.request.UserInfoModifyForm;
+import com.zzlbe.core.request.UserPasswordModifyForm;
 import com.zzlbe.dao.entity.UserEntity;
 import com.zzlbe.dao.mapper.UserMapper;
 import com.zzlbe.dao.search.UserSearch;
@@ -63,24 +65,37 @@ public class UserController {
         return userBusiness.register(registerForm);
     }
 
+    @PostMapping("modify")
+    public GenericResponse modify(@RequestBody @Valid UserInfoModifyForm modifyForm, BindingResult bindingResult) {
+        // 参数校验
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> list = bindingResult.getAllErrors();
+            return GenericResponse.ERROR.setMessage(list.get(0).getDefaultMessage());
+        }
+
+        return userBusiness.modify(modifyForm);
+    }
+
+    @PostMapping("passwordModify")
+    public GenericResponse passwordModify(@RequestBody @Valid UserPasswordModifyForm passwordModifyForm, BindingResult bindingResult) {
+        // 参数校验
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> list = bindingResult.getAllErrors();
+            return GenericResponse.ERROR.setMessage(list.get(0).getDefaultMessage());
+        }
+
+        return userBusiness.passwordModify(passwordModifyForm);
+    }
+
+
     @PostMapping("userAll")
     public GenericResponse userAll(@RequestBody UserSearch userSearch) {
         return userBusiness.userAll(userSearch);
     }
 
-    @GetMapping("userInfo/{token}")
-    public GenericResponse userInfo(@PathVariable("token") String token) {
-        return userBusiness.userInfo(new UserInfoDTO().setToken(token));
-    }
-
-    @GetMapping("userInfoByPhone/{phone}")
-    public GenericResponse userInfoByPhone(@PathVariable("phone") String phone) {
-        return userBusiness.userInfo(new UserInfoDTO().setPhoneNo(phone));
-    }
-
-    @GetMapping("userInfoById/{id}")
-    public GenericResponse userInfoById(@PathVariable("id") Long id) {
-        return userBusiness.userInfo(new UserInfoDTO().setId(id));
+    @PostMapping("userInfo")
+    public GenericResponse userInfo(@RequestBody UserInfoDTO userInfoDTO) {
+        return userBusiness.userInfo(userInfoDTO);
     }
 
 }

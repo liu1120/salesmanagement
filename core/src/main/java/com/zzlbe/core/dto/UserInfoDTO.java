@@ -4,9 +4,8 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Data
-@Accessors(chain = true)
 public class UserInfoDTO {
     private Long id;
     private String token;
-    private String phoneNo;
+    private String phone;
 }

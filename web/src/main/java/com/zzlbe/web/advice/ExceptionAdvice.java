@@ -1,4 +1,4 @@
-package com.zzlbe.advice;
+package com.zzlbe.web.advice;
 
 import com.zzlbe.core.common.GenericResponse;
 import org.slf4j.Logger;
