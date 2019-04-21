@@ -1,21 +1,21 @@
-package com.zzlbe.dao.entity;
+package com.zzlbe.dao.search;
 
+import com.zzlbe.dao.page.BasePageRequest;
 import lombok.Data;
-import lombok.experimental.Accessors;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
- * PROJECT: Sales
- * DESCRIPTION: 订单表
+ * PROJECT: sales management
+ * DESCRIPTION: 订单查询
  *
- * @author duGraceful
- * @date 2019/4/13
+ * @author amos
+ * @date 2019/4/20
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-@Accessors(chain = true)
-public class OrderEntity {
+public class OrderSearch extends BasePageRequest {
 
     /**
      * 订单编号
@@ -44,7 +44,7 @@ public class OrderEntity {
     /**
      * 交易时间
      */
-    private Date orDatetime;
+    private String orDatetimeStr;
     /**
      * 销售员编号
      */
@@ -66,7 +66,7 @@ public class OrderEntity {
      */
     private Integer orAddress;
     /**
-     * 订单状态：0未付款,1已付款，2待发货,3已发货,4已签收,5退货中,6已退货，7完成交易
+     * 0未付款,1已付款，2待发货,3已发货,4已签收,5退货中,6已退货，7完成交易
      */
     private Integer orStatus;
     /**
@@ -77,5 +77,4 @@ public class OrderEntity {
      * 拒绝理由
      */
     private String orRefuse;
-
 }

@@ -3,22 +3,64 @@ package com.zzlbe.dao.entity;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
 @Accessors(chain = true)
 public class GoodsEntity {
+
+    /**
+     * 农化产品id
+     */
     private Long id;
+    /**
+     * 农化产品名字
+     */
     private String name;
+    /**
+     * 农化产品品牌
+     */
     private String sort;
+    /**
+     * 农化产品型号
+     */
     private String version;
-    private double price;
-    private double minprice;
+    /**
+     * 农化产品价格
+     */
+    private BigDecimal price;
+    /**
+     * 农化产品底价
+     */
+    private BigDecimal minPrice;
+    /**
+     * 农化产品介绍、说明、图片
+     */
     private String introduce;
-    private String newimgpath;
+    /**
+     * 农化产品图片存放路径
+     */
+    private String newImgPath;
+    /**
+     * 农化产品点击量
+     */
     private String point;
-    private Date updatetime;
-    private long isshow;
-    private int num;
-    private long credit;
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
+    /**
+     * 农化产品是否展示（默认0展示,1不展示）
+     */
+    private Integer isShow;
+    /**
+     * 农化产品库存
+     */
+    private Integer num;
+    /**
+     * 农化产品积分
+     */
+    private Integer credit;
+
 }

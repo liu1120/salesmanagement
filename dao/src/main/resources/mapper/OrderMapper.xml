@@ -40,18 +40,13 @@
         or_refuse
     </sql>
 
-    <select id="selectByPage" resultMap="BaseMap">
-        SELECT
-        <include refid="columns"/>
-        FROM
-        <include refid="tableName"/>
+    <sql id="condition">
         <where>
             <if test="name != null">
                 AND u_name = #{name}
             </if>
         </where>
-        LIMIT #{firstIndex}, #{size}
-    </select>
+    </sql>
 
     <select id="selectById" resultMap="BaseMap">
         SELECT
@@ -60,6 +55,74 @@
         <include refid="tableName"/>
         WHERE orId = #{id}
     </select>
+
+    <select id="selectByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
+    <select id="selectByPageTotal" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+    </select>
+
+    <update id="update">
+        UPDATE
+        <include refid="tableName"/>
+        <set>
+            <if test="orGoodsId != null">
+                or_goods_id = #{orGoodsId},
+            </if>
+            <if test="orCount != null">
+                or_count = #{orCount},
+            </if>
+            <if test="orPrice != null">
+                or_price = #{orPrice},
+            </if>
+            <if test="orSay != null">
+                or_say = #{orSay},
+            </if>
+            <if test="orTotalAmount != null">
+                or_total_amount = #{orTotalAmount},
+            </if>
+            <if test="orDatetime != null">
+                or_datetime = #{orDatetime},
+            </if>
+            <if test="orSellerId != null">
+                or_seller_id = #{orSellerId},
+            </if>
+            <if test="orUserId != null">
+                or_user_id = #{orUserId},
+            </if>
+            <if test="orType != null">
+                or_type = #{orType},
+            </if>
+            <if test="orLogistics != null">
+                or_logistics = #{orLogistics},
+            </if>
+            <if test="orAddress != null">
+                or_address = #{orAddress},
+            </if>
+            <if test="orStatus != null">
+                or_status = #{orStatus},
+            </if>
+            <if test="orWords != null">
+                or_words = #{orWords},
+            </if>
+            <if test="orRefuse != null">
+                or_refuse = #{orRefuse},
+            </if>
+        </set>
+        WHERE
+        or_id = #{orId}
+    </update>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="orId">
         INSERT INTO

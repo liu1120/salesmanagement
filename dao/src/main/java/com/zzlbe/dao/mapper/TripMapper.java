@@ -20,6 +20,8 @@ public interface TripMapper {
 
     void update(TripEntity userEntity);
 
+    void delete(Long id);
+
     TripEntity selectById(Long id);
 
     List<TripEntity> selectByPage(TripSearch tripSearch);

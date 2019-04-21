@@ -1,6 +1,7 @@
 package com.zzlbe.dao.mapper;
 
 import com.zzlbe.dao.entity.OrderEntity;
+import com.zzlbe.dao.search.OrderSearch;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,8 +18,12 @@ public interface OrderMapper {
 
     void insert(OrderEntity orderEntity);
 
+    void update(OrderEntity orderEntity);
+
     OrderEntity selectById(Long id);
 
-    List<OrderEntity> selectByPage(OrderEntity orderEntity);
+    List<OrderEntity> selectByPage(OrderSearch orderSearch);
+
+    Integer selectByPageTotal(OrderSearch orderSearch);
 
 }

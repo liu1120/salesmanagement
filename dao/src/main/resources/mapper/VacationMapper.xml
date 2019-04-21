@@ -82,10 +82,29 @@
         WHERE va_id = #{id}
     </select>
 
+    <delete id="delete">
+        DELETE
+        FROM
+        <include refid="tableName"/>
+        WHERE va_id = #{id}
+    </delete>
+
     <update id="update">
         UPDATE
         <include refid="tableName"/>
         <set>
+            <if test="vaStart != null">
+                va_start = #{vaStart},
+            </if>
+            <if test="vaEnd != null">
+                va_end = #{vaEnd},
+            </if>
+            <if test="vaDays != null">
+                va_days = #{vaDays},
+            </if>
+            <if test="vaReason != null">
+                va_reason = #{vaReason},
+            </if>
             <if test="vaType != null">
                 va_type = #{vaType},
             </if>

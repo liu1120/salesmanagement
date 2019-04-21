@@ -1,6 +1,6 @@
 package com.zzlbe.core.business.impl;
 
-import com.zzlbe.core.UserInfoDTO;
+import com.zzlbe.core.dto.UserInfoDTO;
 import com.zzlbe.core.business.UserBusiness;
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.request.LoginForm;

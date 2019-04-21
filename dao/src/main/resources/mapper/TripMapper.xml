@@ -87,10 +87,35 @@
         WHERE tr_id = #{id}
     </select>
 
+    <delete id="delete">
+        DELETE
+        FROM
+        <include refid="tableName"/>
+        WHERE tr_id = #{id}
+    </delete>
+
     <update id="update">
         UPDATE
         <include refid="tableName"/>
         <set>
+            <if test="trCity != null">
+                tr_city = #{trCity},
+            </if>
+            <if test="trToCity != null">
+                tr_to_city = #{trToCity},
+            </if>
+            <if test="trType != null">
+                tr_type = #{trType},
+            </if>
+            <if test="trIntent != null">
+                tr_intent = #{trIntent},
+            </if>
+            <if test="trStart != null">
+                tr_start = #{trStart},
+            </if>
+            <if test="trStop != null">
+                tr_stop = #{trStop},
+            </if>
             <if test="trState != null">
                 tr_state = #{trState},
             </if>

@@ -80,6 +80,27 @@ public class AttendanceController {
     }
 
     /**
+     * 编辑出差（仅限待审核状态）
+     */
+    @RequestMapping("tripModify")
+    public GenericResponse tripModify(@RequestBody AttendanceTripForm tripForm) {
+        tripForm.setTrStart(DateUtil.getDateByStr(tripForm.getTrStartStr()));
+        tripForm.setTrStop(DateUtil.getDateByStr(tripForm.getTrStopStr()));
+
+        return attendanceBusiness.tripModify(tripForm);
+    }
+
+    /**
+     * 删除出差（仅限待审核状态）
+     * （暂不做）出差未结束，提前回来上班了，此时就要删除出差了
+     */
+    @RequestMapping("tripRemove")
+    public GenericResponse tripRemove(@RequestBody AttendanceTripForm tripForm) {
+
+        return attendanceBusiness.tripRemove(tripForm);
+    }
+
+    /**
      * 请假
      */
     @RequestMapping("vacation")
@@ -106,6 +127,27 @@ public class AttendanceController {
     public GenericResponse vacationVerify(@RequestBody AttendanceVacationForm vacationForm) {
 
         return attendanceBusiness.vacationVerify(vacationForm);
+    }
+
+    /**
+     * 编辑请假（仅限待审核状态）
+     */
+    @RequestMapping("vacationModify")
+    public GenericResponse vacationModify(@RequestBody AttendanceVacationForm vacationForm) {
+        vacationForm.setVaStart(DateUtil.getDateByStr(vacationForm.getVaStartStr()));
+        vacationForm.setVaEnd(DateUtil.getDateByStr(vacationForm.getVaEndStr()));
+
+        return attendanceBusiness.vacationModify(vacationForm);
+    }
+
+    /**
+     * 删除请假（仅限待审核状态）
+     * （暂不做）假期未结束，提前回来上班了，此时就要删除请假了
+     */
+    @RequestMapping("vacationRemove")
+    public GenericResponse vacationRemove(@RequestBody AttendanceVacationForm vacationForm) {
+
+        return attendanceBusiness.vacationRemove(vacationForm);
     }
 
 }

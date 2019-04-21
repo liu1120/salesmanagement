@@ -41,7 +41,7 @@ public class VacationEntity {
      */
     private String vaReason;
     /**
-     * 请假类型
+     * 请假类型 1事假;2病假;3调休
      */
     private Integer vaType;
     /**
