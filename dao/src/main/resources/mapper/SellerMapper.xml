@@ -100,4 +100,17 @@
         )
     </insert>
 
+    <select id="sellerCount" resultType="int">
+        SELECT COUNT(1)
+        FROM
+        <include refid="tableName"/>
+        where sp_rank = 1
+    </select>
+
+    <select id="adminerCount" resultType="int">
+        SELECT COUNT(1)
+        FROM
+        <include refid="tableName"/>
+        where sp_rank = 0
+    </select>
 </mapper>

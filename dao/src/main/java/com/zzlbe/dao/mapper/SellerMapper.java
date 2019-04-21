@@ -20,4 +20,7 @@ public interface SellerMapper {
 
     List<SellerEntity> selectByPage(SellerSearch sellerSearch);
 
+    int adminerCount();
+
+    int sellerCount();
 }

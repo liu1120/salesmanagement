@@ -3,8 +3,9 @@ function clearLoginInfo() {
     var login_username=localStorage.getItem("login_username");
     if(login_username!=null){
         localStorage.removeItem('login_username');
-        self.location.href="admin/login"
     }
+    self.location.href="login"
+    // console.log("self.location.href"+self.location.href);
 }
 function checkLoginInfo() {//略去
     console.log("checkLoginInfo");

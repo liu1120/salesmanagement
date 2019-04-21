@@ -21,4 +21,5 @@ public interface SuggestMapper {
 
     List<SuggestEntity> selectByPage(SuggestEntity suggestEntity);
 
+    int suggestionCount();
 }

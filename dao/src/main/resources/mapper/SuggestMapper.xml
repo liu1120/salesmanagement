@@ -49,6 +49,11 @@
         WHERE suId = #{id}
     </select>
 
+    <select id="suggestionCount" resultType="int">
+        SELECT COUNT(1)
+        FROM
+        <include refid="tableName"/>
+    </select>
     <insert id="insert" useGeneratedKeys="true" keyProperty="suId">
         INSERT INTO
         <include refid="tableName"/>
