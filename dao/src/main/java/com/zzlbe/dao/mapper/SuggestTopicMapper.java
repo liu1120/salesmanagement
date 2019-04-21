@@ -1,6 +1,7 @@
 package com.zzlbe.dao.mapper;
 
 import com.zzlbe.dao.entity.SuggestTopicEntity;
+import com.zzlbe.dao.search.SuggestTopicSearch;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,6 +20,8 @@ public interface SuggestTopicMapper {
 
     SuggestTopicEntity selectById(Long id);
 
-    List<SuggestTopicEntity> selectByPage(SuggestTopicEntity suggestTopicEntity);
+    List<SuggestTopicEntity> selectByPage(SuggestTopicSearch suggestTopicSearch);
+
+    Integer selectByPageTotal(SuggestTopicSearch suggestTopicSearch);
 
 }

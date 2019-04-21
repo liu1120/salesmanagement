@@ -16,6 +16,8 @@ public abstract class BasePageRequest {
 
     private Integer page = 1;
 
+    private Boolean sortDesc = false;
+
     public Integer getFirstIndex() {
         return getSize() * (getPage() - 1);
     }

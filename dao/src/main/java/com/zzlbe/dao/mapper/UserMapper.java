@@ -13,6 +13,8 @@ public interface UserMapper {
 
     void insert(UserEntity userEntity);
 
+    void update(UserEntity userEntity);
+
     UserEntity selectById(Long id);
 
     UserEntity selectByPhoneNo(String phoneNo);

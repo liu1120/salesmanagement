@@ -3,6 +3,8 @@ package com.zzlbe.dao.entity;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -19,26 +21,30 @@ public class SuggestTopicEntity {
     /**
      * 自增ID
      */
-    private Long toId;
+    private Long id;
     /**
-     * 销售员编号
+     * 外键ID
+     * SuggestEntity#id
      */
-    private Long toSellerId;
-    /**
-     * 反馈时间
-     */
-    private Date toTime;
-    /**
-     * 反馈内容
-     */
-    private String toContent;
+    @NotNull(message = "回复主题不能为空")
+    private Long suggestId;
     /**
      * 用户编号
      */
-    private Long toUserId;
+    @NotNull(message = "回复用户编号不能为空")
+    private Long userId;
     /**
      * 用户名字
      */
-    private String toUserName;
+    private String userName;
+    /**
+     * 反馈内容
+     */
+    @NotBlank(message = "回复内容不能为空")
+    private String content;
+    /**
+     * 反馈时间
+     */
+    private Date createTime;
 
 }

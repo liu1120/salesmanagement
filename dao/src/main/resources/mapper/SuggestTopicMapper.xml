@@ -3,47 +3,71 @@
 <mapper namespace="com.zzlbe.dao.mapper.SuggestTopicMapper">
 
     <resultMap id="BaseMap" type="com.zzlbe.dao.entity.SuggestTopicEntity">
-        <result column="to_id" property="toId"/>
-        <result column="to_seller_id" property="toSellerId"/>
-        <result column="to_time" property="toTime"/>
-        <result column="to_content" property="toContent"/>
-        <result column="to_user_id" property="toUserId"/>
-        <result column="to_user_name" property="toUserName"/>
+        <result column="id" property="id"/>
+        <result column="suggest_id" property="suggestId"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="content" property="content"/>
+        <result column="create_time" property="createTime"/>
     </resultMap>
 
     <sql id="tableName">tb_suggest_topic</sql>
 
     <sql id="columns">
-        to_id,
-        to_seller_id,
-        to_time,
-        to_content,
-        to_user_id,
-        to_user_name
+        id,
+        suggest_id,
+        user_id,
+        user_name,
+        content,
+        create_time
     </sql>
 
-    <select id="selectByPage" resultMap="BaseMap">
-        SELECT
-        <include refid="columns"/>
-        FROM
-        <include refid="tableName"/>
+    <sql id="condition">
         <where>
-            <if test="name != null">
-                AND u_name = #{name}
+            <if test="suggestId != null">
+                AND suggest_id = #{suggestId}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="userName != null">
+                AND user_name = #{userName}
+            </if>
+            <if test="content != null">
+                AND content REGEXP #{content}
             </if>
         </where>
-        LIMIT #{firstIndex}, #{size}
-    </select>
+        <if test="sortDesc">
+            ORDER BY create_time DESC
+        </if>
+    </sql>
 
     <select id="selectById" resultMap="BaseMap">
         SELECT
         <include refid="columns"/>
         FROM
         <include refid="tableName"/>
-        WHERE toId = #{id}
+        WHERE id = #{id}
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="toId">
+    <select id="selectByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
+    <select id="selectByPageTotal" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
         <include refid="tableName"/>
         (
@@ -51,12 +75,12 @@
         )
         VALUES
         (
-        #{toId},
-        #{toSellerId},
-        #{toTime},
-        #{toContent},
-        #{toUserId},
-        #{toUserName}
+        #{id},
+        #{suggestId},
+        #{userId},
+        #{userName},
+        #{content},
+        #{createTime}
         )
     </insert>
 

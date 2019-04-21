@@ -1,0 +1,116 @@
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>在职员工列表</h5>
+                </div>
+                <div class="ibox-content">
+                    <div style="margin-bottom: 8px">
+                        <a href="/hr/employee/toAdd.do" class="btn btn-success">添加员工</a>
+                    </div>
+                    <table class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>工号</th>
+                            <th>姓名</th>
+                            <th>性别</th>
+                            <th>电话</th>
+                            <th>部门名称</th>
+                            <th>入职时间</th>
+                            <th>管理</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr class="gradeA">
+                            <td>1</td>
+                            <td>1012</td>
+                            <td>张2</td>
+                            <td>男</td>
+                            <td>18832050264</td>
+                            <td>保洁部</td>
+
+                            <td>2017-07-05</td>
+                            <td><a href="/hr/employee/7/detial.do" class="btn btn-info">查看</a>&nbsp;&nbsp;
+                                <a href="/hr/employee/7/toUpdate.do"
+                                   class="btn btn-primary">修改</a>&nbsp;&nbsp;
+                                <a onclick="del(7)" class="btn btn-danger delete">删除</a></td>
+                        </tr>
+
+                        <tr class="gradeA">
+                            <td>2</td>
+                            <td>1011</td>
+                            <td>唐y</td>
+                            <td>男</td>
+                            <td>18832013916</td>
+                            <td>宣传部</td>
+
+                            <td>2017-07-05</td>
+                            <td><a href="/hr/employee/6/detial.do" class="btn btn-info">查看</a>&nbsp;&nbsp;
+                                <a href="/hr/employee/6/toUpdate.do"
+                                   class="btn btn-primary">修改</a>&nbsp;&nbsp;
+                                <a onclick="del(6)" class="btn btn-danger delete">删除</a></td>
+                        </tr>
+
+                        <tr class="gradeA">
+                            <td>3</td>
+                            <td>1010</td>
+                            <td>杨6</td>
+                            <td>男</td>
+                            <td>17871239756</td>
+                            <td>保洁部</td>
+
+                            <td>2017-05-12</td>
+                            <td><a href="/detial.do" class="btn btn-info">查看</a>&nbsp;&nbsp;
+                                <a href="/toUpdate.do"
+                                   class="btn btn-primary">修改</a>&nbsp;&nbsp;
+                                <a onclick="del(5)" class="btn btn-danger delete">删除</a></td>
+                        </tr>
+
+                        <tr class="gradeA">
+                            <td>4</td>
+                            <td>1009</td>
+                            <td>张4</td>
+                            <td>男</td>
+                            <td>15810239904</td>
+                            <td>保洁部</td>
+
+                            <td>2017-02-06</td>
+                            <td><a href="/detial.do" class="btn btn-info">查看</a>&nbsp;&nbsp;
+                                <a href="/toUpdate.do"
+                                   class="btn btn-primary">修改</a>&nbsp;&nbsp;
+                                <a onclick="del(4)" class="btn btn-danger delete">删除</a></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    <div>
+							<span style="float: left; padding: 5px">
+								当前&nbsp;<span style="color: red;">1</span>&nbsp;/&nbsp;<b>2</b>&nbsp;页&nbsp;&nbsp;
+								总共&nbsp;<b>7</b>&nbsp;条</span>
+                        <nav aria-label="Page navigation" style="margin: 0 auto; width: 240px">
+                            <ul class="pagination" style="margin: 0;">
+                                <li>
+                                    <a href="/hr/employee/listPage.do?pageNo=1"
+                                       aria-label="Previous"> <span
+                                            aria-hidden="true">前一页</span>
+                                    </a>
+                                </li>
+
+                                <li><a href="/hr/employee/listPage.do?pageNo=1">1</a></li>
+
+                                <li><a href="/hr/employee/listPage.do?pageNo=2">2</a></li>
+
+                                <li><a href="/hr/employee/listPage.do?pageNo=2"
+                                       aria-label="Next"> <span aria-hidden="true">后一页</span>
+                                </a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

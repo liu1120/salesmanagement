@@ -87,6 +87,36 @@
         LIMIT 1
     </select>
 
+    <update id="update">
+        UPDATE
+        <include refid="tableName"/>
+        <set>
+            <if test="name != null">
+                u_name = #{name},
+            </if>
+            <if test="password != null">
+                u_password = #{password},
+            </if>
+            <if test="wechat != null">
+                u_wechat = #{wechat},
+            </if>
+            <if test="phone != null">
+                u_phone = #{phone},
+            </if>
+            <if test="realname != null">
+                u_realname = #{realname},
+            </if>
+            <if test="address != null">
+                u_address = #{address},
+            </if>
+            <if test="credit != null">
+                u_credit = #{credit},
+            </if>
+        </set>
+        WHERE
+        u_id = #{id}
+    </update>
+
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
         <include refid="tableName"/>
