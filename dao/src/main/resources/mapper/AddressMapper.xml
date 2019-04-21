@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzlbe.dao.mapper.AddressMapper">
+
+    <resultMap id="BaseMap" type="com.zzlbe.dao.entity.AddressEntity">
+        <result column="ad_id" property="id"/>
+        <result column="ad_address" property="address"/>
+        <result column="ad_info" property="info"/>
+        <result column="ad_u_id" property="uid"/>
+        <result column="ad_u_name" property="uname"/>
+        <result column="ad_phone" property="phone"/>
+        <result column="ad_status" property="status"/>
+    </resultMap>
+
+    <sql id="tableName">tb_addresses</sql>
+
+
+    <sql id="columns">
+        ad_id,
+        ad_address,
+        ad_info,
+        ad_u_id,
+        ad_u_name,
+        ad_phone,
+        ad_status
+    </sql>
+
+    <select id="selectByUid" resultMap="BaseMap">
+        SELECT * FROM tb_addresses WHERE ad_u_id =#{uid}
+    </select>
+
+
+    <update id="update">
+        UPDATE
+        <include refid="tableName"/>
+        <set>
+            <if test="id != null">
+                ad_id = #{id},
+            </if>
+            <if test="address != null">
+                ad_address = #{address},
+            </if>
+            <if test="info != null">
+                ad_info = #{info},
+            </if>
+            <if test="uid != null">
+                ad_u_id = #{uid},
+            </if>
+            <if test="uname != null">
+                ad_u_name = #{uname},
+            </if>
+            <if test="phone != null">
+                ad_phone = #{phone},
+            </if>
+            <if test="status != null">
+                ad_status = #{status},
+            </if>
+        </set>
+        WHERE
+        ad_id = #{id}
+    </update>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+        <include refid="tableName"/>
+        (
+        <include refid="columns"/>
+        )
+        VALUES
+        (
+        #{id},
+        #{address},
+        #{info},
+        #{uid},
+        #{uname},
+        #{phone},
+        #{status}
+        )
+    </insert>
+
+
+</mapper>

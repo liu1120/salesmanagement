@@ -1,15 +1,14 @@
 package com.zzlbe.web.controller;
 
 import com.zzlbe.core.util.IpUtil;
-import com.zzlbe.dao.entity.UserEntity;
+import com.zzlbe.dao.entity.AddressEntity;
+import com.zzlbe.dao.mapper.AddressMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * PROJECT: Sales
@@ -20,19 +19,18 @@ import java.util.List;
  */
 @Controller
 public class HelloController {
-
+    @Resource
+    private AddressMapper addressMapper;
     @RequestMapping("/temp")
-    public String temp() {
-        List<UserEntity> learnList =new ArrayList<UserEntity>();
-        UserEntity bean =new UserEntity();
-        learnList.add(bean);
-
-        bean =new UserEntity();
-        learnList.add(bean);
-
-        ModelAndView modelAndView = new ModelAndView("admin/z_login");
-        modelAndView.addObject("learnList", learnList);
-        return "admin/z_login";
+    public void temp() {
+        System.out.println("temp");
+//        List<AddressEntity> list =addressMapper.selectByUid(1002);
+        AddressEntity ad=new AddressEntity();
+        long num=12350;
+        ad.setId(num);
+        System.out.println(ad.getId());
+        addressMapper.update(ad);
+        System.out.println("list:");
     }
 
     /**

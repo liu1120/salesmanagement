@@ -7,7 +7,7 @@
         <result column="go_name" property="name"/>
         <result column="go_sort" property="sort"/>
         <result column="go_version" property="version"/>
-        <result column="go_price" property="price"/>
+        <result column="gupdateo_price" property="price"/>
         <result column="go_minprice" property="minPrice"/>
         <result column="go_introduce" property="introduce"/>
         <result column="go_newimgpath" property="newImgPath"/>
