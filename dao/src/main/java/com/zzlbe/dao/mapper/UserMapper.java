@@ -21,4 +21,6 @@ public interface UserMapper {
 
     Integer selectByPageTotal(UserSearch search);
 
+    int userCount();
+
 }

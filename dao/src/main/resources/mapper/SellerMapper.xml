@@ -16,7 +16,7 @@
         <result column="sp_number" property="number"/>
     </resultMap>
 
-    <sql id="tableName">tb_user</sql>
+    <sql id="tableName">tb_seller</sql>
 
     <sql id="columns">
         sp_id,
@@ -38,6 +38,7 @@
     <select id="selectSeller" resultMap="BaseMap">
         SELECT * FROM tb_seller WHERE sp_name = #{username}
     </select>
+
     <select id="selectByPage" resultMap="BaseMap">
         SELECT
         <include refid="columns"/>
