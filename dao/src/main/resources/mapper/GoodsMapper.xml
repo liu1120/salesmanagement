@@ -76,12 +76,21 @@
         <include refid="condition"/>
     </select>
 
+
+
     <select id="selectById" resultMap="BaseMap">
         SELECT
         <include refid="columns"/>
         FROM
         <include refid="tableName"/>
         WHERE go_id = #{id}
+    </select>
+
+    <select id="selectAll" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
     </select>
 
     <select id="selectByExample" resultMap="BaseMap">
@@ -92,6 +101,24 @@
         <include refid="condition"/>
         LIMIT 1
     </select>
+
+    <select id="selectGoodsByName" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE go_name
+        LIKE '%' || #{goodsname} || '%'
+    </select>
+
+    <select id="getGoodsBySort" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE go_sort = #{sortid}
+    </select>
+
 
     <update id="update">
         UPDATE

@@ -3,6 +3,8 @@ package com.zzlbe.dao.entity;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.util.Date;
+
 @Data
 @Accessors(chain = true)
 public class SaleEntity {
@@ -12,9 +14,8 @@ public class SaleEntity {
     private long start;
     private long reach;
     private long minus;
-    private long startime;
-    private long overtime;
+    private Date startime;
+    private Date overtime;
     private long areaids;
     private long isOk;
-
 }

@@ -24,6 +24,12 @@ public interface GoodsMapper {
 
     List<GoodsEntity> selectByPage(GoodsEntity search);
 
+    List<GoodsEntity> selectAll();
+
     Integer selectByPageTotal(GoodsEntity search);
+
+    List<GoodsEntity> selectGoodsByName(String goodsname);
+
+    List<GoodsEntity> getGoodsBySort(long sortid);
 
 }

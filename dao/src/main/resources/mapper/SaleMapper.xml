@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzlbe.dao.mapper.SaleMapper">
+
+    <resultMap id="BaseMap" type="com.zzlbe.dao.entity.SaleEntity">
+        <result column="sa_id" property="id"/>
+        <result column="sa_type" property="type"/>
+        <result column="sa_discount" property="discount"/>
+        <result column="sa_start" property="start"/>
+        <result column="sa_reach" property="reach"/>
+        <result column="sa_minus" property="minus"/>
+        <result column="sa_startime" property="startime"/>
+        <result column="sa_overtime" property="overtime"/>
+        <result column="sa_area_ids" property="areaids"/>
+        <result column="sa_isOk" property="isOk"/>
+    </resultMap>
+
+    <sql id="tableName">tb_sale</sql>
+
+    <sql id="columns">
+        sa_id,
+        sa_type,
+        sa_discount,
+        sa_start,
+        sa_reach,
+        sa_minus,
+        sa_startime,
+        sa_overtime,
+        sa_area_ids,
+        sa_isOk
+    </sql>
+
+    <select id="selectSaleById" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE sa_id = #{goodsid}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+        <include refid="tableName"/>
+        (
+        <include refid="columns"/>
+        )
+        VALUES
+        (
+        #{id},
+        #{type},
+        #{discount},
+        #{start},
+        #{reach},
+        #{minus},
+        #{startime},
+        #{overtime},
+        #{areaids},
+        #{isOk}
+        )
+    </insert>
+
+</mapper>
