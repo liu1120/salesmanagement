@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzlbe.dao.mapper.GiftMapper">
+
+    <resultMap id="BaseMap" type="com.zzlbe.dao.entity.GiftEntity">
+        <result column="gi_id" property="id"/>
+        <result column="gi_name" property="name"/>
+        <result column="gi_describe" property="describe"/>
+        <result column="gi_credit" property="credit"/>
+        <result column="gi_num" property="num"/>
+        <result column="gi_isshow" property="isshow"/>
+        <result column="gi_endtime" property="endtime"/>
+        <result column="gi_imgpath" property="imgpath"/>
+    </resultMap>
+
+    <sql id="tableName">tb_gift</sql>
+
+    <sql id="columns">
+        gi_id,
+        gi_name,
+        gi_describe,
+        gi_credit,
+        gi_num,
+        gi_isshow,
+        gi_endtime,
+        gi_imgpath
+    </sql>
+
+
+    <insert id="insert"  useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+        <include refid="tableName"/>
+        (
+        <include refid="columns"/>
+        )
+        VALUES
+        (
+        #{id},
+        #{name},
+        #{describe},
+        #{credit},
+        #{num},
+        #{isshow},
+        #{endtime},
+        #{imgpath}
+        )
+    </insert>
+
+
+
+    <select id="selectById" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE
+        gi_id = #{id}
+    </select>
+
+    <select id="selectAll" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+    </select>
+</mapper>

@@ -26,7 +26,11 @@
     </sql>
 
     <select id="selectByUid" resultMap="BaseMap">
-        SELECT * FROM tb_addresses WHERE ad_u_id =#{uid}
+        SELECT * FROM tb_addresses WHERE ad_u_id =#{uid} AND ad_status &lt;&gt;1
+    </select>
+
+    <select id="selectById" resultMap="BaseMap">
+        SELECT * FROM tb_addresses WHERE ad_id =#{id}
     </select>
 
 

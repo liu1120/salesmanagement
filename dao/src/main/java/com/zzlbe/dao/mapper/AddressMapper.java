@@ -8,7 +8,9 @@ import java.util.List;
 @Repository
 public interface AddressMapper {
 
-    List<AddressEntity> selectByUid(long uid);//查询通过用户id查询
+    AddressEntity selectById(long id);//通过id查询
+
+    List<AddressEntity> selectByUid(long uid);//通过商品id查询评论
 
     void insert(AddressEntity addressEntity);//用户添加地址
 
