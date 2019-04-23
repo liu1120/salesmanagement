@@ -1,8 +1,12 @@
 package com.zzlbe.core.business.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.zzlbe.core.business.UserBusiness;
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.dto.UserInfoDTO;
+import com.zzlbe.core.dto.wx.Code2SessionResponse;
+import com.zzlbe.core.dto.wx.WxErrorCodeEnum;
+import com.zzlbe.core.dto.wx.WxLoginRequest;
 import com.zzlbe.core.request.LoginForm;
 import com.zzlbe.core.request.RegisterForm;
 import com.zzlbe.core.request.UserInfoModifyForm;
@@ -14,8 +18,12 @@ import com.zzlbe.dao.entity.UserEntity;
 import com.zzlbe.dao.mapper.UserMapper;
 import com.zzlbe.dao.page.PageResponse;
 import com.zzlbe.dao.search.UserSearch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -24,8 +32,13 @@ import java.util.List;
 @Component("userBusiness")
 public class UserBusinessImpl implements UserBusiness {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserBusinessImpl.class);
+
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private RestTemplate restTemplate;
+
 
     private static GenericResponse PHONE_NO_FORMAT_ERROR = new GenericResponse("2001", "手机号格式错误!");
     private static GenericResponse USER_NOT_EXIST = new GenericResponse("2003", "用户不存在!");
@@ -45,7 +58,7 @@ public class UserBusinessImpl implements UserBusiness {
         BeanUtils.copyProperties(registerForm, userEntity);
         userMapper.insert(userEntity);
 
-        return new GenericResponse<>(generateUserInfo(userEntity));
+        return userInfoResponse(userEntity);
     }
 
     @Override
@@ -62,7 +75,62 @@ public class UserBusinessImpl implements UserBusiness {
             return new GenericResponse("2004", "密码错误");
         }
 
-        return new GenericResponse<>(generateUserInfo(userEntity));
+        return userInfoResponse(userEntity);
+    }
+
+    @Override
+    public GenericResponse weChatLogin(WxLoginRequest wxLoginRequest) {
+        // 通过js_code请求微信获取openid/sessionKey等信息
+        String appKey = "wxc60802b4db0c011d";
+        String secret = "c57a91fd6287fca522b754009b633785";
+        String wxCode2Session = "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code";
+
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(
+                String.format(wxCode2Session, appKey, secret, wxLoginRequest.getCode()), String.class);
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            String responseDataStr = responseEntity.getBody();
+            LOGGER.info("微信登录 >>>>> response data str: {}", responseDataStr);
+
+            Code2SessionResponse code2SessionResponse = JSON.parseObject(responseDataStr, Code2SessionResponse.class);
+            if (code2SessionResponse == null) {
+                return GenericResponse.ERROR;
+            }
+            // 获取 session 失败执行的操作
+            WxErrorCodeEnum errorCodeEnum = WxErrorCodeEnum.getValue(code2SessionResponse.getErrcode());
+            if (errorCodeEnum != null && !WxErrorCodeEnum.SUCCESS.equals(errorCodeEnum)) {
+                return GenericResponse.FAIL.setMessage(code2SessionResponse.getErrmsg());
+            }
+
+            // 用户唯一标示
+            String openid = code2SessionResponse.getOpenid();
+            // 会话密钥
+            String sessionKey = code2SessionResponse.getSessionKey();
+            // 用户在开放平台的唯一标识符
+            String unionId = code2SessionResponse.getUnionid();
+
+            LOGGER.info("微信登录 >>>>> openid: {}, unionId: {}", openid, unionId);
+
+            UserEntity userEntity = userMapper.selectByOpenid(openid);
+            if (userEntity == null) {
+                userEntity = new UserEntity();
+                userEntity.setOpenid(openid);
+                userEntity.setSessionKey(sessionKey);
+                userEntity.setName(wxLoginRequest.getUsername());
+                userEntity.setPhone(wxLoginRequest.getPhoneNo());
+                userEntity.setPassword(wxLoginRequest.getPassword());
+                userMapper.insert(userEntity);
+            } else {
+                userEntity.setSessionKey(sessionKey);
+                userEntity.setName(wxLoginRequest.getUsername());
+                userEntity.setPhone(wxLoginRequest.getPhoneNo());
+                userEntity.setPassword(wxLoginRequest.getPassword());
+                userMapper.update(userEntity);
+            }
+
+            return userInfoResponse(userEntity);
+        }
+
+        return GenericResponse.ERROR;
     }
 
     @Override
@@ -84,7 +152,7 @@ public class UserBusinessImpl implements UserBusiness {
         BeanUtils.copyProperties(modifyForm, userEntity);
         userMapper.update(userEntity);
 
-        return new GenericResponse<>(generateUserInfo(userEntity));
+        return userInfoResponse(userEntity);
     }
 
     @Override
@@ -121,7 +189,7 @@ public class UserBusinessImpl implements UserBusiness {
             return USER_NOT_EXIST;
         }
 
-        return new GenericResponse<>(generateUserInfo(userEntity));
+        return userInfoResponse(userEntity);
     }
 
     @Override
@@ -155,4 +223,9 @@ public class UserBusinessImpl implements UserBusiness {
 
         return userInfoVO;
     }
+
+    private GenericResponse<UserInfoVO> userInfoResponse(UserEntity userEntity) {
+        return new GenericResponse<>(generateUserInfo(userEntity));
+    }
+
 }
