@@ -22,6 +22,8 @@ public interface OrderMapper {
 
     OrderEntity selectById(Long id);
 
+    List<OrderEntity> selectByUid(Long id);
+
     List<OrderEntity> selectByPage(OrderSearch orderSearch);
 
     Integer selectByPageTotal(OrderSearch orderSearch);

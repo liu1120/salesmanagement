@@ -7,14 +7,9 @@ import com.zzlbe.core.request.LoginForm;
 import com.zzlbe.core.request.RegisterForm;
 import com.zzlbe.core.request.UserInfoModifyForm;
 import com.zzlbe.core.request.UserPasswordModifyForm;
-import com.zzlbe.dao.entity.GoodsEntity;
-import com.zzlbe.dao.entity.GoodssortEntity;
-import com.zzlbe.dao.entity.SaleEntity;
-import com.zzlbe.dao.entity.UserEntity;
-import com.zzlbe.dao.mapper.GoodsMapper;
-import com.zzlbe.dao.mapper.GoodssortMapper;
-import com.zzlbe.dao.mapper.SaleMapper;
-import com.zzlbe.dao.mapper.UserMapper;
+import com.zzlbe.core.util.DateUtil;
+import com.zzlbe.dao.entity.*;
+import com.zzlbe.dao.mapper.*;
 import com.zzlbe.dao.search.UserSearch;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -33,7 +28,18 @@ public class UserController {
     @Resource
     private GoodsMapper goodsMapper;
     @Resource
+    private OrderMapper orderMapper;
+    @Resource
     private SaleMapper saleMapper;
+    @Resource
+    private GoodstopicMapper goodstopicMapper;
+
+    @Resource
+    private GiftMapper giftMapper;
+
+    @Resource
+    private AddressMapper addressMapper;
+
     @Resource
     private GoodssortMapper goodssortMapper;
     @Resource
@@ -66,6 +72,20 @@ public class UserController {
         return list;
     }
 
+
+    @GetMapping(value = "getCommentsByGoodsid")//查找全部商品评论
+    public List<GoodstopicEntity> getCommentsByGoodsid(@RequestParam("goodsid") long goodsid) {
+        List<GoodstopicEntity> list = goodstopicMapper.selectByGoodsid(goodsid);
+        return list;
+    }
+
+    @GetMapping(value = "getGifts")//查找全部礼品
+    public List<GiftEntity> getGifts() {
+        List<GiftEntity> list = giftMapper.selectAll();
+        return list;
+    }
+
+
     @GetMapping(value = "getGoodsSort")//查找全部商品分类
     public List<GoodssortEntity> getGoodsSort() {
         List<GoodssortEntity> list = goodssortMapper.selectAll();
@@ -87,14 +107,66 @@ public class UserController {
 
     @GetMapping(value = "getSaleGoodsById")//通过商品id查找促销商品
     public SaleEntity getSaleGoodsById(@RequestParam("goodsid") long goodsid) {
-        System.out.println("111");
         SaleEntity saleEntity = saleMapper.selectSaleById(goodsid);
-        System.out.println("222");
-        System.out.println(saleEntity);
         return saleEntity;
     }
 
+    @GetMapping(value = "selectCreditById")//通过用户id查找积分
+    public long selectCreditById(@RequestParam("uid") long uid) {
+        return userMapper.selectById(uid).getCredit();
+    }
 
+    @GetMapping(value = "getOrderList")//查找用户下的订单
+    public List<OrderEntity> getOrderList(@RequestParam("uid") long uid) {
+        List<OrderEntity> list = orderMapper.selectByUid(uid);
+        return list;
+    }
+
+    @GetMapping(value = "getOrder")//查找用户下的订单
+    public OrderEntity getOrder(@RequestParam("id") long id) {
+        OrderEntity orderEntity = orderMapper.selectById(id);
+        return orderEntity;
+    }
+
+    @GetMapping(value = "getOrderStatus")//查看订单的状态
+    public long getOrderStatus(@RequestParam("id") long id) {
+        return orderMapper.selectById(id).getOrStatus();
+    }
+
+    @GetMapping(value = "addComments")//为已完成的订单添加评论。1成功，0失败.同时修改订单表状态，为已评价
+    public int addComments(@RequestParam("comment") String comment,@RequestParam("orderid") long orderid) {
+        OrderEntity orderEntity=orderMapper.selectById(orderid);
+        if (orderEntity.getOrStatus()!=7)return 0;
+        GoodstopicEntity goodstopicEntity=new GoodstopicEntity();
+        goodstopicEntity.setGoodsid(orderEntity.getOrGoodsId());
+
+        DateUtil du=new DateUtil();
+        goodstopicEntity.setCreatetime(du.getDateByStr(du.getDateTime()));
+        goodstopicEntity.setContent(comment);
+        goodstopicEntity.setUid(orderEntity.getOrUserId());
+
+        UserEntity userEntity=userMapper.selectById(orderEntity.getOrUserId());
+        goodstopicEntity.setUname(userEntity.getName());
+
+        goodstopicMapper.insert(goodstopicEntity);//对商品进行评价
+        orderEntity.setOrStatus(8);//修改状态为8 已评价
+        orderMapper.update(orderEntity);
+        return 1;
+    }
+
+    @GetMapping(value = "getAddressByUid")//查看订单的状态
+    public List<AddressEntity> getAddressByUid(@RequestParam("uid") long uid) {
+        List<AddressEntity> list=addressMapper.selectByUid(uid);
+        return list;
+    }
+
+    @GetMapping(value = "delectAddresByid")//删除地址。（隐藏地址）
+    public int delectAddresByid(@RequestParam("id") long id) {
+        AddressEntity addressEntity=addressMapper.selectById(id);
+        addressEntity.setStatus(1);
+        addressMapper.update(addressEntity);
+        return 0;
+    }
 
 
     @PostMapping(value = "login")
@@ -123,6 +195,7 @@ public class UserController {
         }
         return userBusiness.register(registerForm);
     }
+
 
     @PostMapping("modify")
     public GenericResponse modify(@RequestBody @Valid UserInfoModifyForm modifyForm, BindingResult bindingResult) {

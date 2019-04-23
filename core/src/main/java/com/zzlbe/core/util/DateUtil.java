@@ -19,19 +19,19 @@ public class DateUtil {
             ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
 
 
-    private String getTime() {
+    public String getTime() {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
         return format.format(date);
     }
 
-    private String getDate() {
+    public String getDate() {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(date);
     }
 
-    private String getDateTime() {
+    public String getDateTime() {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(date);
@@ -130,6 +130,6 @@ public class DateUtil {
 
 
     public static void main(String[] args) {
-        System.out.println(getLocalDateTimeByHour(17));
+        System.out.println(getDateByStr("2019-04-23 18:57:20"));
     }
 }

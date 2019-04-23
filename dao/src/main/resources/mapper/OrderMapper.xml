@@ -53,9 +53,16 @@
         <include refid="columns"/>
         FROM
         <include refid="tableName"/>
-        WHERE orId = #{id}
+        WHERE or_id = #{id}
     </select>
 
+    <select id="selectByUid" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE or_user_id = #{uid}
+    </select>
     <select id="selectByPage" resultMap="BaseMap">
         SELECT
         <include refid="columns"/>
