@@ -47,4 +47,13 @@ public class UserEntity {
      */
     private Long credit;
 
+    /**
+     * 用户唯一标识
+     */
+    private String openid;
+    /**
+     * 会话密钥
+     */
+    private String sessionKey;
+
 }

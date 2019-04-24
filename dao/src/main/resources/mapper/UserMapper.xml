@@ -11,6 +11,8 @@
         <result column="u_realname" property="realname"/>
         <result column="u_address" property="address"/>
         <result column="u_credit" property="credit"/>
+        <result column="u_openid" property="openid"/>
+        <result column="u_session_key" property="sessionKey"/>
     </resultMap>
 
     <sql id="tableName">tb_user</sql>
@@ -23,7 +25,9 @@
         u_phone,
         u_realname,
         u_address,
-        u_credit
+        u_credit,
+        u_openid,
+        u_session_key
     </sql>
 
     <sql id="condition">
@@ -78,6 +82,14 @@
         WHERE u_id = #{id}
     </select>
 
+    <select id="selectByOpenid" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE u_openid = #{openid}
+    </select>
+
     <select id="selectByPhoneNo" resultMap="BaseMap">
         SELECT
         <include refid="columns"/>
@@ -112,6 +124,12 @@
             <if test="credit != null">
                 u_credit = #{credit},
             </if>
+            <if test="openid != null">
+                u_openid = #{openid},
+            </if>
+            <if test="sessionKey != null">
+                u_session_key = #{sessionKey},
+            </if>
         </set>
         WHERE
         u_id = #{id}
@@ -132,7 +150,9 @@
         #{phone},
         #{realname},
         #{address},
-        #{credit}
+        #{credit},
+        #{openid},
+        #{sessionKey}
         )
     </insert>
 

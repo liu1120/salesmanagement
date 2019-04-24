@@ -19,6 +19,8 @@ public interface UserMapper {
 
     UserEntity selectByPhoneNo(String phoneNo);
 
+    UserEntity selectByOpenid(String openId);
+
     List<UserEntity> selectByPage(UserSearch userSearch);
 
     Integer selectByPageTotal(UserSearch search);
