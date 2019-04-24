@@ -41,5 +41,46 @@
         WHERE ar_sp_id = #{id}
     </select>
 
+    <select id="selectProvince" resultMap="BaseMap">
+        SELECT
+        ar_provincecode,ar_provincename
+        FROM
+        <include refid="tableName"/>
+        group by ar_provincecode
+    </select>
 
+    <select id="selectCity" resultMap="BaseMap">
+        SELECT
+        ar_citycode,ar_cityname
+        FROM
+        <include refid="tableName"/>
+        WHERE ar_provincecode = #{provincecode}
+        group by ar_citycode
+
+    </select>
+
+    <select id="selectCounty" resultMap="BaseMap">
+        SELECT
+        ar_countycode,ar_countyname
+        FROM
+        <include refid="tableName"/>
+        WHERE ar_citycode = #{citycode}
+        group by ar_countycode
+    </select>
+
+    <select id="selectTown" resultMap="BaseMap">
+        SELECT
+        ar_towncode,ar_townname
+        FROM
+        <include refid="tableName"/>
+        WHERE ar_countycode=#{countycode}
+    </select>
+
+    <select id="selectspid" resultMap="BaseMap">
+        SELECT
+        ar_towncode,ar_townname,ar_sp_id
+        FROM
+        <include refid="tableName"/>
+        WHERE ar_towncode=#{towncode}
+    </select>
 </mapper>

@@ -15,7 +15,7 @@
         <result column="sg_date" property="date"/>
     </resultMap>
 
-    <sql id="tableName">tb_suggest_topic</sql>
+    <sql id="tableName">tb_sendgift</sql>
 
     <sql id="columns">
         sg_id,

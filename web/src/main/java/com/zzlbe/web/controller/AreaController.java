@@ -10,17 +10,40 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 @RestController
-@RequestMapping("user")
+@RequestMapping("area")
 public class AreaController {
     @Autowired
     AreaMapper areaMapper;
 
-    @GetMapping(value = "selectBySpid")
+    @GetMapping(value = "selectBySpid")//查询销售员的区域
     public List<AreaEntity> selectBySpid(@RequestParam("spid") long spid) {
         //调用dao层
-        System.out.println(spid);
         List<AreaEntity> areaEntity = areaMapper.selectBySpid(spid);
         return areaEntity;
     }
 
+    @GetMapping(value = "selectProvince")//省份去重.选省份。
+    public List<AreaEntity> selectProvince() {
+        List<AreaEntity> areaEntitys = areaMapper.selectProvince();
+        return areaEntitys;
+    }
+
+    @GetMapping(value = "selectCity")//城市去重
+    public List<AreaEntity> selectCity(@RequestParam("provincecode") long provincecode) {
+        List<AreaEntity> areaEntity = areaMapper.selectCity(provincecode);
+        return areaEntity;
+    }
+    @GetMapping(value = "selectCounty")//城镇去重
+    public List<AreaEntity> selectCounty(@RequestParam("citycode") long citycode) {
+        //调用dao层
+        List<AreaEntity> areaEntity = areaMapper.selectCounty(citycode);
+        return areaEntity;
+    }
+
+    @GetMapping(value = "selectTown")//区县
+    public List<AreaEntity> selectTown(@RequestParam("countycode") long countycode) {
+        //调用dao层
+        List<AreaEntity> areaEntity = areaMapper.selectTown(countycode);
+        return areaEntity;
+    }
 }

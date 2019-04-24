@@ -1,7 +1,6 @@
 package com.zzlbe.web.controller;
 
 import com.zzlbe.core.util.IpUtil;
-import com.zzlbe.dao.entity.AddressEntity;
 import com.zzlbe.dao.mapper.AddressMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,11 +24,11 @@ public class HelloController {
     public void temp() {
         System.out.println("temp");
 //        List<AddressEntity> list =addressMapper.selectByUid(1002);
-        AddressEntity ad=new AddressEntity();
-        long num=12350;
-        ad.setId(num);
-        System.out.println(ad.getId());
-        addressMapper.update(ad);
+//        AddressEntity ad=new AddressEntity();
+//        long num=12350;
+//        ad.setId(num);
+//        System.out.println(ad.getId());
+//        addressMapper.update(ad);
         System.out.println("list:");
     }
 

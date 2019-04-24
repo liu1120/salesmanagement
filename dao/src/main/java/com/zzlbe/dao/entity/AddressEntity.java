@@ -1,5 +1,6 @@
 package com.zzlbe.dao.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -10,6 +11,7 @@ import lombok.experimental.Accessors;
  * @date 2019/4/21
  */
 @Data
+@AllArgsConstructor
 @Accessors(chain = true)
 public class AddressEntity {
 
@@ -32,16 +34,16 @@ public class AddressEntity {
     /**
      * 用户id
      */
-    private int uid;
+    private long uid;
 
     /**
      * 用户姓名
      */
-    private int uname;
+    private String uname;
     /**
      * 用户手机号
      */
-    private int phone;
+    private long phone;
 
     /**
      * 地址状态，0默认有效，1无效

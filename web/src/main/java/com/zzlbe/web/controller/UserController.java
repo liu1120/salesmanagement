@@ -1,5 +1,6 @@
 package com.zzlbe.web.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.zzlbe.core.business.UserBusiness;
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.dto.UserInfoDTO;
@@ -7,6 +8,7 @@ import com.zzlbe.core.request.LoginForm;
 import com.zzlbe.core.request.RegisterForm;
 import com.zzlbe.core.request.UserInfoModifyForm;
 import com.zzlbe.core.request.UserPasswordModifyForm;
+import com.zzlbe.core.response.AreaVO;
 import com.zzlbe.core.util.DateUtil;
 import com.zzlbe.dao.entity.*;
 import com.zzlbe.dao.mapper.*;
@@ -33,6 +35,8 @@ public class UserController {
     private OrderMapper orderMapper;
     @Resource
     private SaleMapper saleMapper;
+    @Resource
+    private AreaMapper areaMapper;
     @Resource
     private SentgiftMapper sentgiftMapper;
     @Resource
@@ -116,8 +120,14 @@ public class UserController {
         userEntity.setCredit(userEntity.getCredit()-giftEntity.getCredit());//更新用户积分
         userMapper.update(userEntity);
 
+
+        AreaVO areavo= JSON.parseObject(addressEntity.getAddress(), AreaVO.class);
+
+        long formid=areaMapper.selectspid(areavo.getTowncode()).getSpid();
+
         SentgiftEntity sentgiftEntity=new SentgiftEntity();
         sentgiftEntity.setToid(uid);//需要制定派送人
+        sentgiftEntity.setFromid(formid);
         sentgiftEntity.setTophone(userEntity.getPhone());
         sentgiftEntity.setAddress(adid+"");
         sentgiftEntity.setType(0);
@@ -125,16 +135,31 @@ public class UserController {
         sentgiftEntity.setCredit(giftEntity.getCredit());
         sentgiftEntity.setStatus(0);
         DateUtil du=new DateUtil();
-        getDateByStr(du.getDateTime());
+        sentgiftEntity.setDate(getDateByStr(du.getDateTime()));
+        sentgiftEntity.toString();
+        sentgiftMapper.insert(sentgiftEntity);
         return 1;
     }
-
-
 
     @GetMapping(value = "getGoodsBySort")//查找某一分类下的商品
     public List<GoodsEntity> getGoodsBySort(@RequestParam("sortid") long sortid) {
         List<GoodsEntity> list = goodsMapper.getGoodsBySort(sortid);
         return list;
+    }
+
+    @GetMapping(value = "addAddress")//添加地址
+    public int addAddress(@RequestParam("provincecode") long provincecode,@RequestParam("countycode") long countycode,@RequestParam("towncode") long towncode,@RequestParam("citycode") long citycode,@RequestParam("info") String info,@RequestParam("uid") long uid,@RequestParam("name") String name,@RequestParam("phone") long phone) {
+        AreaVO areaVO=new AreaVO();
+        areaVO.setProvincecode(provincecode);
+        areaVO.setCitycode(citycode);
+        areaVO.setCountycode(countycode);
+        areaVO.setTowncode(towncode);
+        String areaStr = JSON.toJSONString(areaVO);
+
+        long id=0;
+        AddressEntity addressEntity=new AddressEntity(id,areaStr,info,uid,name,phone,0);
+        addressMapper.insert(addressEntity);
+        return 0;
     }
 
 
