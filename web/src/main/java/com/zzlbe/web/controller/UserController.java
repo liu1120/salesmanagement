@@ -19,6 +19,8 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
+import static com.zzlbe.core.util.DateUtil.getDateByStr;
+
 @RestController
 @RequestMapping("user")
 @CrossOrigin("http://localhost:8080")
@@ -31,6 +33,8 @@ public class UserController {
     private OrderMapper orderMapper;
     @Resource
     private SaleMapper saleMapper;
+    @Resource
+    private SentgiftMapper sentgiftMapper;
     @Resource
     private GoodstopicMapper goodstopicMapper;
 
@@ -85,12 +89,47 @@ public class UserController {
         return list;
     }
 
-
+    @GetMapping(value = "getGiftCreditById")//根据礼品id返回所需积分
+    public long getGiftCreditById(@RequestParam("id") long id) {
+        return giftMapper.selectById(id).getCredit();
+    }
     @GetMapping(value = "getGoodsSort")//查找全部商品分类
     public List<GoodssortEntity> getGoodsSort() {
         List<GoodssortEntity> list = goodssortMapper.selectAll();
         return list;
     }
+
+    /**
+     *用户使用积分兑换产品只可兑换一份礼品
+     * 用户的积分大于礼品积分，处理：减去用户积分，产生送礼品。
+     * @param uid 用户id
+     * @param adid 下单地址adid
+     * @param id 礼品id
+     * @return 0失败，1成功
+     */
+    @GetMapping(value = "getGift")
+    public int getGift(@RequestParam("uid") long uid,@RequestParam("id") long id,@RequestParam("adid") long adid) {
+        UserEntity userEntity=userMapper.selectById(uid);
+        GiftEntity giftEntity=giftMapper.selectById(id);
+        AddressEntity addressEntity=addressMapper.selectById(adid);
+        if(userEntity.getCredit()<giftEntity.getCredit())return 0;
+        userEntity.setCredit(userEntity.getCredit()-giftEntity.getCredit());//更新用户积分
+        userMapper.update(userEntity);
+
+        SentgiftEntity sentgiftEntity=new SentgiftEntity();
+        sentgiftEntity.setToid(uid);//需要制定派送人
+        sentgiftEntity.setTophone(userEntity.getPhone());
+        sentgiftEntity.setAddress(adid+"");
+        sentgiftEntity.setType(0);
+        sentgiftEntity.setNum(1);
+        sentgiftEntity.setCredit(giftEntity.getCredit());
+        sentgiftEntity.setStatus(0);
+        DateUtil du=new DateUtil();
+        getDateByStr(du.getDateTime());
+        return 1;
+    }
+
+
 
     @GetMapping(value = "getGoodsBySort")//查找某一分类下的商品
     public List<GoodsEntity> getGoodsBySort(@RequestParam("sortid") long sortid) {
@@ -141,7 +180,7 @@ public class UserController {
         goodstopicEntity.setGoodsid(orderEntity.getOrGoodsId());
 
         DateUtil du=new DateUtil();
-        goodstopicEntity.setCreatetime(du.getDateByStr(du.getDateTime()));
+        goodstopicEntity.setCreatetime(getDateByStr(du.getDateTime()));
         goodstopicEntity.setContent(comment);
         goodstopicEntity.setUid(orderEntity.getOrUserId());
 

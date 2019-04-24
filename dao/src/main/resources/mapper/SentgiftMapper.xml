@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzlbe.dao.mapper.SentgiftMapper">
+
+    <resultMap id="BaseMap" type="com.zzlbe.dao.entity.SentgiftEntity">
+        <result column="sg_id" property="id"/>
+        <result column="sg_fromid" property="fromid"/>
+        <result column="sg_toid" property="toid"/>
+        <result column="sg_tophone" property="tophone"/>
+        <result column="sg_type" property="type"/>
+        <result column="sg_logistics" property="logistics"/>
+        <result column="sg_num" property="num"/>
+        <result column="sg_credit" property="credit"/>
+        <result column="sg_status" property="status"/>
+        <result column="sg_date" property="date"/>
+    </resultMap>
+
+    <sql id="tableName">tb_suggest_topic</sql>
+
+    <sql id="columns">
+        sg_id,
+        sg_fromid,
+        sg_toid,
+        sg_tophone,
+        sg_address,
+        sg_type,
+        sg_logistics,
+        sg_num,
+        sg_credit,
+        sg_status,
+        sg_date
+    </sql>
+
+    <select id="selectById" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE sg_id = #{id}
+    </select>
+    <select id="selectByUid" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE sg_toid = #{uid}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+        <include refid="tableName"/>
+        (
+        <include refid="columns"/>
+        )
+        VALUES
+        (
+        #{id},
+        #{fromid},
+        #{toid},
+        #{tophone},
+        #{address},
+        #{type},
+        #{logistics},
+        #{num},
+        #{credit},
+        #{status},
+        #{date}
+        )
+    </insert>
+
+</mapper>
