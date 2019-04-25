@@ -20,6 +20,11 @@
         <result column="or_refuse" property="orRefuse"/>
     </resultMap>
 
+    <!--<resultMap id="AmountDTO" type="com.zzlbe.core.dto.AmountDTO">-->
+        <!--<result column="or_id" property="month"/>-->
+        <!--<result column="or_total_amount" property="amt"/>-->
+    <!--</resultMap>-->
+
     <sql id="tableName">tb_order</sql>
 
     <sql id="columns">
@@ -79,6 +84,15 @@
         <include refid="tableName"/>
         <include refid="condition"/>
     </select>
+
+    <!--<select id="getTotalAmountByMonth" resultType="AmountDTO">-->
+        <!--SELECT-->
+        <!--month(or_datetime) as id,sum(or_total_amount) as or_total_amount-->
+        <!--from tb_order-->
+        <!--group by month(or_datetime)-->
+
+    <!--</select>-->
+
 
     <update id="update">
         UPDATE

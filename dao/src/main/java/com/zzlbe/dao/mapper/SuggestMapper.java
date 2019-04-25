@@ -27,4 +27,7 @@ public interface SuggestMapper {
     Integer selectByPageTotal(SuggestSearch suggestSearch);
 
     int suggestionCount();
+
+    int suggestionUndeal();
+
 }

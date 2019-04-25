@@ -155,7 +155,6 @@ public class UserController {
         areaVO.setCountycode(countycode);
         areaVO.setTowncode(towncode);
         String areaStr = JSON.toJSONString(areaVO);
-
         long id=0;
         AddressEntity addressEntity=new AddressEntity(id,areaStr,info,uid,name,phone,0);
         addressMapper.insert(addressEntity);

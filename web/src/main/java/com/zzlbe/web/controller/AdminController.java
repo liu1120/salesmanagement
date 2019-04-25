@@ -21,7 +21,6 @@ public class AdminController {
     SellerMapper sellerMapper;
     @Autowired
     UserMapper userMapper;
-
     @Autowired
     SuggestMapper suggestMapper;
     //展示登录界面
@@ -74,7 +73,6 @@ public class AdminController {
 
     @GetMapping(value="index")
     public void index() {
-        System.out.println("Get");
         String uname=null,username=null,password=null;
         index(uname,username,password);
     }
@@ -86,14 +84,17 @@ public class AdminController {
         System.out.println("adminernum:"+adminernum);
         int suggestnum=suggestMapper.suggestionCount();
         System.out.println("suggestnum:"+suggestnum);
-
     }
+
     @RequestMapping("/test")
     public String test() {
         return "admin/test";
     }
 
+    @RequestMapping("/suggestionUndeal")
+    public int suggestionUndeal() {
 
-
+        return suggestMapper.suggestionUndeal();
+    }
 
 }

@@ -2,6 +2,7 @@ package com.zzlbe.dao.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
@@ -11,6 +12,7 @@ import lombok.experimental.Accessors;
  * @date 2019/4/21
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
 public class AddressEntity {
