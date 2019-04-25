@@ -14,6 +14,7 @@ public interface AreaMapper {
     List<AreaEntity> selectTown(long countycode);
     AreaEntity selectspid(long towncode);
 
+    AreaEntity selectOne(long towncode);
 
     //更新数据管理员信息
 }

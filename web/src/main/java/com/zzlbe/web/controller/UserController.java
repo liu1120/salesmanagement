@@ -223,6 +223,7 @@ public class UserController {
         return list;
     }
 
+
     @GetMapping(value = "delectAddresByid")//删除地址。（隐藏地址）
     public int delectAddresByid(@RequestParam("id") long id) {
         AddressEntity addressEntity=addressMapper.selectById(id);
@@ -230,7 +231,13 @@ public class UserController {
         addressMapper.update(addressEntity);
         return 0;
     }
-
+    @PostMapping(value = "getAddresName")//将对应的json地址id转化为json中文地址
+        public AreaEntity getAddresName(@RequestParam("addressids") String addressids) {
+//        String addressids="{ \"province_code\":\"410000000000\" , \"city_code\":\"410100000000\"  , \"county_code\":\"410102000000\"  , \"town_code\":\"410102005000\"}";
+        AreaVO areavo= JSON.parseObject(addressids, AreaVO.class);
+        AreaEntity areaEntity=areaMapper.selectOne(areavo.getTowncode());
+        return areaEntity;
+    }
 
     @PostMapping(value = "login")
     public UserEntity postLogin(@RequestParam("username") String username, @RequestParam("password") String password) {

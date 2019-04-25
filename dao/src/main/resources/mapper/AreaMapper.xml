@@ -76,9 +76,9 @@
         WHERE ar_countycode=#{countycode}
     </select>
 
-    <select id="selectspid" resultMap="BaseMap">
+    <select id="selectOne" resultMap="BaseMap">
         SELECT
-        ar_towncode,ar_townname,ar_sp_id
+        ar_provincename,ar_cityname,ar_countyname,ar_townname
         FROM
         <include refid="tableName"/>
         WHERE ar_towncode=#{towncode}
