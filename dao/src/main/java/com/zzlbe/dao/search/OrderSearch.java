@@ -20,7 +20,7 @@ public class OrderSearch extends BasePageRequest {
     /**
      * 订单编号
      */
-    private Integer orId;
+    private Long orId;
     /**
      * 农化产品id
      */

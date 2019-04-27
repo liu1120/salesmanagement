@@ -2,7 +2,8 @@ package com.zzlbe.core.request;
 
 import lombok.Data;
 
-import java.math.BigDecimal;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 /**
  * PROJECT: sales
@@ -15,29 +16,32 @@ import java.math.BigDecimal;
 public class OrderForm {
 
     /**
+     * 判断是用户下单还是销售员下单
+     * 用户下单：0;
+     * 销售员下单：1
+     */
+    @NotNull(message = "下单方式不能为空")
+    private Boolean orderFlag;
+
+    /**
      * 订单编号
      */
     private Long orId;
     /**
      * 农化产品id
      */
+    @NotNull(message = "请选择下单产品")
     private Long orGoodsId;
     /**
      * 商品数量
      */
+    @NotNull(message = "商品数量为空")
+    @Min(value = 1, message = "商品数量不能少于1")
     private Integer orCount;
-    /**
-     * 商品单价
-     */
-    private BigDecimal orPrice;
     /**
      * 0正常，满300减20：九折。。。
      */
     private String orSay;
-    /**
-     * 交易总金额
-     */
-    private BigDecimal orTotalAmount;
     /**
      * 销售员编号
      */
@@ -45,6 +49,7 @@ public class OrderForm {
     /**
      * 用户编号
      */
+    @NotNull(message = "请指定下单用户")
     private Long orUserId;
     /**
      * 下单审核状态：0待审核，1审核通过，2审核拒绝
@@ -57,6 +62,7 @@ public class OrderForm {
     /**
      * 收货地址，json格式{ "province_name":"河南省" , "county_name":"郑州市"  , "town_name":"中原区"  , "village_name":"绿东村街道"  , "address_info":"中原中路146号" }
      */
+    @NotNull(message = "请指定收货地址")
     private Integer orAddress;
     /**
      * 0未付款,1已付款，2待发货,3已发货,4已签收,5退货中,6已退货，7完成交易

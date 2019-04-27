@@ -1,6 +1,7 @@
 package com.zzlbe.core.business.impl;
 
 import com.zzlbe.core.business.AttendanceBusiness;
+import com.zzlbe.core.common.ErrorCodeEnum;
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.constant.AttendanceConstant;
 import com.zzlbe.core.request.AttendancePunchForm;
@@ -151,7 +152,7 @@ public class AttendanceBusinessImpl extends BaseBusinessImpl implements Attendan
             return GenericResponse.ERROR;
         }
         if (tripEntity.getTrState() != 1) {
-            return new GenericResponse("3000", "当前状态不允许修改");
+            return new GenericResponse(ErrorCodeEnum.ATTENDANCE_MODIFY_CLOSE);
         }
 
         tripEntity.setTrCity(tripForm.getTrCity());
@@ -172,7 +173,7 @@ public class AttendanceBusinessImpl extends BaseBusinessImpl implements Attendan
             return GenericResponse.ERROR;
         }
         if (tripEntity.getTrState() != 1) {
-            return new GenericResponse("3000", "当前状态不允许删除");
+            return new GenericResponse(ErrorCodeEnum.ATTENDANCE_MODIFY_CLOSE);
         }
 
         tripMapper.delete(tripForm.getTrId());
@@ -220,7 +221,7 @@ public class AttendanceBusinessImpl extends BaseBusinessImpl implements Attendan
             return GenericResponse.ERROR;
         }
         if (vacationEntity.getVaStatus() != 0) {
-            return new GenericResponse("3000", "当前状态不允许修改");
+            return new GenericResponse(ErrorCodeEnum.ATTENDANCE_MODIFY_CLOSE);
         }
 
         vacationEntity.setVaStart(form.getVaStart());
@@ -240,7 +241,7 @@ public class AttendanceBusinessImpl extends BaseBusinessImpl implements Attendan
             return GenericResponse.ERROR;
         }
         if (vacationEntity.getVaStatus() != 0) {
-            return new GenericResponse("3000", "当前状态不允许刪除");
+            return new GenericResponse(ErrorCodeEnum.ATTENDANCE_MODIFY_CLOSE);
         }
 
         vacationMapper.delete(form.getVaId());

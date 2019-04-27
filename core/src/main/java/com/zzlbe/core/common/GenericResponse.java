@@ -27,6 +27,11 @@ public class GenericResponse<T> implements Serializable {
         this.message = message;
     }
 
+    public GenericResponse(ErrorCodeEnum errorCodeEnum) {
+        this.code = errorCodeEnum.getCode();
+        this.message = errorCodeEnum.getMsg();
+    }
+
     public GenericResponse(T body) {
         this.code = SUCCESS.getCode();
         this.message = SUCCESS.getMessage();

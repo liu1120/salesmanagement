@@ -1,6 +1,7 @@
 package com.zzlbe.core.business.impl;
 
 import com.zzlbe.core.business.SuggestBusiness;
+import com.zzlbe.core.common.ErrorCodeEnum;
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.dao.entity.SuggestEntity;
 import com.zzlbe.dao.entity.SuggestTopicEntity;
@@ -65,7 +66,7 @@ public class SuggestBusinessImpl extends BaseBusinessImpl implements SuggestBusi
     public GenericResponse reply(SuggestTopicEntity suggestTopicEntity) {
         SuggestEntity suggestEntity = suggestMapper.selectById(suggestTopicEntity.getSuggestId());
         if (suggestEntity == null) {
-            return new GenericResponse("5001", "回复无效, 主题不存在!");
+            return new GenericResponse(ErrorCodeEnum.SUGGEST_REPLY_ERROR);
         }
         suggestTopicEntity.setId(null);
         suggestTopicEntity.setCreateTime(new Date());
@@ -86,10 +87,10 @@ public class SuggestBusinessImpl extends BaseBusinessImpl implements SuggestBusi
     public GenericResponse finish(Long userId, Long suggestId) {
         SuggestEntity suggestEntity = suggestMapper.selectById(suggestId);
         if (suggestEntity == null) {
-            return new GenericResponse("5001", "关闭主题失败, 主题不存在!");
+            return new GenericResponse(ErrorCodeEnum.SUGGEST_CLOSE_ERROR);
         }
         if (!suggestEntity.getUserId().equals(userId)) {
-            return new GenericResponse("5002", "关闭主题失败, 非发起人操作关闭!");
+            return new GenericResponse(ErrorCodeEnum.SUGGEST_CLOSE_ERROR_NOT_SPONSOR);
         }
 
         // status 状态 >>>  0未处理，1处理中，2处理完成

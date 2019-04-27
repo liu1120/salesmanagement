@@ -47,8 +47,50 @@
 
     <sql id="condition">
         <where>
-            <if test="name != null">
-                AND u_name = #{name}
+            <if test="orId != null">
+                AND or_id = #{orId}
+            </if>
+            <if test="orGoodsId != null">
+                AND or_goods_id = #{orGoodsId}
+            </if>
+            <if test="orCount != null">
+                AND or_count = #{orCount}
+            </if>
+            <if test="orPrice != null">
+                AND or_price = #{orPrice}
+            </if>
+            <if test="orSay != null">
+                AND or_say = #{orSay}
+            </if>
+            <if test="orTotalAmount != null">
+                AND or_total_amount = #{orTotalAmount}
+            </if>
+            <if test="orDatetime != null">
+                AND or_datetime = #{orDatetime}
+            </if>
+            <if test="orSellerId != null">
+                AND or_seller_id = #{orSellerId}
+            </if>
+            <if test="orUserId != null">
+                AND or_user_id = #{orUserId}
+            </if>
+            <if test="orType != null">
+                AND or_type = #{orType}
+            </if>
+            <if test="orLogistics != null">
+                AND or_logistics = #{orLogistics}
+            </if>
+            <if test="orAddress != null">
+                AND or_address = #{orAddress}
+            </if>
+            <if test="orStatus != null">
+                AND or_status = #{orStatus}
+            </if>
+            <if test="orWords != null">
+                AND or_words = #{orWords}
+            </if>
+            <if test="orRefuse != null">
+                AND or_refuse = #{orRefuse}
             </if>
         </where>
     </sql>
@@ -68,6 +110,24 @@
         <include refid="tableName"/>
         WHERE or_user_id = #{uid}
     </select>
+
+    <select id="selectByExample" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+        ORDER BY or_datetime DESC LIMIT 1
+    </select>
+
+    <select id="selectListByExample" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+    </select>
+
     <select id="selectByPage" resultMap="BaseMap">
         SELECT
         <include refid="columns"/>
@@ -90,7 +150,6 @@
         from tb_order where or_datetime>date_add(last_day(date_sub(curdate(), interval 1 year)), interval 1 day)
         group by date_format(or_datetime, '%Y-%m')
     </select>
-
 
     <update id="update">
         UPDATE

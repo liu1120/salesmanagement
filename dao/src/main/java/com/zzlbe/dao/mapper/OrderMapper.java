@@ -27,6 +27,10 @@ public interface OrderMapper {
 
     List<OrderEntity> selectByUid(Long id);
 
+    OrderEntity selectByExample(OrderSearch orderSearch);
+
+    List<OrderEntity> selectListByExample(OrderSearch orderSearch);
+
     List<OrderEntity> selectByPage(OrderSearch orderSearch);
 
     Integer selectByPageTotal(OrderSearch orderSearch);
