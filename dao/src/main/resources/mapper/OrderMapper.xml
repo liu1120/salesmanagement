@@ -20,10 +20,10 @@
         <result column="or_refuse" property="orRefuse"/>
     </resultMap>
 
-    <!--<resultMap id="AmountDTO" type="com.zzlbe.core.dto.AmountDTO">-->
-        <!--<result column="or_id" property="month"/>-->
-        <!--<result column="or_total_amount" property="amt"/>-->
-    <!--</resultMap>-->
+    <resultMap id="AmountSearch" type="com.zzlbe.dao.search.AmountSearch">
+        <result column="month" property="month"/>
+        <result column="totalmoney" property="amt"/>
+    </resultMap>
 
     <sql id="tableName">tb_order</sql>
 
@@ -85,13 +85,11 @@
         <include refid="condition"/>
     </select>
 
-    <!--<select id="getTotalAmountByMonth" resultType="AmountDTO">-->
-        <!--SELECT-->
-        <!--month(or_datetime) as id,sum(or_total_amount) as or_total_amount-->
-        <!--from tb_order-->
-        <!--group by month(or_datetime)-->
-
-    <!--</select>-->
+    <select id="getTotalAmountByMonth" resultMap="AmountSearch">
+        select date_format(or_datetime, '%Y-%m') as month, sum(or_total_amount) as totalmoney
+        from tb_order where or_datetime>date_add(last_day(date_sub(curdate(), interval 1 year)), interval 1 day)
+        group by date_format(or_datetime, '%Y-%m')
+    </select>
 
 
     <update id="update">

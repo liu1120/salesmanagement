@@ -1,5 +1,6 @@
 package com.zzlbe.web.controller;
 
+import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.dao.entity.AreaEntity;
 import com.zzlbe.dao.mapper.AreaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,34 +17,34 @@ public class AreaController {
     AreaMapper areaMapper;
 
     @GetMapping(value = "selectBySpid")//查询销售员的区域
-    public List<AreaEntity> selectBySpid(@RequestParam("spid") long spid) {
+    public GenericResponse selectBySpid(@RequestParam("spid") long spid) {
         //调用dao层
         List<AreaEntity> areaEntity = areaMapper.selectBySpid(spid);
-        return areaEntity;
+        return new GenericResponse<>(areaEntity);
     }
 
     @GetMapping(value = "selectProvince")//省份去重.选省份。
-    public List<AreaEntity> selectProvince() {
+    public GenericResponse selectProvince() {
         List<AreaEntity> areaEntitys = areaMapper.selectProvince();
-        return areaEntitys;
+        return new GenericResponse<>(areaEntitys);
     }
 
     @GetMapping(value = "selectCity")//城市去重
-    public List<AreaEntity> selectCity(@RequestParam("provincecode") long provincecode) {
+    public GenericResponse selectCity(@RequestParam("provincecode") long provincecode) {
         List<AreaEntity> areaEntity = areaMapper.selectCity(provincecode);
-        return areaEntity;
+        return new GenericResponse<>(areaEntity);
     }
     @GetMapping(value = "selectCounty")//城镇去重
-    public List<AreaEntity> selectCounty(@RequestParam("citycode") long citycode) {
+    public GenericResponse selectCounty(@RequestParam("citycode") long citycode) {
         //调用dao层
         List<AreaEntity> areaEntity = areaMapper.selectCounty(citycode);
-        return areaEntity;
+        return new GenericResponse<>(areaEntity);
     }
 
     @GetMapping(value = "selectTown")//区县
-    public List<AreaEntity> selectTown(@RequestParam("countycode") long countycode) {
+    public GenericResponse selectTown(@RequestParam("countycode") long countycode) {
         //调用dao层
         List<AreaEntity> areaEntity = areaMapper.selectTown(countycode);
-        return areaEntity;
+        return new GenericResponse<>(areaEntity);
     }
 }

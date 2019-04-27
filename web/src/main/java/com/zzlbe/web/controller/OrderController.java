@@ -50,4 +50,8 @@ public class OrderController {
         return orderBusiness.payment(paymentForm);
     }
 
+    @RequestMapping("getTotalAmountByMonth")
+    public GenericResponse getTotalAmountByMonth() {
+        return orderBusiness.getTotalAmount();
+    }
 }

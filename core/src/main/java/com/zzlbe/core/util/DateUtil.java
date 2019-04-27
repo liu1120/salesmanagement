@@ -128,8 +128,10 @@ public class DateUtil {
         return null;
     }
 
-
+    public static String getDateByStr2(String date) {
+        return date.substring(0,19).replace("T"," ");
+    }
     public static void main(String[] args) {
-        System.out.println(getDateByStr("2019-04-23 18:57:20"));
+        System.out.println(getDateByStr2("2019-04-22T17:47:34.000+0800"));
     }
 }

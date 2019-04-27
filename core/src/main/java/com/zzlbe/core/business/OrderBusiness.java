@@ -45,4 +45,17 @@ public interface OrderBusiness {
      */
     GenericResponse payment(PaymentForm paymentForm);
 
+    /**
+     * 统计近12月销售额
+     *
+     * @return GenericResponse
+     */
+    GenericResponse getTotalAmountByMonth();
+    /**
+     * 统计当月销售额
+     *
+     * @return GenericResponse
+     */
+    GenericResponse getTotalAmount();
+
 }

@@ -87,11 +87,17 @@
         <include refid="tableName"/>
     </select>
 
-    <select id="suggestionUndeal" resultType="int">
+    <select id="suggestionUndeal1" resultType="int">
         SELECT COUNT(1)
         FROM
         <include refid="tableName"/>
         where su_status&lt;&gt;2
+    </select>
+    <select id="suggestionUndeal2" resultType="int">
+        SELECT COUNT(1)
+        FROM
+        <include refid="tableName"/>
+        where su_status=2
     </select>
     <update id="update">
         UPDATE

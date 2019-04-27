@@ -22,6 +22,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static com.zzlbe.core.util.DateUtil.getDateByStr;
+import static com.zzlbe.core.util.DateUtil.getDateByStr2;
 
 @RestController
 @RequestMapping("user")
@@ -239,6 +240,10 @@ public class UserController {
         return areaEntity;
     }
 
+    @GetMapping(value = "getDateBystr")//日期转换成标准格式
+    public String getDateBystr(@RequestParam("date") String date) {
+        return getDateByStr2(date);
+    }
     @PostMapping(value = "login")
     public UserEntity postLogin(@RequestParam("username") String username, @RequestParam("password") String password) {
         //调用dao层

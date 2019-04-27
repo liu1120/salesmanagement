@@ -28,6 +28,8 @@ public interface SuggestMapper {
 
     int suggestionCount();
 
-    int suggestionUndeal();
+    int suggestionUndeal1();
+
+    int suggestionUndeal2();
 
 }

@@ -21,3 +21,4 @@ function checkLoginInfo() {//略去
         document.manageDepForm.submit();
     }
 }
+

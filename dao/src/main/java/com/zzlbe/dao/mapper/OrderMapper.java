@@ -1,6 +1,7 @@
 package com.zzlbe.dao.mapper;
 
 import com.zzlbe.dao.entity.OrderEntity;
+import com.zzlbe.dao.search.AmountSearch;
 import com.zzlbe.dao.search.OrderSearch;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +23,7 @@ public interface OrderMapper {
 
     OrderEntity selectById(Long id);
 
-    OrderEntity getTotalAmountByMonth();
+    List<AmountSearch> getTotalAmountByMonth();
 
     List<OrderEntity> selectByUid(Long id);
 

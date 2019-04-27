@@ -14,11 +14,11 @@
 <body class="sidebar-fixed header-fixed" onload="writeLoginInfo()">
 <div class="page-wrapper">
     <nav class="navbar page-header" style="padding-top: 0px">
-        <a href="#" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
+        <a href="" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
             <i class="fa fa-bars"></i>
         </a>
 
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="">
             <img src="/static/imgs/logo.png" alt="logo">
         </a>
 
@@ -28,26 +28,22 @@
 
         <ul class="navbar-nav ml-auto">
             <li class="nav-item d-md-down-none">
-                <a href="#">
+                <a href="/admin/suggestinfo">
                     <i class="fa fa-bell"></i>
-                    <span class="badge badge-pill badge-danger">5</span>
+                    <span class="badge badge-pill badge-danger">6</span>
                 </a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+                <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">
                     <img src="/static/imgs/avatar-1.png" class="avatar avatar-sm" alt="logo">
-                    <span class="small ml-1 d-md-down-none">liu</span>
+                    <span class="small ml-1 d-md-down-none" id="loginname"   th:text="${login_username}"></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">
 
-                    <a href="#" class="dropdown-item">
+                    <a href="/admin/seleinfo" class="dropdown-item">
                         <i class="fa fa-user"></i> 个人信息
-                    </a>
-
-                    <a href="#" class="dropdown-item">
-                        <i class="fa fa-envelope"></i> 信息
                     </a>
 
                     <a href="#" class="dropdown-item" onclick="clearLoginInfo()">
@@ -78,17 +74,17 @@
 
                         <ul class="nav-dropdown-items">
                             <li class="nav-item">
-                                <a href="/static/ch_month.html" class="nav-link">
+                                <a href="/admin/salesvolume" class="nav-link">
                                     <i class="icon icon-graph"></i>&nbsp;&nbsp;产品销量
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/static/ch_person.html" class="nav-link">
+                                <a href="/admin/sellersvolume" class="nav-link">
                                     <i class="icon icon-graph"></i>&nbsp;&nbsp;销售员业绩
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/static/ch_area.html" class="nav-link">
+                                <a href="/admin/areavolume" class="nav-link">
                                     <i class="icon icon-graph"></i>&nbsp;&nbsp;地区销量
                                 </a>
                             </li>
@@ -103,13 +99,13 @@
                         <ul class="nav-dropdown-items">
                             <ul class="nav-dropdown-items">
                                 <li class="nav-item">
-                                    <a href="/static/ac_list.html" class="nav-link">
+                                    <a href="/admin/activity" class="nav-link">
                                         <i class="icon icon-target"></i>&nbsp;&nbsp;促销活动
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="/static/gi_list.html" class="nav-link">
+                                    <a href="/admin/gift" class="nav-link">
                                         <i class="icon icon-target"></i>&nbsp;&nbsp;礼品领取记录
                                     </a>
                                 </li>
@@ -125,22 +121,22 @@
 
                         <ul class="nav-dropdown-items">
                             <li class="nav-item">
-                                <a href="/static/g_list.html" class="nav-link">
+                                <a href="/admin/goods" class="nav-link">
                                     <i class="icon icon-energy"></i> &nbsp;&nbsp;农产品列表
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/static/g_infoAdd.html" class="nav-link">
+                                <a href="/admin/addgoods" class="nav-link">
                                     <i class="icon icon-energy"></i> &nbsp;&nbsp;增加新农产品
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/static/or_list.html" class="nav-link">
+                                <a href="/admin/order" class="nav-link">
                                     <i class="icon icon-energy"></i> &nbsp;&nbsp;订单列表
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/static/se_list.html" class="nav-link">
+                                <a href="/admin/orderservice" class="nav-link">
                                     <i class="icon icon-energy"></i> &nbsp;&nbsp;退货列表
                                 </a>
                             </li>
@@ -154,19 +150,19 @@
 
                         <ul class="nav-dropdown-items">
                             <li class="nav-item">
-                                <a href="/r_info.html" class="nav-link">
+                                <a href="/admin/info" class="nav-link">
                                     <i class="icon icon-puzzle"></i> &nbsp;&nbsp;信息管理
                                 </a>
                             </li>
 
                             <li class="nav-item">
-                                <a href="/r_attence.html" class="nav-link">
+                                <a href="/admin/attendce" class="nav-link">
                                     <i class="icon icon-puzzle"></i> &nbsp;&nbsp;考勤记录
                                 </a>
                             </li>
 
                             <li class="nav-item">
-                                <a href="/r_leave.html" class="nav-link">
+                                <a href="" class="nav-link">
                                     <i class="icon icon-puzzle"></i>&nbsp;&nbsp; 出差审核
                                 </a>
                             </li>
@@ -174,17 +170,17 @@
                     </li>
                     <li class="nav-title">More</li>
                     <li class="nav-item">
-                        <a href="/z_suggest.html" class="nav-link">
+                        <a href="/admin/suggest" class="nav-link">
                             <i class="icon icon-grid"></i>投诉与建议
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/z_consult.html" class="nav-link">
+                        <a href="/admin/question" class="nav-link">
                             <i class="icon icon-grid"></i> 技术咨询
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/z_notice.html" class="nav-link">
+                        <a href="/admin/technology" class="nav-link">
                             <i class="icon icon-grid"></i> 技术发布
                         </a>
                     </li>
@@ -198,7 +194,7 @@
                         <div class="card p-4">
                             <div class="card-body d-flex justify-content-between align-items-center">
                                 <div>
-                                    <span class="h4 d-block font-weight-normal mb-2" th:text="${usernum}"></span>
+                                    <span class="h4 d-block font-weight-normal mb-2" th:text="${usernum}">0</span>
                                     <span class="font-weight-light">用户总人数</span>
                                 </div>
 
@@ -213,7 +209,7 @@
                         <div class="card p-4">
                             <div class="card-body d-flex justify-content-between align-items-center">
                                 <div>
-                                    <span class="h4 d-block font-weight-normal mb-2">54</span>
+                                    <span class="h4 d-block font-weight-normal mb-2"  th:text="${adminernum}">0</span>
                                     <span class="font-weight-light">销售员</span>
                                 </div>
 
@@ -227,8 +223,9 @@
                         <div class="card p-4">
                             <div class="card-body d-flex justify-content-between align-items-center">
                                 <div>
-                                    <span class="h4 d-block font-weight-normal mb-2">32,400￥</span>
+                                    <span class="h4 d-block font-weight-normal mb-2" th:text="${amountSearch.amt}"></span>
                                     <span class="font-weight-light">本月销售总额</span>
+
                                 </div>
 
                                 <div class="h2 text-muted">
@@ -241,7 +238,7 @@
                         <div class="card p-4">
                             <div class="card-body d-flex justify-content-between align-items-center">
                                 <div>
-                                    <span class="h4 d-block font-weight-normal mb-2">2条</span>
+                                    <span class="h4 d-block font-weight-normal mb-2" th:text="${suggestnum1}">0</span>
                                     <span class="font-weight-light">投诉与建议</span>
                                 </div>
 
@@ -268,8 +265,6 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
@@ -283,14 +278,38 @@
 </body>
 <script type="text/javascript" src="/static/jquery/jquery.js"></script>
 <script type="text/javascript" src="/static/js/admin.js"></script>
-<script type="text/javascript" src="/static/js/chartdemo.js"></script>
+<script type="text/javascript" src="/static/js/chartdemo.js" th:inline="javascript"></script>
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
         var login_username = [[${login_username}]];
+        var e=document.getElementById("loginname");
+        // localStorage.removeItem('login_username');
+
+
         console.log("login_username:"+login_username);
-        if(login_username!=null){
+        if(login_username!=undefined){
             localStorage.setItem("login_username",login_username);
+            console.log("login_username::"+login_username);
+        }else{
+            var login_username=localStorage.getItem("login_username");
+            var a="<input type=hidden name='login_username' value=";
+            var b=login_username;
+            var c=">";
+            a=a+b+c;
+            console.log("login_username:::"+a);
+            if(login_username==undefined){
+                document.write("<form action='/admin/index' method=post name=manageDepForm style='display:none'>");
+                document.write("");//参数1
+                document.write(a);
+                document.write("<input type=hidden name='username' value=''/>");//参数1
+                document.write("<input type=hidden name='password' value=''/>");//参数2
+                document.write("</form>");
+                document.manageDepForm.submit();
+            }
         }
+
+
+
     }
 </script>
 <script type="text/javascript">

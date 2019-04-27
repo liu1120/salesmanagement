@@ -10,11 +10,13 @@ import com.zzlbe.dao.entity.UserEntity;
 import com.zzlbe.dao.mapper.GoodsMapper;
 import com.zzlbe.dao.mapper.OrderMapper;
 import com.zzlbe.dao.mapper.UserMapper;
+import com.zzlbe.dao.search.AmountSearch;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * PROJECT: sales management
@@ -98,6 +100,19 @@ public class OrderBusinessImpl implements OrderBusiness {
         orderEntity.setOrStatus(1);
         orderMapper.update(orderEntity);
 
+        return GenericResponse.SUCCESS;
+    }
+
+    @Override
+    public GenericResponse getTotalAmountByMonth() {
+        List<AmountSearch> AmountSearchs=orderMapper.getTotalAmountByMonth();
+        return GenericResponse.SUCCESS;
+    }
+
+    @Override
+    public GenericResponse getTotalAmount() {
+        List<AmountSearch> amountSearchs=orderMapper.getTotalAmountByMonth();
+        AmountSearch amountSearch=amountSearchs.get(amountSearchs.size()-1);
         return GenericResponse.SUCCESS;
     }
 }

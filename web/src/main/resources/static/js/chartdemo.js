@@ -8,7 +8,7 @@ $(document).ready(function () {
         new Chart(lineChart, {
             type: 'line',
             data: {
-                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                labels: ["Jan12", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 datasets: [{
                     label: 'Users',
                     data: [12, 19, 3, 5, 2, 3, 20, 33, 23, 12, 33, 10],
