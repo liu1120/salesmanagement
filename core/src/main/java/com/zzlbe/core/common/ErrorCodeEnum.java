@@ -52,6 +52,7 @@ public enum ErrorCodeEnum {
     ORDER_PAYMENT_CHECK_ERROR("5007", "订单审核未通过，不允许修改"),
     ORDER_CREATE_SET_SELLER("5008", "下单请指定销售员"),
     ORDER_CREATE_SELLER_NOT_EXIT("5009", "该地区暂时不能下单"),
+    ORDER_MODIFY_CHANGE_SELLER("5010", "暂不支持修改销售员"),
 
 
     /**

@@ -120,57 +120,29 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         // 订单状态：0未付款,1已付款，2待发货,3已发货,4已签收,5退货中,6已退货，7完成交易
         Integer orStatus = orderEntity.getOrStatus();
 
-        // 未付款，订单信息均可修改
+        // 1.未付款，订单信息均可修改
         if (orStatus == 0) {
-            if (!orderForm.getOrUserId().equals(orderEntity.getOrUserId())) {
-                // 校验用户
-                UserEntity userEntity = userMapper.selectById(orderForm.getOrUserId());
-                if (userEntity == null) {
-                    return new GenericResponse<>(ErrorCodeEnum.USER_NOT_FOUND);
-                }
+            GenericResponse unpaidModifyOrder = unpaidModifyOrder(orderForm, orderEntity);
+            if (!unpaidModifyOrder.successful()) {
+                return unpaidModifyOrder;
             }
-
-            /*Long orderSellerId = orderForm.getOrSellerId();
-
-            // 用户下单，并且修改了地址,此时要更新指定销售员
-            if (!orderForm.getOrderFlag() && !orderForm.getOrAddress().equals(orderEntity.getOrAddress())) {
-                orderSellerId = getSellerIdByAddress(orderForm.getOrAddress());
-                if (orderSellerId == null) {
-                    return new GenericResponse(ErrorCodeEnum.ORDER_CREATE_SELLER_NOT_EXIT);
-                }
-            }
-            // 销售员下单直接修改就是
-            if (!orderSellerId.equals(orderEntity.getOrSellerId())) {
-                // 校验销售员
-                SellerEntity sellerEntity = sellerMapper.selectById(orderForm.getOrSellerId());
-                if (sellerEntity == null) {
-                    return new GenericResponse<>(ErrorCodeEnum.SELLER_NOT_FOUND);
-                }
-            }*/
-
-            // 校验商品
-            GenericResponse checkGoodsResponse = checkGoods(orderForm.getOrGoodsId());
-            if (!checkGoodsResponse.successful()) {
-                return checkGoodsResponse;
-            }
-            GoodsEntity goodsEntity = (GoodsEntity) checkGoodsResponse.getBody();
-            if (orderForm.getOrCount() < 1) {
-                return new GenericResponse<>(ErrorCodeEnum.ORDER_MODIFY_COUNT_MIN_1);
-            }
-
-            // 安全起见：重新设置金额(单价 * 数量)
-            BigDecimal goodsCount = new BigDecimal(orderForm.getOrCount());
-            orderEntity.setOrPrice(goodsEntity.getPrice());
-            orderEntity.setOrTotalAmount(goodsEntity.getPrice().multiply(goodsCount));
-
-            // 设置其他信息
-            BeanUtils.copyProperties(orderForm, orderEntity);
+            orderEntity = (OrderEntity) unpaidModifyOrder.getBody();
 
         } else if (orStatus == 1 || orStatus == 2) {
-            orderEntity.setOrAddress(orderForm.getOrAddress());
+            // 2.已付款，未发货可修改收货地址和备注（暂只支持销售员修改地址，如果想让用户修改地址，可放开下边代码）
+            Integer orderAddress = orderForm.getOrAddress();
+            /*GenericResponse userModifyAddress = notShippedModifyAddress(orderEntity, orderAddress);
+            if (!userModifyAddress.successful()) {
+                return userModifyAddress;
+            }
+            orderEntity = (OrderEntity) userModifyAddress.getBody();*/
+
+            // 订单已付款，仅支持修改收货地址
+            orderEntity.setOrAddress(orderAddress);
             orderEntity.setOrWords(orderForm.getOrWords());
 
         } else {
+            // 3.其他状态不允许修改
             return new GenericResponse(ErrorCodeEnum.ORDER_MODIFY_ERROR);
         }
 
@@ -194,18 +166,6 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         orderMapper.update(orderEntity);
 
         return GenericResponse.SUCCESS;
-    }
-
-    private GenericResponse checkGoods(Long orGoodsId) {
-        GoodsEntity goodsEntity = goodsMapper.selectById(orGoodsId);
-        if (goodsEntity == null) {
-            return new GenericResponse(ErrorCodeEnum.GOODS_NOT_FOUND);
-        }
-        // 判断商品是否已下架
-        if (goodsEntity.getIsShow() != 1) {
-            return new GenericResponse(ErrorCodeEnum.GOODS_REMOVED);
-        }
-        return new GenericResponse<>(goodsEntity);
     }
 
     @Override
@@ -258,7 +218,6 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         List<AmountSearch> amountByMonth = orderMapper.getTotalAmountByMonth();
         return new GenericResponse<>(amountByMonth);
     }
-
     @Override
     public GenericResponse getTotalAmount() {
         List<AmountSearch> amountByMonth = orderMapper.getTotalAmountByMonth();
@@ -285,5 +244,118 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
             return null;
         }
         return areaEntity.getSpid();
+    }
+
+    /**
+     * 校验商品是否存在或已下架
+     *
+     * @param orGoodsId 商品ID
+     * @return 商品状态
+     */
+    private GenericResponse checkGoods(Long orGoodsId) {
+        GoodsEntity goodsEntity = goodsMapper.selectById(orGoodsId);
+        if (goodsEntity == null) {
+            return new GenericResponse(ErrorCodeEnum.GOODS_NOT_FOUND);
+        }
+        // 判断商品是否已下架
+        if (goodsEntity.getIsShow() != 1) {
+            return new GenericResponse(ErrorCodeEnum.GOODS_REMOVED);
+        }
+        return new GenericResponse<>(goodsEntity);
+    }
+
+    /**
+     * 订单未支付修改订单信息
+     *
+     * @param orderForm   要修改的订单信息
+     * @param orderEntity 修改后的订单
+     * @return 修改状态
+     */
+    private GenericResponse unpaidModifyOrder(OrderForm orderForm, OrderEntity orderEntity) {
+        /*
+         * 校验用户
+         */
+        if (!orderForm.getOrUserId().equals(orderEntity.getOrUserId())) {
+            UserEntity userEntity = userMapper.selectById(orderForm.getOrUserId());
+            if (userEntity == null) {
+                return new GenericResponse<>(ErrorCodeEnum.USER_NOT_FOUND);
+            }
+        }
+
+        /*
+         * 校验销售员
+         * 1.客户修改订单，要校验地址和该地区的销售员，如下 A、B
+         * 2.销售员修改订单，要校验新的销售员，如下 B
+         */
+        Long orderSellerId = orderForm.getOrSellerId();
+
+        // A.客户下单，并且修改了地址，此时要更新指定销售员
+        if (!orderForm.getOrderFlag() && !orderForm.getOrAddress().equals(orderEntity.getOrAddress())) {
+            orderSellerId = getSellerIdByAddress(orderForm.getOrAddress());
+            if (orderSellerId == null) {
+                return new GenericResponse(ErrorCodeEnum.ORDER_CREATE_SELLER_NOT_EXIT);
+            }
+        }
+
+        // B.销售员下单，或用户修改了地址，此时要校验销售员编号和之前是否一样
+        if (!orderSellerId.equals(orderEntity.getOrSellerId())) {
+            // 校验销售员
+            SellerEntity sellerEntity = sellerMapper.selectById(orderSellerId);
+            if (sellerEntity == null) {
+                return new GenericResponse<>(ErrorCodeEnum.SELLER_NOT_FOUND);
+            }
+            orderEntity.setOrSellerId(orderSellerId);
+        }
+
+        /*
+         * 校验商品
+         */
+        GenericResponse checkGoodsResponse = checkGoods(orderForm.getOrGoodsId());
+        if (!checkGoodsResponse.successful()) {
+            return checkGoodsResponse;
+        }
+        GoodsEntity goodsEntity = (GoodsEntity) checkGoodsResponse.getBody();
+        if (orderForm.getOrCount() < 1) {
+            return new GenericResponse<>(ErrorCodeEnum.ORDER_MODIFY_COUNT_MIN_1);
+        }
+
+        /*
+         * 接口安全：重新设置金额(单价 * 数量)
+         */
+        BigDecimal goodsCount = new BigDecimal(orderForm.getOrCount());
+        orderEntity.setOrPrice(goodsEntity.getPrice());
+        orderEntity.setOrTotalAmount(goodsEntity.getPrice().multiply(goodsCount));
+
+        /*
+         * 设置其他信息
+         */
+        BeanUtils.copyProperties(orderForm, orderEntity);
+
+        return new GenericResponse<>(orderEntity);
+    }
+
+    /**
+     * 未发货修改收货地址 >>> (只适用于用户修改收货地址) 暂时用不到
+     *
+     * @param orderEntity  修改后的订单信息
+     * @param orderAddress 收货地址
+     * @return 修改收货地址结果
+     */
+    private GenericResponse notShippedModifyAddress(OrderEntity orderEntity, Integer orderAddress) {
+        // 修改了地址，此时要更新指定销售员
+        if (!orderAddress.equals(orderEntity.getOrAddress())) {
+            Long orderSellerId = getSellerIdByAddress(orderAddress);
+            if (orderSellerId == null) {
+                return new GenericResponse(ErrorCodeEnum.ORDER_CREATE_SELLER_NOT_EXIT);
+            }
+            // 校验销售员
+            SellerEntity sellerEntity = sellerMapper.selectById(orderSellerId);
+            if (sellerEntity == null) {
+                return new GenericResponse<>(ErrorCodeEnum.SELLER_NOT_FOUND);
+            }
+            orderEntity.setOrSellerId(orderSellerId);
+            orderEntity.setOrAddress(orderAddress);
+        }
+        return new GenericResponse<>(orderEntity);
     }
 }
