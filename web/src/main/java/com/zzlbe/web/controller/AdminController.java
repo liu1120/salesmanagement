@@ -1,5 +1,6 @@
 package com.zzlbe.web.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.zzlbe.core.business.OrderBusiness;
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.util.MD5Utils;
@@ -12,9 +13,7 @@ import com.zzlbe.dao.search.AmountSearch;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -57,14 +56,12 @@ public class AdminController {
             List<AmountSearch> amountSearchs=orderMapper.getTotalAmountByMonth();
             AmountSearch amountSearch=amountSearchs.get(amountSearchs.size()-1);
             mav.addObject("amountSearch",amountSearch);
-            mav.addObject("amountSearchs",amountSearchs);
 
             mav.addObject("usernum",usernum);
             mav.addObject("adminernum",adminernum);
             mav.addObject("suggestnum1",suggestnum1);
             mav.addObject("suggestnum2",suggestnum2);
-            mav.addObject("getTotalAmountByMonth",getTotalAmountByMonth());
-            mav.addObject("getTotalAmount",getTotalAmount());
+            mav.addObject("getTotalAmountFormat",getTotalAmountFormat());
 
             mav.setViewName("admin/index");
         }else if(uname==null&&username==null&&password==null){
@@ -81,14 +78,11 @@ public class AdminController {
                         List<AmountSearch> amountSearchs=orderMapper.getTotalAmountByMonth();
                         AmountSearch amountSearch=amountSearchs.get(amountSearchs.size()-1);
 
-                        mav.addObject("amountSearchs",amountSearchs);
                         mav.addObject("amountSearch",amountSearch);
                         mav.addObject("usernum",userMapper.userCount());
                         mav.addObject("adminernum",sellerMapper.adminerCount());
                         mav.addObject("suggestnum1",suggestMapper.suggestionUndeal1());
                         mav.addObject("suggestionUndeal2",suggestMapper.suggestionUndeal2());
-                        mav.addObject("getTotalAmountByMonth",getTotalAmountByMonth());
-                        mav.addObject("getTotalAmountByMonth",getTotalAmount());
                         mav.addObject("login_username", username);
                         mav.setViewName("admin/index");
                         //queryIndex();
@@ -114,12 +108,23 @@ public class AdminController {
     }
 
 
-    @RequestMapping("getTotalAmountByMonth")
+    //返回echart所需的格式
+    @GetMapping(value="getTotalAmountFormat")
+    @ResponseBody
+    public String getTotalAmountFormat(){
+        List<AmountSearch> amountSearchs=orderMapper.getTotalAmountByMonth();
+        String str = JSON.toJSONString(amountSearchs);
+        return str;
+    }
+
+
+    @PostMapping("getTotalAmountByMonth")
     public GenericResponse getTotalAmountByMonth() {
         List<AmountSearch> amountSearchs=orderMapper.getTotalAmountByMonth();
         return new GenericResponse<>(amountSearchs);
     }
-    @RequestMapping("getTotalAmount")
+
+    @RequestMapping("getTotalAmount")//当前月销售额
     public GenericResponse getTotalAmount() {
         List<AmountSearch> amountSearchs=orderMapper.getTotalAmountByMonth();
         AmountSearch amountSearch=amountSearchs.get(amountSearchs.size()-1);
@@ -136,4 +141,11 @@ public class AdminController {
         return "admin/test";
     }
 
+
+    @RequestMapping("salesvolume")//当前月销售额
+    public GenericResponse salesvolume() {
+        List<AmountSearch> amountSearchs=orderMapper.getTotalAmountByMonth();
+        AmountSearch amountSearch=amountSearchs.get(amountSearchs.size()-1);
+        return new GenericResponse<>(amountSearch);
+    }
 }
