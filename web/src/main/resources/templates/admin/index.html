@@ -260,6 +260,7 @@
 
                             <div class="card-body p-0">
                                 <div class="p-4">
+                                    <!--<div id='chartdata' style="display: none" th:text="${getTotalAmountFormat}"></div>-->
                                     <canvas id="line-chart" width="100%" height="20"></canvas>
                                 </div>
                             </div>
@@ -272,7 +273,7 @@
     <script src="/static/vendor/jquery/jquery.min.js"></script>
     <script src="/static/vendor/popper.js/popper.min.js"></script>
     <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/static/vendor/chart.js/chart.min.js"></script>
+    <script src="/static/vendor/Chart.js/chart.min.js"></script>
     <script src="/static/js/carbon.js"></script>
 </div>
 </body>
@@ -284,8 +285,6 @@
         var login_username = [[${login_username}]];
         var e=document.getElementById("loginname");
         // localStorage.removeItem('login_username');
-
-
         console.log("login_username:"+login_username);
         if(login_username!=undefined){
             localStorage.setItem("login_username",login_username);
@@ -307,47 +306,7 @@
                 document.manageDepForm.submit();
             }
         }
-
-
-
     }
 </script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        var barChart = $('#bar-chart');
-        if (barChart.length > 0) {
-            new Chart(barChart, {
-                type: 'bar',
-                data: {
-                    labels: ["一月", "二月", "三月", "四月", "五月", "六月"],
-                    datasets: [{
-                        label: '# of Votes',
-                        data: [12, 22, 3, 5, 4, 3],
-                        backgroundColor: [
-                            'rgba(33, 150, 243, 0.5)',
-                            'rgba(33, 150, 243, 0.5)',
-                            'rgba(33, 150, 243, 0.5)',
-                            'rgba(33, 150, 243, 0.5)',
-                            'rgba(33, 150, 243, 0.5)',
-                            'rgba(33, 150, 243, 0.5)',
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    legend: {
-                        display: false
-                    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: false
-                            }
-                        }]
-                    }
-                }
-            });
-        }
-    });
-</script>
+
 </html>
