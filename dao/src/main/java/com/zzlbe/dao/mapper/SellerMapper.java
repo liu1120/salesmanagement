@@ -2,6 +2,7 @@ package com.zzlbe.dao.mapper;
 
 import com.zzlbe.dao.entity.SellerEntity;
 import com.zzlbe.dao.search.SellerSearch;
+import com.zzlbe.dao.search.SellersellSearch;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface SellerMapper {
     int adminerCount();
 
     int sellerCount();
+
+    List<SellersellSearch> getSellerAll();
 }

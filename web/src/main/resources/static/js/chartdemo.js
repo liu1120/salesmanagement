@@ -23,7 +23,6 @@ $(document).ready(function () {
                 borderWidth: 1
             }]
         };
-
         // 获取所选canvas元素的内容
         var ctx = document.getElementById("line-chart");
         //设置图表高度
@@ -36,54 +35,59 @@ $(document).ready(function () {
         });
     });
 
-
-
     /**
      * Bar Chart
      */
-    var barChart = $('#bar-chart');
-
-    if (barChart.length > 0) {
-        new Chart(barChart, {
-            type: 'bar',
-            data: {
+    $.ajax({
+        url: 'getGoodSell',
+        type: "get",
+        data:{goodsid:0},
+        dataType: 'json',
+    }).done(function (results) {
+        // 将获取到的json数据分别存放到两个数组中
+        var labels = [], data=[];
+        for(var i=0;i<results.length;i++){ //第一层循环取到各个list
+            labels.push(results[i].month);
+            data.push(results[i].count);
+        }
+        // 设置图表的数据
+        var tempData = {
+            labels : labels,
+            datasets: [{
+                label: '销售量',
                 labels: ["Red", "Blue", "Cyan", "Green", "Purple", "Orange"],
-                datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
-                    backgroundColor: [
-                        'rgba(244, 88, 70, 0.5)',
-                        'rgba(33, 150, 243, 0.5)',
-                        'rgba(0, 188, 212, 0.5)',
-                        'rgba(42, 185, 127, 0.5)',
-                        'rgba(156, 39, 176, 0.5)',
-                        'rgba(253, 178, 68, 0.5)'
-                    ],
-                    borderColor: [
-                        '#F45846',
-                        '#2196F3',
-                        '#00BCD4',
-                        '#2ab97f',
-                        '#9C27B0',
-                        '#fdb244'
-                    ],
-                    borderWidth: 1
-                }]
-            },
+                data: data,
+                backgroundColor: [
+                    'rgba(244, 88, 70, 0.5)',
+                    'rgba(33, 150, 243, 0.5)',
+                    'rgba(0, 188, 212, 0.5)',
+                    'rgba(42, 185, 127, 0.5)',
+                    'rgba(156, 39, 176, 0.5)',
+                    'rgba(253, 178, 68, 0.5)'
+                ],
+                borderColor: [
+                    '#F45846',
+                    '#2196F3',
+                    '#00BCD4',
+                    '#2ab97f',
+                    '#9C27B0',
+                    '#fdb244'
+                ],
+                borderWidth: 1
+            }]
+        };
+        // 获取所选canvas元素的内容
+        var ctx = document.getElementById("bar-chart");
+        //设置图表高度
+        var myLineChart = new Chart(ctx, {
+            type: 'bar',
+            data: tempData,
             options: {
-                legend: {
-                    display: false
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
+                maintainAspectRatio: true,
             }
         });
-    }
+    });
+
 
     /**
      * Radar Chart
@@ -194,3 +198,4 @@ $(document).ready(function () {
         });
     });
 });
+

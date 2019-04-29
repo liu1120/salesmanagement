@@ -4,12 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.zzlbe.core.business.OrderBusiness;
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.util.MD5Utils;
+import com.zzlbe.dao.entity.GoodsEntity;
 import com.zzlbe.dao.entity.SellerEntity;
-import com.zzlbe.dao.mapper.OrderMapper;
-import com.zzlbe.dao.mapper.SellerMapper;
-import com.zzlbe.dao.mapper.SuggestMapper;
-import com.zzlbe.dao.mapper.UserMapper;
-import com.zzlbe.dao.search.AmountSearch;
+import com.zzlbe.dao.mapper.*;
+import com.zzlbe.dao.search.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +29,9 @@ public class AdminController {
     OrderBusiness orderBusiness;
     @Autowired
     OrderMapper orderMapper;
+    @Autowired
+    GoodsMapper goodsMapper;
+
     //展示登录界面
     @RequestMapping("/login")
     public String login() {
@@ -131,11 +132,6 @@ public class AdminController {
         return new GenericResponse<>(amountSearch);
     }
 
-    @RequestMapping("/test1")
-    public void test1() {
-        orderBusiness.getTotalAmount();
-    }
-
     @RequestMapping("/test")
     public String test() {
         return "admin/test";
@@ -143,9 +139,63 @@ public class AdminController {
 
 
     @RequestMapping("salesvolume")//当前月销售额
-    public GenericResponse salesvolume() {
-        List<AmountSearch> amountSearchs=orderMapper.getTotalAmountByMonth();
-        AmountSearch amountSearch=amountSearchs.get(amountSearchs.size()-1);
-        return new GenericResponse<>(amountSearch);
+    public ModelAndView salesvolume() {
+        ModelAndView mv=new ModelAndView();
+        mv.setViewName("admin/ch_month.html");
+        return  mv;
+    }
+
+    @RequestMapping("selectAllGoods")//josn,选择农化产品
+    @ResponseBody
+    public String selectAllGoods() {
+        List<GoodsEntity> goodsEntities= goodsMapper.selectAll();
+        String str=JSON.toJSONString(goodsEntities);
+        return str;
+    }
+
+    @RequestMapping("getGoodSellTop10")//josn,商品6月销售量前10
+    @ResponseBody
+    public String getGoodSellTop10() {
+        List<Goodsselltop10Search> goodsselltop10Searches= orderMapper.getGoodSellTop10();
+        String str=JSON.toJSONString(goodsselltop10Searches);
+        return str;
+    }
+
+    @RequestMapping("getGoodSell")//json,商品6个月销售量变化
+    @ResponseBody
+    public String getGoodSell(@RequestParam("goodsid") long goodsid) {
+        System.out.println("getGoodSell===goodsid:"+goodsid);
+        if(goodsid==0){
+            List<Goodsselltop10Search> goodsselltop10Searches= orderMapper.getGoodSellTop10();
+            goodsid=goodsselltop10Searches.get(0).getId();
+        }
+        List<GoodssellSearch> goodssellSearches= orderMapper.getGoodSell(goodsid);
+        String str=JSON.toJSONString(goodssellSearches);
+        return str;
+    }
+
+    @RequestMapping("sellersvolume")//当前月销售额
+    public ModelAndView sellersvolume() {
+        ModelAndView mv=new ModelAndView();
+        mv.setViewName("admin/ch_person.html");
+        return  mv;
+    }
+
+
+    @RequestMapping("getSellerTop10")//josn,销售员6月销售量前10
+    @ResponseBody
+    public String getSellerTop10() {
+        List<Sellertop10Search> Sellertop10Searches= orderMapper.getSellerTop10();
+        String str=JSON.toJSONString(Sellertop10Searches);
+        return str;
+    }
+
+
+    @RequestMapping("getSellerAll")//josn,选择农化产品
+    @ResponseBody
+    public String getSellerAll() {
+        List<SellersellSearch> SellersellSearches= sellerMapper.getSellerAll();
+        String str=JSON.toJSONString(SellersellSearches);
+        return str;
     }
 }

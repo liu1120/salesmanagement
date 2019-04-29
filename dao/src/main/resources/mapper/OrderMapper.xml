@@ -24,6 +24,22 @@
         <result column="month" property="month"/>
         <result column="totalmoney" property="amt"/>
     </resultMap>
+    <resultMap id="GoodsSellSearch" type="com.zzlbe.dao.search.GoodssellSearch">
+        <result column="month" property="month"/>
+        <result column="count" property="count"/>
+    </resultMap>
+    <resultMap id="Goodsselltop10Search" type="com.zzlbe.dao.search.Goodsselltop10Search">
+        <result column="or_goods_id" property="id"/>
+        <result column="go_name" property="name"/>
+        <result column="count" property="count"/>
+    </resultMap>
+
+
+    <resultMap id="Sellertop10Search" type="com.zzlbe.dao.search.Sellertop10Search">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="count" property="count"/>
+    </resultMap>
 
     <sql id="tableName">tb_order</sql>
 
@@ -88,9 +104,34 @@
     <select id="getTotalAmountByMonth" resultMap="AmountSearch">
         select date_format(or_datetime, '%Y-%m') as month, sum(or_total_amount) as totalmoney
         from tb_order where or_datetime>date_add(last_day(date_sub(curdate(), interval 1 year)), interval 1 day)
+        AND or_type=1
+        AND or_status>6
         group by date_format(or_datetime, '%Y-%m')
     </select>
 
+    <select id="getGoodSellTop10" resultMap="Goodsselltop10Search">
+        SELECT or_goods_id,go_name,SUM(or_count) as count from tb_order AS a
+        LEFT JOIN tb_goods AS b ON a.or_goods_id=b.go_id
+        where or_datetime>DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+        GROUP BY or_goods_id ORDER BY count DESC LIMIT 10
+    </select>
+
+    <select id="getGoodSell" resultMap="GoodsSellSearch">
+        select date_format(or_datetime, '%Y-%m') as month, sum(or_count) as count
+        from tb_order
+        where or_datetime>date_add(last_day(date_sub(curdate(), interval 6 MONTH)), interval 1 day)
+        AND or_type=1
+        AND or_status>6
+        AND or_goods_id=#{id}
+        group by date_format(or_datetime, '%Y-%m')
+    </select>
+
+    <select id="getSellerTop10" resultMap="Sellertop10Search">
+        SELECT sp_id as id,sp_realname as name,SUM(or_total_amount) as count from tb_order AS a
+        LEFT JOIN tb_seller AS b ON a.or_seller_id=b.sp_id
+        where or_datetime>DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+        GROUP BY sp_id ORDER BY count DESC LIMIT 10
+    </select>
 
     <update id="update">
         UPDATE

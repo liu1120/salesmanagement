@@ -61,7 +61,7 @@
                     <li class="nav-title">导航</li>
 
                     <li class="nav-item">
-                        <a href="/static/index.html" class="nav-link active">
+                        <a href="/static/index.html" class="nav-link">
                             <i class="icon icon-speedometer"></i> 仪表盘
                         </a>
                     </li>
@@ -74,7 +74,7 @@
 
                         <ul class="nav-dropdown-items">
                             <li class="nav-item">
-                                <a href="/admin/salesvolume" class="nav-link">
+                                <a href="/admin/salesvolume" class="nav-link active">
                                     <i class="icon icon-graph"></i>&nbsp;&nbsp;产品销量
                                 </a>
                             </li>
@@ -190,81 +190,53 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-3">
-                        <div class="card p-4">
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="h4 d-block font-weight-normal mb-2" th:text="${usernum}">0</span>
-                                    <span class="font-weight-light">用户总人数</span>
-                                </div>
-
-                                <div class="h2 text-muted">
-                                    <i class="icon icon-people"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="card p-4">
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="h4 d-block font-weight-normal mb-2"  th:text="${adminernum}">0</span>
-                                    <span class="font-weight-light">销售员</span>
-                                </div>
-
-                                <div class="h2 text-muted">
-                                    <i class="icon icon-cloud-download"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card p-4">
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="h4 d-block font-weight-normal mb-2" th:text="${amountSearch.amt}"></span>
-                                    <span class="font-weight-light">本月销售总额</span>
-
-                                </div>
-
-                                <div class="h2 text-muted">
-                                    <i class="icon icon-wallet"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card p-4">
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="h4 d-block font-weight-normal mb-2" th:text="${suggestnum1}">0</span>
-                                    <span class="font-weight-light">投诉与建议</span>
-                                </div>
-
-                                <div class="h2 text-muted">
-                                    <i class="icon icon-target"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row ">
                     <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                近12个月月销售总额
+                        <!--模板结束11111-->
+                        <div class="row">
+                            <div class="col-md-8" style="min-height: 500px">
+                                <div class="card">
+                                    <div class="card-header bg-light">
+                                        <h3>月销量变化图</h3>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1.5">
+                                            <div class="form-group">
+                                                <h3> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;农产品:</h3>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <select id="single-select2" class="form-control">
+                                                    <option value="0">--请选择--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body" id="bar-chart-p">
+                                        <canvas id="bar-chart"></canvas>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="card-body p-0">
-                                <div class="p-4">
-                                    <!--<div id='chartdata' style="display: none" th:text="${getTotalAmountFormat}"></div>-->
-                                    <canvas id="line-chart" width="100%" height="20"></canvas>
+                            <div class="col-md-4" style="min-height: 500px">
+                                <div class="card">
+                                    <div class="card-header bg-light">
+                                        农产品月销量排行榜
+                                    </div>
+                                    <div class="form-group">
+                                        top10<br><br>
+                                        <table style="width: 100%" id="goodstop10">
+                                            <thead>
+                                            <td>排名</td>
+                                            <td>名称</td>
+                                            <td>总销量</td>
+                                            </thead>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <!--模板开始222222-->
                     </div>
                 </div>
             </div>
@@ -277,7 +249,7 @@
     <script src="/static/js/carbon.js"></script>
 </div>
 </body>
-<script type="text/javascript" src="/static/jquery/jquery.js"></script>
+<script type="text/javascript" src="/static/js/adminjq.js"></script>
 <script type="text/javascript" src="/static/js/admin.js"></script>
 <script type="text/javascript" src="/static/js/chartdemo.js" th:inline="javascript"></script>
 <script type="text/javascript" th:inline="javascript">
@@ -291,11 +263,6 @@
             localStorage.setItem("login_username",login_username);
             console.log("login_username::"+login_username);
         }else{
-            // var a="<input type=hidden name='login_username' value=";
-            // var b=login_username;
-            // var c=">";
-            // a=a+b+c;
-
             e.innerText=local_username;
             console.log("login_username:::"+a);
             if(login_username==undefined){
@@ -311,4 +278,8 @@
     }
 </script>
 
+<script>
+
+
+</script>
 </html>

@@ -16,6 +16,11 @@
         <result column="sp_number" property="number"/>
     </resultMap>
 
+    <resultMap id="SellersellSearch" type="com.zzlbe.dao.search.SellersellSearch">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+    </resultMap>
+
     <sql id="tableName">tb_seller</sql>
 
     <sql id="columns">
@@ -67,6 +72,10 @@
         FROM
         <include refid="tableName"/>
         WHERE sp_id = #{id}
+    </select>
+
+    <select id="getSellerAll" resultMap="SellersellSearch">
+        SELECT sp_id as id,sp_realname as name from tb_seller WHERE sp_rank=0
     </select>
 
     <select id="selectByPhoneNo" resultMap="BaseMap">
