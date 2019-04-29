@@ -5,8 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.zzlbe.core.business.OrderBusiness;
 import com.zzlbe.core.common.ErrorCodeEnum;
 import com.zzlbe.core.common.GenericResponse;
+import com.zzlbe.core.constant.OrderStatusEnum;
 import com.zzlbe.core.request.OrderCheckForm;
 import com.zzlbe.core.request.OrderForm;
+import com.zzlbe.core.request.OrderProcessForm;
 import com.zzlbe.core.request.PaymentForm;
 import com.zzlbe.dao.entity.*;
 import com.zzlbe.dao.mapper.*;
@@ -184,7 +186,46 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         }
 
         // 订单状态：0未付款,1已付款，2待发货,3已发货,4已签收,5退货中,6已退货，7完成交易
-        orderEntity.setOrStatus(1);
+        orderEntity.setOrStatus(2);
+        orderMapper.update(orderEntity);
+
+        return GenericResponse.SUCCESS;
+    }
+
+    @Override
+    public GenericResponse process(OrderProcessForm orderProcessForm) {
+        OrderEntity orderEntity = orderMapper.selectById(orderProcessForm.getOrId());
+        if (orderEntity == null) {
+            return new GenericResponse(ErrorCodeEnum.ORDER_NOT_FOUND);
+        }
+
+        OrderStatusEnum orderStatus = orderProcessForm.getStatus();
+        if (orderStatus == null) {
+            return new GenericResponse(ErrorCodeEnum.ORDER_TRANSFER);
+        }
+
+        // 订单状态：0未付款,1已付款，2待发货, 3已发货,4已签收,5退货中,6已退货，7完成交易
+        switch (orderStatus) {
+            case SHIP:
+                orderEntity.setOrStatus(3);
+                break;
+            case SIGNING:
+                orderEntity.setOrStatus(4);
+                break;
+            case AFTER_SALE:
+                orderEntity.setOrStatus(5);
+                orderEntity.setOrWords(orderProcessForm.getOrWords());
+                break;
+            case FINISH_SALE:
+                orderEntity.setOrStatus(6);
+                break;
+            case FINISH:
+                orderEntity.setOrStatus(7);
+                break;
+            default:
+                break;
+        }
+
         orderMapper.update(orderEntity);
 
         return GenericResponse.SUCCESS;
@@ -218,6 +259,7 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         List<AmountSearch> amountByMonth = orderMapper.getTotalAmountByMonth();
         return new GenericResponse<>(amountByMonth);
     }
+
     @Override
     public GenericResponse getTotalAmount() {
         List<AmountSearch> amountByMonth = orderMapper.getTotalAmountByMonth();

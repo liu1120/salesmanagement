@@ -63,8 +63,50 @@
 
     <sql id="condition">
         <where>
-            <if test="name != null">
-                AND u_name = #{name}
+            <if test="orId != null">
+                AND or_id = #{orId}
+            </if>
+            <if test="orGoodsId != null">
+                AND or_goods_id = #{orGoodsId}
+            </if>
+            <if test="orCount != null">
+                AND or_count = #{orCount}
+            </if>
+            <if test="orPrice != null">
+                AND or_price = #{orPrice}
+            </if>
+            <if test="orSay != null">
+                AND or_say = #{orSay}
+            </if>
+            <if test="orTotalAmount != null">
+                AND or_total_amount = #{orTotalAmount}
+            </if>
+            <if test="orDatetime != null">
+                AND or_datetime = #{orDatetime}
+            </if>
+            <if test="orSellerId != null">
+                AND or_seller_id = #{orSellerId}
+            </if>
+            <if test="orUserId != null">
+                AND or_user_id = #{orUserId}
+            </if>
+            <if test="orType != null">
+                AND or_type = #{orType}
+            </if>
+            <if test="orLogistics != null">
+                AND or_logistics = #{orLogistics}
+            </if>
+            <if test="orAddress != null">
+                AND or_address = #{orAddress}
+            </if>
+            <if test="orStatus != null">
+                AND or_status = #{orStatus}
+            </if>
+            <if test="orWords != null">
+                AND or_words = #{orWords}
+            </if>
+            <if test="orRefuse != null">
+                AND or_refuse = #{orRefuse}
             </if>
         </where>
     </sql>
@@ -131,6 +173,23 @@
         LEFT JOIN tb_seller AS b ON a.or_seller_id=b.sp_id
         where or_datetime>DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
         GROUP BY sp_id ORDER BY count DESC LIMIT 10
+    </select>
+
+    <select id="selectByExample" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+        ORDER BY or_datetime DESC LIMIT 1
+    </select>
+
+    <select id="selectListByExample" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
     </select>
 
     <update id="update">

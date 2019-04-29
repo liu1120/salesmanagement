@@ -53,7 +53,7 @@ public enum ErrorCodeEnum {
     ORDER_CREATE_SET_SELLER("5008", "下单请指定销售员"),
     ORDER_CREATE_SELLER_NOT_EXIT("5009", "该地区暂时不能下单"),
     ORDER_MODIFY_CHANGE_SELLER("5010", "暂不支持修改销售员"),
-
+    ORDER_TRANSFER("5010", "运输中，请耐心等待"),
 
     /**
      * 考勤相关
