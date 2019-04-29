@@ -13,13 +13,17 @@ public interface SellerMapper {
 
     SellerEntity selectSeller(String username);
 
-    void insert(SellerEntity SellerEntity);
+    void insert(SellerEntity sellerEntity);
+
+    void update(SellerEntity sellerEntity);
 
     SellerEntity selectById(Long id);
 
     SellerEntity selectByPhoneNo(String phoneNo);
 
     List<SellerEntity> selectByPage(SellerSearch sellerSearch);
+
+    Integer selectByPageTotal(SellerSearch sellerSearch);
 
     int adminerCount();
 

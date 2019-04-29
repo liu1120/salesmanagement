@@ -15,7 +15,7 @@ public enum ErrorCodeEnum {
     /**
      * 用户相关
      */
-    // USER("2000", "销售员"),
+    // USER("2000", "用户"),
     USER_NOT_FOUND("2001", "用户不存在!"),
     USER_PHONE_FORMAT_ERROR("2002", "手机号格式错误!"),
     USER_PHONE_HAS_REGISTERED("2003", "手机号已注册!"),

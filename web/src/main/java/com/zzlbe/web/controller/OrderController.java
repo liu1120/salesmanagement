@@ -9,10 +9,7 @@ import com.zzlbe.core.request.PaymentForm;
 import com.zzlbe.dao.search.OrderSearch;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -27,6 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("order")
+@CrossOrigin("http://localhost:8080")
 public class OrderController {
 
     @Resource
