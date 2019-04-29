@@ -249,6 +249,18 @@ public class AttendanceBusinessImpl extends BaseBusinessImpl implements Attendan
         return GenericResponse.SUCCESS;
     }
 
+    @Override
+    public GenericResponse tripDetail(Long id) {
+
+        return new GenericResponse<>(tripMapper.selectById(id));
+    }
+
+    @Override
+    public GenericResponse vacationDetail(Long id) {
+
+        return new GenericResponse<>(vacationMapper.selectById(id));
+    }
+
     /**
      * 正常上班时间 ? true : false
      */

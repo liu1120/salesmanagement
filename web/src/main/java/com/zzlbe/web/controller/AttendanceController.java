@@ -9,10 +9,7 @@ import com.zzlbe.core.util.DateUtil;
 import com.zzlbe.dao.search.AttendanceSearch;
 import com.zzlbe.dao.search.TripSearch;
 import com.zzlbe.dao.search.VacationSearch;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -71,6 +68,15 @@ public class AttendanceController {
     }
 
     /**
+     * 请假详情
+     */
+    @GetMapping("tripDetail/{id}")
+    public GenericResponse tripDetail(@PathVariable("id") Long id) {
+
+        return attendanceBusiness.tripDetail(id);
+    }
+
+    /**
      * 出差审批
      */
     @RequestMapping("tripVerify")
@@ -118,6 +124,15 @@ public class AttendanceController {
     public GenericResponse vacationList(@RequestBody VacationSearch vacationSearch) {
 
         return attendanceBusiness.vacationList(vacationSearch);
+    }
+
+    /**
+     * 请假详情
+     */
+    @GetMapping("vacationDetail/{id}")
+    public GenericResponse vacationDetail(@PathVariable("id") Long id) {
+
+        return attendanceBusiness.vacationDetail(id);
     }
 
     /**

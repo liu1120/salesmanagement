@@ -79,4 +79,19 @@ public interface AttendanceBusiness {
      */
     GenericResponse vacationRemove(AttendanceVacationForm form);
 
+    /**
+     * 打卡详情
+     *
+     * @param id 打卡编号
+     * @return 详情
+     */
+    GenericResponse tripDetail(Long id);
+
+    /**
+     * 请假详情
+     *
+     * @param id 请假编号
+     * @return 详情
+     */
+    GenericResponse vacationDetail(Long id);
 }
