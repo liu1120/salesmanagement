@@ -71,8 +71,8 @@ public class OrderController {
     /**
      * 审核订单
      */
-    @RequestMapping("orderCheck")
-    public GenericResponse orderCheck(@RequestBody OrderCheckForm orderCheckForm) {
+    @RequestMapping("check")
+    public GenericResponse check(@RequestBody OrderCheckForm orderCheckForm) {
 
         return orderBusiness.orderCheck(orderCheckForm);
     }

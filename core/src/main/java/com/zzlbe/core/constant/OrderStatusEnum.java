@@ -11,8 +11,8 @@ public enum OrderStatusEnum {
 
     /***/
     CREATE("已创建"),
-    CHECK("已审核"),
     PAYMENT("已支付"),
+    CHECK("已审核"),
     SHIP("已发货"),
     SIGNING("已签收"),
     AFTER_SALE("售后处理中"),
