@@ -2,6 +2,7 @@ package com.zzlbe.core.business.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.zzlbe.core.business.UserBusiness;
+import com.zzlbe.core.common.ErrorCodeEnum;
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.dto.UserInfoDTO;
 import com.zzlbe.core.dto.wx.Code2SessionResponse;
@@ -40,18 +41,15 @@ public class UserBusinessImpl implements UserBusiness {
     private RestTemplate restTemplate;
 
 
-    private static GenericResponse PHONE_NO_FORMAT_ERROR = new GenericResponse("2001", "手机号格式错误!");
-    private static GenericResponse USER_NOT_EXIST = new GenericResponse("2003", "用户不存在!");
-
     @Override
     public GenericResponse register(RegisterForm registerForm) {
         if (!CheckUtil.isPhoneNo(registerForm.getPhone())) {
-            return PHONE_NO_FORMAT_ERROR;
+            return new GenericResponse(ErrorCodeEnum.USER_PHONE_FORMAT_ERROR);
         }
 
         UserEntity userEntity = userMapper.selectByPhoneNo(registerForm.getPhone());
         if (userEntity != null) {
-            return new GenericResponse("2002", "该手机号已注册");
+            return new GenericResponse(ErrorCodeEnum.USER_PHONE_HAS_REGISTERED);
         }
 
         userEntity = new UserEntity();
@@ -64,15 +62,15 @@ public class UserBusinessImpl implements UserBusiness {
     @Override
     public GenericResponse login(LoginForm loginForm) {
         if (!CheckUtil.isPhoneNo(loginForm.getPhone())) {
-            return PHONE_NO_FORMAT_ERROR;
+            return new GenericResponse(ErrorCodeEnum.USER_PHONE_FORMAT_ERROR);
         }
 
         UserEntity userEntity = userMapper.selectByPhoneNo(loginForm.getPhone());
         if (userEntity == null) {
-            return USER_NOT_EXIST;
+            return new GenericResponse(ErrorCodeEnum.USER_NOT_FOUND);
         }
         if (!userEntity.getPassword().equals(loginForm.getPassword())) {
-            return new GenericResponse("2004", "密码错误");
+            return new GenericResponse(ErrorCodeEnum.USER_LOGIN_PASSWORD_ERROR);
         }
 
         return userInfoResponse(userEntity);
@@ -136,17 +134,17 @@ public class UserBusinessImpl implements UserBusiness {
     @Override
     public GenericResponse modify(UserInfoModifyForm modifyForm) {
         if (!CheckUtil.isPhoneNo(modifyForm.getPhone())) {
-            return PHONE_NO_FORMAT_ERROR;
+            return new GenericResponse(ErrorCodeEnum.USER_PHONE_FORMAT_ERROR);
         }
 
         UserEntity userEntity = userMapper.selectByPhoneNo(modifyForm.getPhone());
         if (userEntity != null && !userEntity.getId().equals(modifyForm.getId())) {
-            return new GenericResponse("2002", modifyForm.getPhone() + " 手机号已占用");
+            return new GenericResponse(ErrorCodeEnum.USER_MODIFY_PHONE_HAS_REGISTERED);
         }
 
         userEntity = userMapper.selectById(modifyForm.getId());
         if (userEntity == null) {
-            return USER_NOT_EXIST;
+            return new GenericResponse(ErrorCodeEnum.USER_NOT_FOUND);
         }
 
         BeanUtils.copyProperties(modifyForm, userEntity);
@@ -158,14 +156,14 @@ public class UserBusinessImpl implements UserBusiness {
     @Override
     public GenericResponse passwordModify(UserPasswordModifyForm modifyForm) {
         if (!modifyForm.getNewPassword().equals(modifyForm.getEnterPassword())) {
-            return new GenericResponse("2005", "两次输入的不一致!");
+            return new GenericResponse(ErrorCodeEnum.USER_MODIFY_PASSWORD_ENTER_ERROR);
         }
         UserEntity userEntity = userMapper.selectById(modifyForm.getId());
         if (userEntity == null) {
-            return USER_NOT_EXIST;
+            return new GenericResponse(ErrorCodeEnum.USER_NOT_FOUND);
         }
         if (!userEntity.getPassword().equals(modifyForm.getOldPassword())) {
-            return new GenericResponse("2006", "原始密码错误!");
+            return new GenericResponse(ErrorCodeEnum.USER_MODIFY_PASSWORD_ERROR);
         }
 
         userEntity.setPassword(modifyForm.getEnterPassword());
@@ -186,7 +184,7 @@ public class UserBusinessImpl implements UserBusiness {
         }
 
         if (userEntity == null) {
-            return USER_NOT_EXIST;
+            return new GenericResponse(ErrorCodeEnum.USER_NOT_FOUND);
         }
 
         return userInfoResponse(userEntity);

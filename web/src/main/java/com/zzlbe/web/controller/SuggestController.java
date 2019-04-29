@@ -23,7 +23,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("suggest")
-@CrossOrigin("http://localhost:8080")
 public class SuggestController {
 
     @Resource

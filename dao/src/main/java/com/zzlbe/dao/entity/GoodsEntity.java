@@ -51,7 +51,7 @@ public class GoodsEntity {
      */
     private Date updateTime;
     /**
-     * 农化产品是否展示（默认0展示,1不展示）
+     * 农化产品是否展示（默认1展示,0不展示）
      */
     private Integer isShow;
     /**

@@ -78,7 +78,7 @@
 
     <select id="selectOne" resultMap="BaseMap">
         SELECT
-        ar_provincename,ar_cityname,ar_countyname,ar_townname
+        <include refid="columns"/>
         FROM
         <include refid="tableName"/>
         WHERE ar_towncode=#{towncode}
