@@ -138,19 +138,29 @@ public class BusinessController {
 
         List<AreaEntity> areaEntities = areaMapper.selectBySpid(spid);
         mv.addObject("areas", areaEntities);
+        if(areaEntities.size()>0){
+            mv.addObject("provincename", areaEntities.get(0).getProvincename());
+            mv.addObject("cityname", areaEntities.get(0).getCityname());
+        }
 
         mv.setViewName("admin/r_divideArea.html");
         return mv;
     }
 
     @PostMapping("saveAssign")//后台查看-为员工划分区域进行保存
-    public ModelAndView saveAssign(@RequestParam("id") Long id) {
+    public ModelAndView saveAssign(@RequestParam("areaName") Long areaName[],Long id) {
         ModelAndView mv = new ModelAndView();
-//        SellerEntity sellerEntity=sellerMapper.selectById(id);
-        mv.setViewName("admin/r_divideArea.html");
+        AreaEntity areaEntity=new AreaEntity();
+        for (int i=0;i<areaName.length;i++){
+            areaEntity.setSpid(id);
+            areaEntity.setCountycode(areaName[i]);
+            areaMapper.update(areaEntity);
+        }
+//        mv.setViewName("admin/r_divideArea.html");
+        mv.addObject("id",id);
+        mv.setViewName("redirect:/admin/infoAssign");
         return mv;
     }
-
 
     @RequestMapping("selectProvince")//省份去重.选省份。
     @ResponseBody
@@ -168,11 +178,11 @@ public class BusinessController {
         return str;
     }
 
-    @RequestMapping("selectTown")//区县
+    @RequestMapping("selectCounty")//区县
     @ResponseBody
-    public String selectTown(@RequestParam("countycode") long countycode) {
+    public String selectCounty(@RequestParam("citycode") long citycode) {
         //调用dao层
-        List<AreaEntity> areaEntities = areaMapper.selectTown(countycode);
+        List<AreaEntity> areaEntities = areaMapper.selectCounty(citycode);
         String str = JSON.toJSONString(areaEntities);
         return str;
     }

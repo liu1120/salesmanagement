@@ -12,9 +12,10 @@ public interface AreaMapper {
     List<AreaEntity> selectCity(long provincecode);
     List<AreaEntity> selectCounty(long citycode);
     List<AreaEntity> selectTown(long countycode);
-    AreaEntity selectspid(long towncode);
+//    AreaEntity selectspid(long towncode);
 
     AreaEntity selectOne(long towncode);
 
     //更新数据管理员信息
+    void update(AreaEntity areaEntity);
 }

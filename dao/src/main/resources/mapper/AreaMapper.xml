@@ -85,4 +85,42 @@
         <include refid="tableName"/>
         WHERE ar_towncode=#{towncode}
     </select>
+
+    <update id="update">
+        UPDATE
+        <include refid="tableName"/>
+        <set>
+            <if test="provincecode != null">
+                ar_provincecode = #{provincecode},
+            </if>
+            <if test="provincename != null">
+                ar_provincename = #{provincename},
+            </if>
+            <if test="citycode != null">
+                ar_citycode = #{citycode},
+            </if>
+            <if test="cityname != null">
+                ar_cityname = #{cityname},
+            </if>
+            <if test="countycode != null">
+                ar_countycode = #{countycode},
+            </if>
+            <if test="countyname != null">
+                ar_countyname = #{countyname},
+            </if>
+            <if test="towncode != null">
+                ar_towncode = #{towncode},
+            </if>
+            <if test="townname != null">
+                ar_townname = #{townname},
+            </if>
+            <if test="spid != null">
+                ar_sp_id = #{spid},
+            </if>
+        </set>
+        WHERE
+        ar_countycode = #{countycode}
+    </update>
+
+
 </mapper>
