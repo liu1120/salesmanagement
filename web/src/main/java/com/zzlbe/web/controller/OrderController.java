@@ -4,14 +4,12 @@ import com.zzlbe.core.business.OrderBusiness;
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.request.OrderCheckForm;
 import com.zzlbe.core.request.OrderForm;
+import com.zzlbe.core.request.OrderProcessForm;
 import com.zzlbe.core.request.PaymentForm;
 import com.zzlbe.dao.search.OrderSearch;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -26,6 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("order")
+@CrossOrigin("http://localhost:8080")
 public class OrderController {
 
     @Resource
@@ -52,8 +51,7 @@ public class OrderController {
     public GenericResponse create(@RequestBody @Valid OrderForm orderForm, BindingResult bindingResult) {
         // 参数校验
         if (bindingResult.hasErrors()) {
-            List<ObjectError> list = bindingResult.getAllErrors();
-            return GenericResponse.ERROR.setMessage(list.get(0).getDefaultMessage());
+            return GenericResponse.ERROR.setMessage(bindingResult.getAllErrors().get(0).getDefaultMessage());
         }
 
         return orderBusiness.create(orderForm);
@@ -71,12 +69,29 @@ public class OrderController {
     /**
      * 审核订单
      */
-    @RequestMapping("orderCheck")
-    public GenericResponse orderCheck(@RequestBody OrderCheckForm orderCheckForm) {
+    @RequestMapping("check")
+    public GenericResponse check(@RequestBody OrderCheckForm orderCheckForm) {
 
         return orderBusiness.orderCheck(orderCheckForm);
     }
 
+    /**
+     * 订单支付
+     */
+    @RequestMapping("payment")
+    public GenericResponse payment(@RequestBody PaymentForm paymentForm) {
+
+        return orderBusiness.payment(paymentForm);
+    }
+
+    /**
+     * 订单发货
+     */
+    @RequestMapping("process")
+    public GenericResponse process(@RequestBody OrderProcessForm processForm) {
+
+        return orderBusiness.process(processForm);
+    }
 
     /**
      * 普通查询
@@ -92,16 +107,6 @@ public class OrderController {
     @PostMapping("findByPage")
     public GenericResponse findByPage(@RequestBody OrderSearch orderSearch) {
         return orderBusiness.findPageByExample(orderSearch);
-    }
-
-
-    /**
-     * 订单支付
-     */
-    @RequestMapping("payment")
-    public GenericResponse payment(@RequestBody PaymentForm paymentForm) {
-
-        return orderBusiness.payment(paymentForm);
     }
 
     @RequestMapping("getTotalAmountByMonth")

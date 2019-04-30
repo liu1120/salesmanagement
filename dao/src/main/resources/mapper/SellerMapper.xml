@@ -36,19 +36,8 @@
         sp_position,
         sp_number
     </sql>
-    <select id="unique" resultMap="BaseMap">
-        SELECT count(1) FROM tb_seller WHERE sp_name = #{username}
-    </select>
 
-    <select id="selectSeller" resultMap="BaseMap">
-        SELECT * FROM tb_seller WHERE sp_name = #{username}
-    </select>
-
-    <select id="selectByPage" resultMap="BaseMap">
-        SELECT
-        <include refid="columns"/>
-        FROM
-        <include refid="tableName"/>
+    <sql id="condition">
         <where>
             <if test="name != null">
                 AND sp_name = #{name}
@@ -63,7 +52,10 @@
                 AND sp_realname = #{realname}
             </if>
         </where>
-        LIMIT #{firstIndex}, #{size}
+    </sql>
+
+    <select id="selectSeller" resultMap="BaseMap">
+        SELECT * FROM tb_seller WHERE sp_name = #{username}
     </select>
 
     <select id="selectById" resultMap="BaseMap">
@@ -72,6 +64,23 @@
         FROM
         <include refid="tableName"/>
         WHERE sp_id = #{id}
+    </select>
+
+    <select id="selectByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
+    <select id="selectByPageTotal" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
     </select>
 
     <select id="getSellerAll" resultMap="SellersellSearch">
@@ -86,6 +95,45 @@
         WHERE sp_phone = #{phoneNo}
         LIMIT 1
     </select>
+
+    <update id="update">
+        UPDATE
+        <include refid="tableName"/>
+        <set>
+            <if test="name != null">
+                sp_name = #{name},
+            </if>
+            <if test="password != null">
+                sp_password = #{password},
+            </if>
+            <if test="img != null">
+                sp_img = #{img},
+            </if>
+            <if test="wechat != null">
+                sp_wechat = #{wechat},
+            </if>
+            <if test="phone != null">
+                sp_phone = #{phone},
+            </if>
+            <if test="realname != null">
+                sp_realname = #{realname},
+            </if>
+            <if test="rank != null">
+                sp_rank = #{rank},
+            </if>
+            <if test="post != null">
+                sp_post = #{post},
+            </if>
+            <if test="position != null">
+                sp_position = #{position},
+            </if>
+            <if test="number != null">
+                sp_number = #{number},
+            </if>
+        </set>
+        WHERE
+        sp_id = #{id}
+    </update>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO

@@ -126,24 +126,6 @@
         <include refid="tableName"/>
         WHERE or_user_id = #{uid}
     </select>
-
-    <select id="selectByExample" resultMap="BaseMap">
-        SELECT
-        <include refid="columns"/>
-        FROM
-        <include refid="tableName"/>
-        <include refid="condition"/>
-        ORDER BY or_datetime DESC LIMIT 1
-    </select>
-
-    <select id="selectListByExample" resultMap="BaseMap">
-        SELECT
-        <include refid="columns"/>
-        FROM
-        <include refid="tableName"/>
-        <include refid="condition"/>
-    </select>
-
     <select id="selectByPage" resultMap="BaseMap">
         SELECT
         <include refid="columns"/>

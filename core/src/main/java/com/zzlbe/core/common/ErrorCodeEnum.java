@@ -15,7 +15,7 @@ public enum ErrorCodeEnum {
     /**
      * 用户相关
      */
-    // USER("2000", "销售员"),
+    // USER("2000", "用户"),
     USER_NOT_FOUND("2001", "用户不存在!"),
     USER_PHONE_FORMAT_ERROR("2002", "手机号格式错误!"),
     USER_PHONE_HAS_REGISTERED("2003", "手机号已注册!"),
@@ -49,11 +49,12 @@ public enum ErrorCodeEnum {
     ORDER_MODIFY_ERROR("5004", "如需修改，请申请售后"),
     ORDER_MODIFY_SELLER_ERROR("5005", "审核员身份有误"),
     ORDER_PAYMENT_ERROR("5006", "仅支持全额付款"),
-    ORDER_PAYMENT_CHECK_ERROR("5007", "订单审核未通过，不允许修改"),
+    ORDER_CHECK_UNPAID("5007", "请提醒用户支付，支付完成可以审核"),
     ORDER_CREATE_SET_SELLER("5008", "下单请指定销售员"),
     ORDER_CREATE_SELLER_NOT_EXIT("5009", "该地区暂时不能下单"),
     ORDER_MODIFY_CHANGE_SELLER("5010", "暂不支持修改销售员"),
-
+    ORDER_TRANSFER("5010", "运输中，请耐心等待"),
+    ORDER_FINISH("5011", "订单状态不允许修改"),
 
     /**
      * 考勤相关

@@ -3,6 +3,7 @@ package com.zzlbe.core.business;
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.request.OrderCheckForm;
 import com.zzlbe.core.request.OrderForm;
+import com.zzlbe.core.request.OrderProcessForm;
 import com.zzlbe.core.request.PaymentForm;
 import com.zzlbe.dao.search.OrderSearch;
 
@@ -54,6 +55,14 @@ public interface OrderBusiness {
      * @return GenericResponse
      */
     GenericResponse payment(PaymentForm paymentForm);
+
+    /**
+     * 订单正常流程
+     *
+     * @param orderProcessForm 订单进度表单
+     * @return GenericResponse
+     */
+    GenericResponse process(OrderProcessForm orderProcessForm);
 
     /**
      * 查询订单
