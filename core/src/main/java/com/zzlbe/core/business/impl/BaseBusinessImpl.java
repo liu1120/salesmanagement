@@ -12,7 +12,7 @@ import java.util.List;
  * @author amos
  * @date 2019/4/21
  */
-abstract class BaseBusinessImpl {
+public abstract class BaseBusinessImpl {
 
     /**
      * 分页工具方法（暂设为private，有需要可放开限制）
@@ -32,7 +32,7 @@ abstract class BaseBusinessImpl {
      *
      * @return GenericResponse<PageResponse>
      */
-    static <T> GenericResponse<PageResponse> genericPageResponse(List<T> entities, Integer total) {
+    protected static <T> GenericResponse<PageResponse> genericPageResponse(List<T> entities, Integer total) {
         return new GenericResponse<>(pageResponse(entities, total));
     }
 
