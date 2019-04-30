@@ -185,6 +185,23 @@
         group by date_format(or_datetime, '%Y-%m')
     </select>
 
+    <select id="selectByExample" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+        ORDER BY or_datetime DESC LIMIT 1
+    </select>
+
+    <select id="selectListByExample" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+    </select>
+
     <update id="update">
         UPDATE
         <include refid="tableName"/>
