@@ -26,7 +26,6 @@ import static com.zzlbe.core.util.DateUtil.getDateByStr2;
 
 @RestController
 @RequestMapping("user")
-@CrossOrigin("http://localhost:8080")
 public class UserController {
     @Resource
     private UserMapper userMapper;
@@ -98,6 +97,7 @@ public class UserController {
     public long getGiftCreditById(@RequestParam("id") long id) {
         return giftMapper.selectById(id).getCredit();
     }
+
     @GetMapping(value = "getGoodsSort")//查找全部商品分类
     public List<GoodssortEntity> getGoodsSort() {
         List<GoodssortEntity> list = goodssortMapper.selectAll();
@@ -105,37 +105,38 @@ public class UserController {
     }
 
     /**
-     *用户使用积分兑换产品只可兑换一份礼品
+     * 用户使用积分兑换产品只可兑换一份礼品
      * 用户的积分大于礼品积分，处理：减去用户积分，产生送礼品。
-     * @param uid 用户id
+     *
+     * @param uid  用户id
      * @param adid 下单地址adid
-     * @param id 礼品id
+     * @param id   礼品id
      * @return 0失败，1成功
      */
     @GetMapping(value = "getGift")
-    public int getGift(@RequestParam("uid") long uid,@RequestParam("id") long id,@RequestParam("adid") long adid) {
-        UserEntity userEntity=userMapper.selectById(uid);
-        GiftEntity giftEntity=giftMapper.selectById(id);
-        AddressEntity addressEntity=addressMapper.selectById(adid);
-        if(userEntity.getCredit()<giftEntity.getCredit())return 0;
-        userEntity.setCredit(userEntity.getCredit()-giftEntity.getCredit());//更新用户积分
+    public int getGift(@RequestParam("uid") long uid, @RequestParam("id") long id, @RequestParam("adid") long adid) {
+        UserEntity userEntity = userMapper.selectById(uid);
+        GiftEntity giftEntity = giftMapper.selectById(id);
+        AddressEntity addressEntity = addressMapper.selectById(adid);
+        if (userEntity.getCredit() < giftEntity.getCredit()) return 0;
+        userEntity.setCredit(userEntity.getCredit() - giftEntity.getCredit());//更新用户积分
         userMapper.update(userEntity);
 
 
-        AreaVO areavo= JSON.parseObject(addressEntity.getAddress(), AreaVO.class);
+        AreaVO areavo = JSON.parseObject(addressEntity.getAddress(), AreaVO.class);
 
-        long formid=areaMapper.selectspid(areavo.getTowncode()).getSpid();
+        long formid = areaMapper.selectspid(areavo.getTowncode()).getSpid();
 
-        SentgiftEntity sentgiftEntity=new SentgiftEntity();
+        SentgiftEntity sentgiftEntity = new SentgiftEntity();
         sentgiftEntity.setToid(uid);//需要制定派送人
         sentgiftEntity.setFromid(formid);
         sentgiftEntity.setTophone(userEntity.getPhone());
-        sentgiftEntity.setAddress(adid+"");
+        sentgiftEntity.setAddress(adid + "");
         sentgiftEntity.setType(0);
         sentgiftEntity.setNum(1);
         sentgiftEntity.setCredit(giftEntity.getCredit());
         sentgiftEntity.setStatus(0);
-        DateUtil du=new DateUtil();
+        DateUtil du = new DateUtil();
         sentgiftEntity.setDate(getDateByStr(du.getDateTime()));
         sentgiftEntity.toString();
         sentgiftMapper.insert(sentgiftEntity);
@@ -149,15 +150,15 @@ public class UserController {
     }
 
     @GetMapping(value = "addAddress")//添加地址
-    public int addAddress(@RequestParam("provincecode") long provincecode,@RequestParam("countycode") long countycode,@RequestParam("towncode") long towncode,@RequestParam("citycode") long citycode,@RequestParam("info") String info,@RequestParam("uid") long uid,@RequestParam("name") String name,@RequestParam("phone") long phone) {
-        AreaVO areaVO=new AreaVO();
+    public int addAddress(@RequestParam("provincecode") long provincecode, @RequestParam("countycode") long countycode, @RequestParam("towncode") long towncode, @RequestParam("citycode") long citycode, @RequestParam("info") String info, @RequestParam("uid") long uid, @RequestParam("name") String name, @RequestParam("phone") long phone) {
+        AreaVO areaVO = new AreaVO();
         areaVO.setProvincecode(provincecode);
         areaVO.setCitycode(citycode);
         areaVO.setCountycode(countycode);
         areaVO.setTowncode(towncode);
         String areaStr = JSON.toJSONString(areaVO);
-        long id=0;
-        AddressEntity addressEntity=new AddressEntity(id,areaStr,info,uid,name,phone,0);
+        long id = 0;
+        AddressEntity addressEntity = new AddressEntity(id, areaStr, info, uid, name, phone, 0);
         addressMapper.insert(addressEntity);
         return 0;
     }
@@ -198,18 +199,18 @@ public class UserController {
     }
 
     @GetMapping(value = "addComments")//为已完成的订单添加评论。1成功，0失败.同时修改订单表状态，为已评价
-    public int addComments(@RequestParam("comment") String comment,@RequestParam("orderid") long orderid) {
-        OrderEntity orderEntity=orderMapper.selectById(orderid);
-        if (orderEntity.getOrStatus()!=7)return 0;
-        GoodstopicEntity goodstopicEntity=new GoodstopicEntity();
+    public int addComments(@RequestParam("comment") String comment, @RequestParam("orderid") long orderid) {
+        OrderEntity orderEntity = orderMapper.selectById(orderid);
+        if (orderEntity.getOrStatus() != 7) return 0;
+        GoodstopicEntity goodstopicEntity = new GoodstopicEntity();
         goodstopicEntity.setGoodsid(orderEntity.getOrGoodsId());
 
-        DateUtil du=new DateUtil();
+        DateUtil du = new DateUtil();
         goodstopicEntity.setCreatetime(getDateByStr(du.getDateTime()));
         goodstopicEntity.setContent(comment);
         goodstopicEntity.setUid(orderEntity.getOrUserId());
 
-        UserEntity userEntity=userMapper.selectById(orderEntity.getOrUserId());
+        UserEntity userEntity = userMapper.selectById(orderEntity.getOrUserId());
         goodstopicEntity.setUname(userEntity.getName());
 
         goodstopicMapper.insert(goodstopicEntity);//对商品进行评价
@@ -220,23 +221,24 @@ public class UserController {
 
     @GetMapping(value = "getAddressByUid")//查看订单的状态
     public List<AddressEntity> getAddressByUid(@RequestParam("uid") long uid) {
-        List<AddressEntity> list=addressMapper.selectByUid(uid);
+        List<AddressEntity> list = addressMapper.selectByUid(uid);
         return list;
     }
 
 
     @GetMapping(value = "delectAddresByid")//删除地址。（隐藏地址）
     public int delectAddresByid(@RequestParam("id") long id) {
-        AddressEntity addressEntity=addressMapper.selectById(id);
+        AddressEntity addressEntity = addressMapper.selectById(id);
         addressEntity.setStatus(1);
         addressMapper.update(addressEntity);
         return 0;
     }
+
     @PostMapping(value = "getAddresName")//将对应的json地址id转化为json中文地址
-        public AreaEntity getAddresName(@RequestParam("addressids") String addressids) {
+    public AreaEntity getAddresName(@RequestParam("addressids") String addressids) {
 //        String addressids="{ \"province_code\":\"410000000000\" , \"city_code\":\"410100000000\"  , \"county_code\":\"410102000000\"  , \"town_code\":\"410102005000\"}";
-        AreaVO areavo= JSON.parseObject(addressids, AreaVO.class);
-        AreaEntity areaEntity=areaMapper.selectOne(areavo.getTowncode());
+        AreaVO areavo = JSON.parseObject(addressids, AreaVO.class);
+        AreaEntity areaEntity = areaMapper.selectOne(areavo.getTowncode());
         return areaEntity;
     }
 
@@ -244,6 +246,7 @@ public class UserController {
     public String getDateBystr(@RequestParam("date") String date) {
         return getDateByStr2(date);
     }
+
     @PostMapping(value = "login")
     public UserEntity postLogin(@RequestParam("username") String username, @RequestParam("password") String password) {
         //调用dao层
