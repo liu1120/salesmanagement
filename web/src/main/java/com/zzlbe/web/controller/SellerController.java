@@ -8,9 +8,11 @@ import com.zzlbe.core.request.RegisterForm;
 import com.zzlbe.core.request.UserInfoModifyForm;
 import com.zzlbe.core.request.UserPasswordModifyForm;
 import com.zzlbe.dao.search.SellerSearch;
-import com.zzlbe.dao.search.UserSearch;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -20,7 +22,6 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("seller")
-@CrossOrigin("http://localhost:8080")
 public class SellerController {
 
     @Resource

@@ -22,7 +22,6 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("attendance")
-@CrossOrigin("http://localhost:8080")
 public class AttendanceController {
 
     @Resource

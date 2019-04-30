@@ -81,8 +81,8 @@
             <if test="orTotalAmount != null">
                 AND or_total_amount = #{orTotalAmount}
             </if>
-            <if test="orDatetime != null">
-                AND or_datetime = #{orDatetime}
+            <if test="orDatetimeStr != null">
+                AND or_datetime REGEXP #{orDatetimeStr}
             </if>
             <if test="orSellerId != null">
                 AND or_seller_id = #{orSellerId}
@@ -103,10 +103,10 @@
                 AND or_status = #{orStatus}
             </if>
             <if test="orWords != null">
-                AND or_words = #{orWords}
+                AND or_words REGEXP #{orWords}
             </if>
             <if test="orRefuse != null">
-                AND or_refuse = #{orRefuse}
+                AND or_refuse REGEXP #{orRefuse}
             </if>
         </where>
     </sql>

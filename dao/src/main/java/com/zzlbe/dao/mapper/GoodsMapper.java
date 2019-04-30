@@ -23,18 +23,23 @@ public interface GoodsMapper {
 
     GoodsEntity selectByExample(GoodsEntity search);
 
-    List<GoodsEntity> selectByPage(GoodsEntity search);//?无用--liu
-
     List<GoodsEntity> selectAllByPage(GoodsSearch goodsSearch);
 
     List<GoodsEntity> selectAll();
-
-    Integer selectByPageTotal(GoodsEntity search);
 
     Integer selectTotal();
 
     List<GoodsEntity> selectGoodsByName(String goodsname);
 
     List<GoodsEntity> getGoodsBySort(long sortid);
+
+    /**
+     * 分页查询方法
+     * selectByPage：根据查询条件以及分页参数获取 List<GoodsEntity>
+     * selectByPageTotal：根据查询条件获取总的数据条数 Integer
+     */
+    List<GoodsEntity> selectByPage(GoodsSearch goodsSearch);
+
+    Integer selectByPageTotal(GoodsSearch goodsSearch);
 
 }
