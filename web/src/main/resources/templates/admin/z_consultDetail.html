@@ -61,7 +61,7 @@
                     <li class="nav-title">导航</li>
 
                     <li class="nav-item">
-                        <a href="/admin/index" class="nav-link">
+                        <a href="/admin/index" class="nav-link active">
                             <i class="icon icon-speedometer"></i> 仪表盘
                         </a>
                     </li>
@@ -74,7 +74,7 @@
 
                         <ul class="nav-dropdown-items">
                             <li class="nav-item">
-                                <a href="/admin/salesvolume" class="nav-link active">
+                                <a href="/admin/salesvolume" class="nav-link">
                                     <i class="icon icon-graph"></i>&nbsp;&nbsp;产品销量
                                 </a>
                             </li>
@@ -84,9 +84,9 @@
                                 </a>
                             </li>
                             <!--<li class="nav-item">-->
-                                <!--<a href="/admin/areavolume" class="nav-link">-->
-                                    <!--<i class="icon icon-graph"></i>&nbsp;&nbsp;地区销量-->
-                                <!--</a>-->
+                            <!--<a href="/admin/areavolume" class="nav-link">-->
+                            <!--<i class="icon icon-graph"></i>&nbsp;&nbsp;地区销量-->
+                            <!--</a>-->
                             <!--</li>-->
                         </ul>
                     </li>
@@ -187,46 +187,93 @@
                 <div class="row">
                     <div class="col-md-12">
                         <!--模板结束11111-->
-                        <div class="row">
-                            <div class="col-md-8" style="min-height: 500px">
-                                <div class="card">
-                                    <div class="card-header bg-light">
-                                        <h3>月销量变化图</h3>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-1.5">
-                                            <div class="form-group">
-                                                <h3> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;农产品:</h3>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <select id="single-select2" class="form-control">
-                                                    <option value="0">--请选择--</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body" id="bar-chart-p">
-                                        <canvas id="bar-chart"></canvas>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="col-md-4" style="min-height: 500px">
-                                <div class="card">
-                                    <div class="card-header bg-light">
-                                        农产品月销量排行榜
-                                    </div>
-                                    <div class="form-group">
-                                        top10<br><br>
-                                        <table style="width: 100%" id="goodstop10">
-                                            <thead>
-                                            <td>排名</td>
-                                            <td>名称</td>
-                                            <td>总销量</td>
-                                            </thead>
-                                        </table>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header bg-light">
+                                            技术咨询
+                                        </div>
+
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <div class="form-group">
+                                                        <label for="disabled-input" class="form-control-label">咨询对象</label>
+                                                        <input id="disabled-input" class="form-control"
+                                                              value="" th:field="*{suggestEntity.goodsName}" disabled="">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-10">
+                                                <div class="form-group">
+                                                    <label class="form-control-label"  th:text="|咨询时间:${suggestEntity.createTime}|"></label><br>
+                                                    <label class="form-control-label"  th:if="${suggestEntity.status==0}">咨询状态：处理中</label><br>
+                                                    <label class="form-control-label"  th:if="${suggestEntity.status==1}">咨询状态：处理中</label><br>
+                                                    <label class="form-control-label"  th:if="${suggestEntity.status==2}">咨询状态：已解决</label><br>
+                                                    <label class="form-control-label">咨询原因：</label>
+                                                    <div>
+                                                        <p class="form-control-plaintext"
+                                                           style="background-color: whitesmoke"  th:text="${suggestEntity.content}">
+                                                        </p>
+                                                    </div>
+
+
+                                                    <div th:each="suggest:${suggestEntities}">
+                                                        <div th:if="${suggest.name ne '12点1刻'}">
+                                                            <label th:text="${suggest.createTime}"></label>
+                                                            <div class="alert alert-warning" th:if="${suggest.status==0}">
+                                                                <a th:href="@{questionInfo(id=${suggest.id})}" th:text="${suggest.title}"></a>&nbsp;&nbsp;&nbsp;<a style="color:red">待处理</a>
+                                                            </div>
+                                                        </div>
+                                                            <label th:text="${suggest.createTime}"></label>
+                                                            <div class="alert alert-warning" th:if="${suggest.status==0}">
+                                                                <a th:href="@{questionInfo(id=${suggest.id})}" th:text="${suggest.title}"></a>&nbsp;&nbsp;&nbsp;<a style="color:red">待处理</a>
+                                                            </div>
+                                                    </div>
+
+
+                                                    <div  th:each="suggestTopic:${suggestTopicEntities}"><br>
+                                                        <p class="form-control-plaintext"
+                                                           style="background-color: whitesmoke" th:text="|${suggestTopic.content}更新于：${suggestTopic.createTime}|">
+                                                        </p>
+
+                                                    </div>
+                                                    <div><br>2019-02-03 12：16：36<p class="form-control-plaintext"
+                                                                  style="background-color: whitesmoke">
+                                                        这药真的怎么使？！！这药怎么使？！！这药怎么使？！！这药怎么使？！！</p>
+                                                    </div>
+                                                    <div style="margin-left: 200px">
+                                                        <br>
+                                                        2019-02-04 14：15：56
+                                                        <p class="form-control-plaintext"
+                                                           style="background-color: whitesmoke">
+                                                            <a href="#" style="color: #6ce26c">点此，技关xx于术</a>查看技术文章。</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-10">
+                                            <div class="col-md-10">
+                                                <div class="form-group">
+                                                    <label for="textarea">填写回复消息：</label>
+                                                    <textarea id="textarea" class="form-control" rows=" 6"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="single-select">问题查处理结果：</label>
+                                            <select id="single-select" class="form-control">
+                                                <option  value ="1">正在解决中......</option>
+                                                <option  value ="2">已完成，解决</option>
+                                            </select>
+                                        </div>
+                                        <!--<div class="col-md-10">-->
+                                        <button class="btn btn-success">发送</button>
+                                        <!--</div>-->
                                     </div>
                                 </div>
                             </div>
@@ -240,13 +287,11 @@
     <script src="/static/vendor/jquery/jquery.min.js"></script>
     <script src="/static/vendor/popper.js/popper.min.js"></script>
     <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/static/vendor/Chart.js/chart.min.js"></script>
     <script src="/static/js/carbon.js"></script>
 </div>
 </body>
 <script type="text/javascript" src="/static/js/adminjq.js"></script>
 <script type="text/javascript" src="/static/js/admin.js"></script>
-<script type="text/javascript" src="/static/js/chartdemo.js" th:inline="javascript"></script>
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
         var local_username=localStorage.getItem("login_username");
@@ -269,11 +314,6 @@
             // }
         }
     }
-
-</script>
-
-<script>
-
 
 </script>
 </html>

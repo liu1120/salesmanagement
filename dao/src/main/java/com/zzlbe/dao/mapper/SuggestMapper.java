@@ -32,4 +32,6 @@ public interface SuggestMapper {
 
     int suggestionUndeal2();
 
+    List<SuggestEntity> selectAllBy(SuggestSearch suggestSearch);
+
 }

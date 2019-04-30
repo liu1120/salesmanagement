@@ -28,7 +28,7 @@
 
         <ul class="navbar-nav ml-auto">
             <li class="nav-item d-md-down-none">
-                <a href="/admin/suggestinfo">
+                <a href="">
                     <i class="fa fa-bell"></i>
                     <span class="badge badge-pill badge-danger">6</span>
                 </a>
@@ -61,7 +61,7 @@
                     <li class="nav-title">导航</li>
 
                     <li class="nav-item">
-                        <a href="/static/index.html" class="nav-link active">
+                        <a href="/admin/index" class="nav-link active">
                             <i class="icon icon-speedometer"></i> 仪表盘
                         </a>
                     </li>
@@ -83,11 +83,11 @@
                                     <i class="icon icon-graph"></i>&nbsp;&nbsp;销售员业绩
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="/admin/areavolume" class="nav-link">
-                                    <i class="icon icon-graph"></i>&nbsp;&nbsp;地区销量
-                                </a>
-                            </li>
+                            <!--<li class="nav-item">-->
+                                <!--<a href="/admin/areavolume" class="nav-link">-->
+                                    <!--<i class="icon icon-graph"></i>&nbsp;&nbsp;地区销量-->
+                                <!--</a>-->
+                            <!--</li>-->
                         </ul>
                     </li>
                     <!--活动管理模块-->
@@ -121,12 +121,12 @@
 
                         <ul class="nav-dropdown-items">
                             <li class="nav-item">
-                                <a href="/admin/goods" class="nav-link">
+                                <a href="/admin/getAllgoods?pageNo=1" class="nav-link">
                                     <i class="icon icon-energy"></i> &nbsp;&nbsp;农产品列表
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/admin/addgoods" class="nav-link">
+                                <a href="/admin/addGoods" class="nav-link">
                                     <i class="icon icon-energy"></i> &nbsp;&nbsp;增加新农产品
                                 </a>
                             </li>
@@ -177,11 +177,6 @@
                     <li class="nav-item">
                         <a href="/admin/question" class="nav-link">
                             <i class="icon icon-grid"></i> 技术咨询
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/technology" class="nav-link">
-                            <i class="icon icon-grid"></i> 技术发布
                         </a>
                     </li>
                 </ul>
@@ -282,33 +277,27 @@
 <script type="text/javascript" src="/static/js/chartdemo.js" th:inline="javascript"></script>
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
-        var login_username = [[${login_username}]];
         var local_username=localStorage.getItem("login_username");
         var e=document.getElementById("loginname");
-        // localStorage.removeItem('login_username');
+        console.log("local_username:"+local_username);
+        e.innerText=local_username;
+
+        var login_username = [[${login_username}]];
         console.log("login_username:"+login_username);
         if(login_username!=undefined){
             localStorage.setItem("login_username",login_username);
-            console.log("login_username::"+login_username);
+            e.innerText=login_username;
         }else{
-            // var a="<input type=hidden name='login_username' value=";
-            // var b=login_username;
-            // var c=">";
-            // a=a+b+c;
-
-            e.innerText=local_username;
-            console.log("login_username:::"+a);
-            if(login_username==undefined){
-                document.write("<form action='/admin/index' method=post name=manageDepForm style='display:none'>");
-                document.write("");//参数1
-                document.write(a);
-                document.write("<input type=hidden name='username' value=''/>");//参数1
-                document.write("<input type=hidden name='password' value=''/>");//参数2
-                document.write("</form>");
-                document.manageDepForm.submit();
-            }
+            // if(login_username==undefined){
+            //     document.write("<form action='/admin/index' method=post name=manageDepForm style='display:none'>");
+            //     document.write("<input type=hidden name='username' value=''/>");//参数1
+            //     document.write("<input type=hidden name='password' value=''/>");//参数2
+            //     document.write("</form>");
+            //     document.manageDepForm.submit();
+            // }
         }
     }
+
 </script>
 
 </html>

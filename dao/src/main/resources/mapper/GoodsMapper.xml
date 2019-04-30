@@ -68,12 +68,27 @@
         LIMIT #{firstIndex}, #{size}
     </select>
 
+    <select id="selectAllByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
     <select id="selectByPageTotal" resultType="java.lang.Integer">
         SELECT
         COUNT(*)
         FROM
         <include refid="tableName"/>
         <include refid="condition"/>
+    </select>
+
+    <select id="selectTotal" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        <include refid="tableName"/>
     </select>
 
     <select id="selectById" resultMap="BaseMap">

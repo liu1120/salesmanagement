@@ -1,6 +1,7 @@
 package com.zzlbe.dao.mapper;
 
 import com.zzlbe.dao.entity.GoodsEntity;
+import com.zzlbe.dao.search.GoodsSearch;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,11 +23,15 @@ public interface GoodsMapper {
 
     GoodsEntity selectByExample(GoodsEntity search);
 
-    List<GoodsEntity> selectByPage(GoodsEntity search);
+    List<GoodsEntity> selectByPage(GoodsEntity search);//?无用--liu
+
+    List<GoodsEntity> selectAllByPage(GoodsSearch goodsSearch);
 
     List<GoodsEntity> selectAll();
 
     Integer selectByPageTotal(GoodsEntity search);
+
+    Integer selectTotal();
 
     List<GoodsEntity> selectGoodsByName(String goodsname);
 

@@ -40,5 +40,7 @@ public interface OrderMapper {
 
     List<Sellertop10Search> getSellerTop10();
 
+    List<GoodssellSearch> getSellerSell(long id);
+
 
 }

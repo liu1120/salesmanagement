@@ -1,6 +1,6 @@
 $(document).ready(function () {
 //使用Ajax获取json数据
-    var jsonData = $.ajax({
+    $.ajax({
         url: 'getTotalAmountFormat',
         type: "get",
         dataType: 'json',
@@ -37,6 +37,7 @@ $(document).ready(function () {
 
     /**
      * Bar Chart
+     * 初始加载页面时调用，获取商品销售量较高的图谱
      */
     $.ajax({
         url: 'getGoodSell',
@@ -87,6 +88,8 @@ $(document).ready(function () {
             }
         });
     });
+
+
 
 
     /**

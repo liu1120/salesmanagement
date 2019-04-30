@@ -72,7 +72,13 @@
         <include refid="condition"/>
         LIMIT #{firstIndex}, #{size}
     </select>
-
+    <select id="selectAllBy" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+    </select>
     <select id="selectByPageTotal" resultType="java.lang.Integer">
         SELECT
         COUNT(*)

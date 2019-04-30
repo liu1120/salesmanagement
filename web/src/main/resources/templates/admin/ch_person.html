@@ -61,7 +61,7 @@
                     <li class="nav-title">导航</li>
 
                     <li class="nav-item">
-                        <a href="/admin/index" class="nav-link">
+                        <a href="/admin/index" class="nav-link active">
                             <i class="icon icon-speedometer"></i> 仪表盘
                         </a>
                     </li>
@@ -74,7 +74,7 @@
 
                         <ul class="nav-dropdown-items">
                             <li class="nav-item">
-                                <a href="/admin/salesvolume" class="nav-link active">
+                                <a href="/admin/salesvolume" class="nav-link">
                                     <i class="icon icon-graph"></i>&nbsp;&nbsp;产品销量
                                 </a>
                             </li>
@@ -179,6 +179,7 @@
                             <i class="icon icon-grid"></i> 技术咨询
                         </a>
                     </li>
+
                 </ul>
             </nav>
         </div>
@@ -191,24 +192,24 @@
                             <div class="col-md-8" style="min-height: 500px">
                                 <div class="card">
                                     <div class="card-header bg-light">
-                                        <h3>月销量变化图</h3>
+                                        <h3>个人销量</h3>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1.5">
                                             <div class="form-group">
-                                                <h3> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;农产品:</h3>
+                                                <h3> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;销售员:</h3>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <select id="single-select2" class="form-control">
+                                                <select id="single-seller" class="form-control">
                                                     <option value="0">--请选择--</option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="card-body" id="bar-chart-p">
-                                        <canvas id="bar-chart"></canvas>
+                                        <canvas id="bar-chart" width="100%" height="50"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -216,21 +217,22 @@
                             <div class="col-md-4" style="min-height: 500px">
                                 <div class="card">
                                     <div class="card-header bg-light">
-                                        农产品月销量排行榜
+                                        月销售额排行榜
                                     </div>
                                     <div class="form-group">
                                         top10<br><br>
-                                        <table style="width: 100%" id="goodstop10">
+                                        <table style="width: 100%"  id="sellertop10">
                                             <thead>
                                             <td>排名</td>
-                                            <td>名称</td>
-                                            <td>总销量</td>
+                                            <td>姓名</td>
+                                            <td>总销售额</td>
                                             </thead>
                                         </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <!--模板开始222222-->
                     </div>
                 </div>
@@ -246,7 +248,6 @@
 </body>
 <script type="text/javascript" src="/static/js/adminjq.js"></script>
 <script type="text/javascript" src="/static/js/admin.js"></script>
-<script type="text/javascript" src="/static/js/chartdemo.js" th:inline="javascript"></script>
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
         var local_username=localStorage.getItem("login_username");
@@ -271,9 +272,60 @@
     }
 
 </script>
-
-<script>
-
-
+<script type="text/javascript" >
+    /**
+     * Bar Chart
+     * 初始加载页面时调用，获取销售员 销售量较高的图谱
+     */
+    $.ajax({
+        url: 'getSellerSell',
+        type: "get",
+        data:{sellerid:0},
+        dataType: 'json',
+    }).done(function (results) {
+        // 将获取到的json数据分别存放到两个数组中
+        var labels = [], data=[];
+        for(var i=0;i<results.length;i++){ //第一层循环取到各个list
+            labels.push(results[i].month);
+            data.push(results[i].count);
+            console.log("results[i].month"+results[i].month)
+        }
+        // 设置图表的数据
+        var tempData = {
+            labels : labels,
+            datasets: [{
+                label: '销售量',
+                labels: ["Red", "Blue", "Cyan", "Green", "Purple", "Orange"],
+                data: data,
+                backgroundColor: [
+                    'rgba(244, 88, 70, 0.5)',
+                    'rgba(33, 150, 243, 0.5)',
+                    'rgba(0, 188, 212, 0.5)',
+                    'rgba(42, 185, 127, 0.5)',
+                    'rgba(156, 39, 176, 0.5)',
+                    'rgba(253, 178, 68, 0.5)'
+                ],
+                borderColor: [
+                    '#F45846',
+                    '#2196F3',
+                    '#00BCD4',
+                    '#2ab97f',
+                    '#9C27B0',
+                    '#fdb244'
+                ],
+                borderWidth: 1
+            }]
+        };
+        // 获取所选canvas元素的内容
+        var ctx = document.getElementById("bar-chart");
+        //设置图表高度
+        var myLineChart = new Chart(ctx, {
+            type: 'bar',
+            data: tempData,
+            options: {
+                maintainAspectRatio: true,
+            }
+        });
+    });
 </script>
 </html>

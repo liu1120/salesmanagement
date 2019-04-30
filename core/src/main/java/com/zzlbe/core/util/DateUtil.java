@@ -128,10 +128,19 @@ public class DateUtil {
         return null;
     }
 
-    public static String getDateByStr2(String date) {
+    public static String getDateByStr2(String date)//截图字符串、拼接
+    {
         return date.substring(0,19).replace("T"," ");
     }
+
+    public static String getDateByStr3(Date date){//时间格式转换 //Tue Apr 16 16:51:35 CST 2019
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timeFormat = sdf.format(date);
+        return timeFormat;
+    }
+
+
     public static void main(String[] args) {
-        System.out.println(getDateByStr2("2019-04-22T17:47:34.000+0800"));
+        System.out.println();
     }
 }

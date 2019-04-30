@@ -37,7 +37,7 @@
                 <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">
                     <img src="/static/imgs/avatar-1.png" class="avatar avatar-sm" alt="logo">
-                    <span class="small ml-1 d-md-down-none" id="loginname"   th:text="${login_username}"></span>
+                    <span class="small ml-1 d-md-down-none" id="loginname" th:text="${login_username}"></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">
@@ -61,7 +61,7 @@
                     <li class="nav-title">导航</li>
 
                     <li class="nav-item">
-                        <a href="/admin/index" class="nav-link">
+                        <a href="/admin/index" class="nav-link active">
                             <i class="icon icon-speedometer"></i> 仪表盘
                         </a>
                     </li>
@@ -74,7 +74,7 @@
 
                         <ul class="nav-dropdown-items">
                             <li class="nav-item">
-                                <a href="/admin/salesvolume" class="nav-link active">
+                                <a href="/admin/salesvolume" class="nav-link">
                                     <i class="icon icon-graph"></i>&nbsp;&nbsp;产品销量
                                 </a>
                             </li>
@@ -84,9 +84,9 @@
                                 </a>
                             </li>
                             <!--<li class="nav-item">-->
-                                <!--<a href="/admin/areavolume" class="nav-link">-->
-                                    <!--<i class="icon icon-graph"></i>&nbsp;&nbsp;地区销量-->
-                                <!--</a>-->
+                            <!--<a href="/admin/areavolume" class="nav-link">-->
+                            <!--<i class="icon icon-graph"></i>&nbsp;&nbsp;地区销量-->
+                            <!--</a>-->
                             <!--</li>-->
                         </ul>
                     </li>
@@ -187,46 +187,38 @@
                 <div class="row">
                     <div class="col-md-12">
                         <!--模板结束11111-->
-                        <div class="row">
-                            <div class="col-md-8" style="min-height: 500px">
-                                <div class="card">
-                                    <div class="card-header bg-light">
-                                        <h3>月销量变化图</h3>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-1.5">
-                                            <div class="form-group">
-                                                <h3> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;农产品:</h3>
-                                            </div>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header bg-light">
+                                            咨询：
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="card-body">
                                             <div class="form-group">
-                                                <select id="single-select2" class="form-control">
-                                                    <option value="0">--请选择--</option>
+                                                <select id="suggest-select" class="form-control">
+                                                    <option value="">全部</option>
+                                                    <option value="0">待处理</option>
+                                                    <option value="1">处理中</option>
+                                                    <option value="2">已处理</option>
                                                 </select>
                                             </div>
+                                            <div id="suggestid">
+                                                <div th:each="suggest:${suggestEntities}">
+                                                    <label th:text="${suggest.createTime}"></label>
+                                                    <div class="alert alert-warning" th:if="${suggest.status==0}">
+                                                        <a th:href="@{questionInfo(id=${suggest.id})}" th:text="${suggest.title}"></a>&nbsp;&nbsp;&nbsp;<a style="color:red">待处理</a>
+                                                    </div>
+                                                    <div class="alert alert-warning" th:if="${suggest.status==1}">
+                                                        <a th:href="@{questionInfo(id=${suggest.id})}" th:text="${suggest.title}"></a>&nbsp;&nbsp;&nbsp;<a style="color:black">未处理</a>
+                                                    </div>
+                                                    <div class="alert alert-success" th:if="${suggest.status==2}">
+                                                        <a th:href="@{questionInfo(id=${suggest.id})}" th:text="${suggest.title}"></a>&nbsp;&nbsp;&nbsp;<a style="color:black">已处理</a>
+                                                    </div>
+                                                    <br>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="card-body" id="bar-chart-p">
-                                        <canvas id="bar-chart"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4" style="min-height: 500px">
-                                <div class="card">
-                                    <div class="card-header bg-light">
-                                        农产品月销量排行榜
-                                    </div>
-                                    <div class="form-group">
-                                        top10<br><br>
-                                        <table style="width: 100%" id="goodstop10">
-                                            <thead>
-                                            <td>排名</td>
-                                            <td>名称</td>
-                                            <td>总销量</td>
-                                            </thead>
-                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -246,20 +238,19 @@
 </body>
 <script type="text/javascript" src="/static/js/adminjq.js"></script>
 <script type="text/javascript" src="/static/js/admin.js"></script>
-<script type="text/javascript" src="/static/js/chartdemo.js" th:inline="javascript"></script>
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
-        var local_username=localStorage.getItem("login_username");
-        var e=document.getElementById("loginname");
-        console.log("local_username:"+local_username);
-        e.innerText=local_username;
+        var local_username = localStorage.getItem("login_username");
+        var e = document.getElementById("loginname");
+        console.log("local_username:" + local_username);
+        e.innerText = local_username;
 
         var login_username = [[${login_username}]];
-        console.log("login_username:"+login_username);
-        if(login_username!=undefined){
-            localStorage.setItem("login_username",login_username);
-            e.innerText=login_username;
-        }else{
+        console.log("login_username:" + login_username);
+        if (login_username != undefined) {
+            localStorage.setItem("login_username", login_username);
+            e.innerText = login_username;
+        } else {
             // if(login_username==undefined){
             //     document.write("<form action='/admin/index' method=post name=manageDepForm style='display:none'>");
             //     document.write("<input type=hidden name='username' value=''/>");//参数1
@@ -269,11 +260,6 @@
             // }
         }
     }
-
-</script>
-
-<script>
-
 
 </script>
 </html>
