@@ -39,6 +39,8 @@
         FROM
         <include refid="tableName"/>
         WHERE ar_sp_id = #{id}
+        group by ar_countycode
+
     </select>
 
     <select id="selectProvince" resultMap="BaseMap">

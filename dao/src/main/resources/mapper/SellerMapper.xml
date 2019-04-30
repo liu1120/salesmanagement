@@ -48,6 +48,9 @@
             <if test="phone != null">
                 AND sp_phone = #{phone}
             </if>
+            <if test="rank != null">
+                AND sp_rank = #{rank}
+            </if>
             <if test="realname != null">
                 AND sp_realname = #{realname}
             </if>

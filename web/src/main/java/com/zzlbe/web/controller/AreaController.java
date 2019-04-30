@@ -47,4 +47,5 @@ public class AreaController {
         List<AreaEntity> areaEntity = areaMapper.selectTown(countycode);
         return new GenericResponse<>(areaEntity);
     }
+
 }

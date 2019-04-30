@@ -37,7 +37,7 @@
                 <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">
                     <img src="/static/imgs/avatar-1.png" class="avatar avatar-sm" alt="logo">
-                    <span class="small ml-1 d-md-down-none" id="loginname"   th:text="${login_username}"></span>
+                    <span class="small ml-1 d-md-down-none" id="loginname" th:text="${login_username}"></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">
@@ -84,9 +84,9 @@
                                 </a>
                             </li>
                             <!--<li class="nav-item">-->
-                                <!--<a href="/admin/areavolume" class="nav-link">-->
-                                    <!--<i class="icon icon-graph"></i>&nbsp;&nbsp;地区销量-->
-                                <!--</a>-->
+                            <!--<a href="/admin/areavolume" class="nav-link">-->
+                            <!--<i class="icon icon-graph"></i>&nbsp;&nbsp;地区销量-->
+                            <!--</a>-->
                             <!--</li>-->
                         </ul>
                     </li>
@@ -187,7 +187,6 @@
                 <div class="row">
                     <div class="col-md-12">
                         <!--模板结束11111-->
-
                         <div class="wrapper wrapper-content animated fadeInRight">
                             <div class="row">
                                 <div class="col-sm-12">
@@ -197,23 +196,22 @@
                                         </div>
                                         <div class="ibox-content">
 
-                                            <form method="post" class="form-horizontal" action="">
-
+                                            <form method="post" class="form-horizontal" action="saveAssign"  id="loginForm">
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label
                                                                     class="form-control-label">工号</label>
-                                                            <input id="sp_number" class="form-control" value="1009"
-                                                                   readonly>
+                                                            <input id="sp_number" class="form-control" value=""
+                                                                   th:field="*{seller.id}" readonly>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label
                                                                     class="form-control-label">姓名</label>
-                                                            <input id="sp_realname" class="form-control" value="张三"
-                                                                   readonly>
+                                                            <input id="sp_realname" class="form-control" value=""
+                                                                   th:field="*{seller.realname}" readonly>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -222,20 +220,20 @@
                                                         <div class="form-group">
                                                             <label
                                                                     class="form-control-label">部门</label>
-                                                            <input id="sp_post" class="form-control" value="营销"
+                                                            <input id="sp_post" class="form-control" value=""
+                                                                   th:field="*{seller.post}"
                                                                    readonly>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label
-                                                                    class="form-control-label">职位</label>
-                                                            <input id="sp_position" class="form-control" value="职员"
+                                                            <label class="form-control-label">职位</label>
+                                                            <input id="sp_position" class="form-control" value=""
+                                                                   th:field="*{seller.position}"
                                                                    readonly>
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="card">
@@ -246,38 +244,13 @@
                                                                 <table class="table table-striped table-bordered table-hover dataTables-example dataTable no-footer"
                                                                        aria-describedby="DataTables_Table_0_info">
                                                                     <tbody>
-                                                                    <tr class="gradeA odd">
-                                                                        <td class="sorting_1">1</td>
-                                                                        <td class=" ">金水区
-                                                                        </td>
-                                                                        <td class=" ">中原区
-                                                                        </td>
-                                                                        <td class=" ">惠济区
-                                                                        </td>
-                                                                        <td class=" ">二七区
-                                                                        </td>
-                                                                        <td class=" ">金水区
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr class="gradeA even">
-                                                                        <td class="sorting_1">2</td>
-                                                                        <td class=" ">二七区</td>
-                                                                        <td class=" ">中原区</td>
-                                                                        <td class=" ">惠济区</td>
-                                                                        <td class=" ">二七区</td>
-                                                                        <td class=" ">惠济区</td>
-                                                                    </tr>
-                                                                    <tr class="gradeA odd">
-                                                                        <td class="sorting_1">3</td>
-                                                                        <td class=" ">中原区</td>
-                                                                        <td class=" ">惠济区</td>
-                                                                        <td class=" ">中原区</td>
-                                                                        <td class=" "></td>
-                                                                        <td class=" "></td>
+                                                                    <tr class="gradeA odd"  th:each="area:${areas}">
+                                                                        <!--<td class="sorting_1">1</td>-->
+                                                                        <td class=" " th:text="${area.countyname}">
                                                                     </tr>
                                                                     </tbody>
+
                                                                 </table>
-                                                                <!--4444-->
                                                             </div>
                                                         </div>
                                                     </div>
@@ -285,32 +258,21 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">&nbsp;&nbsp;
-                                                            <label for="single-select">区域选择</label>
-                                                            &nbsp;&nbsp;<select id="single-select" class="form-control">
-                                                                <option>河南</option>
-                                                                <option>河北</option>
-                                                                <option>湖南</option>
-                                                                <option>湖北</option>
-                                                                <option>北京</option>
+                                                            <label>区域选择</label>
+                                                            &nbsp;&nbsp;<select id="province-select"
+                                                                                class="form-control">
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">&nbsp;&nbsp;
-                                                            <label for="single-select">&nbsp</label>
-                                                            &nbsp;&nbsp;<select id="single-select2"
+                                                            <label>&nbsp</label>
+                                                            &nbsp;&nbsp;<select id="city-select"
                                                                                 class="form-control">
-                                                                <option>郑州市</option>
-                                                                <option>洛阳市</option>
-                                                                <option>周口市</option>
-                                                                <option>南阳市</option>
-                                                                <option>安阳市</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <!--地区多选-->
 
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -318,31 +280,14 @@
                                                             <div class="card-header">
                                                                 选择分配的区域
                                                             </div>
-
                                                             <div class="card-body">
-
-                                                                <!--3333-->
-
                                                                 <table class="table table-striped table-bordered table-hover dataTables-example dataTable no-footer"
                                                                        id="DataTables_Table_0"
                                                                        aria-describedby="DataTables_Table_0_info">
-                                                                    <tbody>
-                                                                    <tr class="gradeA odd">
-                                                                        <td class="sorting_1">1</td>
-                                                                        <td class=" "><input name="areaName"
-                                                                                             type="checkbox" value=""/>金水区
-                                                                        </td>
-                                                                        <td class=" "><input name="areaName"
-                                                                                             type="checkbox" value=""/>中原区
-                                                                        </td>
-                                                                        <td class=" "><input name="areaName"
-                                                                                             type="checkbox" value=""/>惠济区
-                                                                        </td>
-                                                                        <td class=" "><input name="areaName"
-                                                                                             type="checkbox" value=""/>二七区
-                                                                        </td>
-                                                                        <td class=" "><input name="areaName"
-                                                                                             type="checkbox" value=""/>金水区
+                                                                    <tbody id="areaAdd">
+                                                                    <tr class="gradeA odd"  th:each="area:${areas}">
+                                                                        <td class=" ">
+                                                                            <input name="areaName" type="checkbox" value=""/>金水区
                                                                         </td>
                                                                     </tr>
                                                                     <tr class="gradeA even">
@@ -363,45 +308,8 @@
                                                                                              type="checkbox" value=""/>惠济区
                                                                         </td>
                                                                     </tr>
-                                                                    <tr class="gradeA odd">
-                                                                        <td class="sorting_1">3</td>
-                                                                        <td class=" "><input name="areaName"
-                                                                                             type="checkbox" value=""/>中原区
-                                                                        </td>
-                                                                        <td class=" "><input name="areaName"
-                                                                                             type="checkbox" value=""/>惠济区
-                                                                        </td>
-                                                                        <td class=" "><input name="areaName"
-                                                                                             type="checkbox" value=""/>中原区
-                                                                        </td>
-                                                                        <td class=" "><input name="areaName"
-                                                                                             type="checkbox" value=""/>惠济区
-                                                                        </td>
-                                                                        <td class=" "><input name="areaName"
-                                                                                             type="checkbox" value=""/>中原区
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr class="gradeA even">
-                                                                        <td class="sorting_1">4</td>
-                                                                        <td class=" "><input name="areaName"
-                                                                                             type="checkbox" value=""/>惠济区
-                                                                        </td>
-                                                                        <td class=" "><input name="areaName"
-                                                                                             type="checkbox" value=""/>中原区
-                                                                        </td>
-                                                                        <td class=" "><input name="areaName"
-                                                                                             type="checkbox" value=""/>惠济区
-                                                                        </td>
-                                                                        <td class=" "><input name="areaName"
-                                                                                             type="checkbox" value=""/>中原区
-                                                                        </td>
-                                                                        <td class=" "><input name="areaName"
-                                                                                             type="checkbox" value=""/>惠济区
-                                                                        </td>
-                                                                    </tr>
                                                                     </tbody>
                                                                 </table>
-                                                                <!--4444-->
                                                             </div>
                                                         </div>
                                                     </div>
@@ -410,8 +318,9 @@
                                                 <div class="hr-line-dashed"></div>
                                                 <div class="form-group">
                                                     <div class="col-sm-4 col-sm-offset-8">
-                                                        <a href="/hr/leave/12/update.do" class="btn btn-primary">保&nbsp;&nbsp;存</a>&nbsp;&nbsp;
-                                                        <a href="/hr/leave/listPage.do?pageNo=1" class="btn btn-info">返&nbsp;&nbsp;回</a>
+                                                        <a onclick="document:loginForm.submit()" class="btn btn-primary">保&nbsp;&nbsp;存</a>&nbsp;&nbsp;
+                                                        <a href="/admin/info"
+                                                           class="btn btn-info">返&nbsp;&nbsp;回</a>
                                                     </div>
                                                 </div>
                                             </form>
@@ -420,6 +329,7 @@
                                 </div>
                             </div>
                         </div>
+
 
 
                         <!--模板开始222222-->
@@ -438,18 +348,87 @@
 <script type="text/javascript" src="/static/js/admin.js"></script>
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
-        var local_username=localStorage.getItem("login_username");
-        var e=document.getElementById("loginname");
-        console.log("local_username:"+local_username);
-        e.innerText=local_username;
+        var local_username = localStorage.getItem("login_username");
+        var e = document.getElementById("loginname");
+        console.log("local_username:" + local_username);
+        e.innerText = local_username;
 
         var login_username = [[${login_username}]];
-        console.log("login_username:"+login_username);
-        if(login_username!=undefined){
-            localStorage.setItem("login_username",login_username);
-            e.innerText=login_username;
+        console.log("login_username:" + login_username);
+        if (login_username != undefined) {
+            localStorage.setItem("login_username", login_username);
+            e.innerText = login_username;
         }
     }
+
+</script>
+<script>
+    $.ajax({//下拉选择省份
+        url: 'selectProvince',
+        type: "get",
+        dataType: 'json',
+    }).done(function (results) {
+        $('#province-select').html('');
+        var options = '';
+        options += '';
+        for (var i = 0; i < results.length; i++) {
+            options += '<option value="' + results[i].provincecode + '">' + results[i].provincename + '</option>';
+        }
+        $('#province-select').append(options);
+    }).fail(function (error) {
+        $('#province-select').html('');
+        var options = '';
+        options += '<option value="">--请选择--</option>';
+        $('#province-select').append(options);
+    });//下拉选择省份
+
+    $("#province-select").change(function () {//触发城市选择
+        var provinceid = $("#province-select").val()
+        $.ajax({
+            url: 'selectCity',
+            type: "get",
+            data: {provincecode: provinceid},
+            dataType: 'json',
+        }).done(function (results) {
+            $('#city-select').html('');
+            var options = '';
+            options += '';
+            for (var i = 0; i < results.length; i++) {
+                options += '<option value="' + results[i].citycode + '">' + results[i].cityname + '</option>';
+            }
+            $('#city-select').append(options);
+        }).fail(function (error) {
+            $('#city-select').html('');
+            var options = '';
+            options += '<option value="">--请选择--</option>';
+            $('#city-select').append(options);
+        });
+    });//触发城市选择
+
+
+    $("#city-select").change(function () {//城市变化->触发城镇选择
+        var cityid = $("#city-select").val()
+        $.ajax({
+            url: 'selectTown',
+            type: "get",
+            data: {countycode: cityid},
+            dataType: 'json',
+        }).done(function (results) {
+            var tr = '';
+
+            for (var i = 0; i < results.length; i++) {
+                var tr="<tr class=\"gradeA odd\">";
+                if(i%5==0){
+                    tr+="<td><input name=\"areaName\" type=\"checkbox\"/>"+results[i].countyname+"</td>";
+                }
+                tr+="</tr>";
+            }
+            $('#areaAdd').append(tr);
+
+        }).fail(function (error) {
+
+        });
+    });//触发城镇选择
 
 </script>
 </html>

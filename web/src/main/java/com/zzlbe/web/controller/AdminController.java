@@ -236,7 +236,7 @@ public class AdminController {
     }
 
     @GetMapping("getAllgoods")//后台查看-商品列表
-    public ModelAndView getAllgoods(@RequestParam("pageNo") Integer pageNo) {
+    public ModelAndView getAllgoods(Integer pageNo) {
         GoodsSearch goodsSearch=new GoodsSearch();
         if (pageNo!=null){
             goodsSearch.setPage(pageNo);
@@ -285,12 +285,7 @@ public class AdminController {
         return  mv;
     }
 
-    @GetMapping("info")//后台查看-信息管理
-    public ModelAndView info() {
-        ModelAndView mv=new ModelAndView();
-        mv.setViewName("admin/r_info.html");
-        return  mv;
-    }
+
 
 
     @GetMapping("attendce")//后台查看-考勤管理
@@ -369,7 +364,5 @@ public class AdminController {
         mv.setViewName("admin/gi_list.html");
         return  mv;
     }
-
-
 
 }
