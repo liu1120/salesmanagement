@@ -3,6 +3,7 @@ package com.zzlbe.core.request;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -49,8 +50,11 @@ public class OrderForm {
     /**
      * 用户编号
      */
-    @NotNull(message = "请指定下单用户")
     private Long orUserId;
+    /**
+     * 用户手机号（销售员下单时使用）
+     */
+    private String phoneNo;
     /**
      * 下单审核状态：0待审核，1审核通过，2审核拒绝
      */

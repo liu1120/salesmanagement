@@ -39,7 +39,7 @@
     <sql id="condition">
         <where>
             <if test="name != null">
-                AND go_name = #{name}
+                AND go_name REGEXP #{name}
             </if>
             <if test="version != null">
                 AND go_version = #{version}

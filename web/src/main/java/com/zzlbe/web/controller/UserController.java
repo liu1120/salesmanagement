@@ -138,7 +138,6 @@ public class UserController {
         sentgiftEntity.setStatus(0);
         DateUtil du = new DateUtil();
         sentgiftEntity.setDate(getDateByStr(du.getDateTime()));
-        sentgiftEntity.toString();
         sentgiftMapper.insert(sentgiftEntity);
         return 1;
     }
@@ -150,7 +149,7 @@ public class UserController {
     }
 
     @GetMapping(value = "addAddress")//添加地址
-    public int addAddress(@RequestParam("provincecode") long provincecode, @RequestParam("countycode") long countycode, @RequestParam("towncode") long towncode, @RequestParam("citycode") long citycode, @RequestParam("info") String info, @RequestParam("uid") long uid, @RequestParam("name") String name, @RequestParam("phone") long phone) {
+    public Long addAddress(@RequestParam("provincecode") long provincecode, @RequestParam("countycode") long countycode, @RequestParam("towncode") long towncode, @RequestParam("citycode") long citycode, @RequestParam("info") String info, @RequestParam("uid") long uid, @RequestParam("name") String name, @RequestParam("phone") long phone) {
         AreaVO areaVO = new AreaVO();
         areaVO.setProvincecode(provincecode);
         areaVO.setCitycode(citycode);
@@ -160,7 +159,7 @@ public class UserController {
         long id = 0;
         AddressEntity addressEntity = new AddressEntity(id, areaStr, info, uid, name, phone, 0);
         addressMapper.insert(addressEntity);
-        return 0;
+        return addressEntity.getId();
     }
 
 
