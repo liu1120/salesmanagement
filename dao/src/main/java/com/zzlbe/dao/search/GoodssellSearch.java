@@ -17,6 +17,6 @@ public class GoodssellSearch extends BasePageRequest {
     /**
      * 总交易额
      */
-    private double count;
+    private Double count;
 
 }

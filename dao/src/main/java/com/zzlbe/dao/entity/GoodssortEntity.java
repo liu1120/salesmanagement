@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class GoodssortEntity {
-    private long id;
+    private Long id;
     private String name;
 
 }

@@ -8,14 +8,14 @@ import java.util.Date;
 @Data
 @Accessors(chain = true)
 public class SaleEntity {
-    private long id;
-    private long type;
-    private long discount;
-    private long start;
-    private long reach;
-    private long minus;
+    private Long id;
+    private Long type;
+    private Long discount;
+    private Long start;
+    private Long reach;
+    private Long minus;
     private Date startime;
     private Date overtime;
-    private long areaids;
-    private long isOk;
+    private Long areaids;
+    private Long isOk;
 }

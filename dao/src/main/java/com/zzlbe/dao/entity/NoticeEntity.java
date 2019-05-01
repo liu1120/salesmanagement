@@ -7,12 +7,12 @@ import java.util.Date;
 @Data
 @Accessors(chain = true)
 public class NoticeEntity {
-    private long id;
+    private Long id;
     private String title;
-    private int type;
+    private Integer type;
     private String content;
     private String sp_name;
     private Date time;
-    private long num;
+    private Long num;
 
 }

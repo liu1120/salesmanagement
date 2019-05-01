@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class AmountSearch {
     private String month;
-    private double amt;
+    private Double amt;
 }

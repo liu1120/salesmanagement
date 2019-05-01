@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class AmountDTO {
-    private int month;
-    private double amt;
+    private Integer month;
+    private Double amt;
 }

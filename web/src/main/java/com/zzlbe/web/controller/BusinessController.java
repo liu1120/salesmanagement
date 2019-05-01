@@ -5,7 +5,10 @@ import com.zzlbe.core.util.MD5Utils;
 import com.zzlbe.dao.entity.AreaEntity;
 import com.zzlbe.dao.entity.SellerEntity;
 import com.zzlbe.dao.mapper.AreaMapper;
+import com.zzlbe.dao.mapper.AttendanceMapper;
 import com.zzlbe.dao.mapper.SellerMapper;
+import com.zzlbe.dao.search.AttendanSearch;
+import com.zzlbe.dao.search.AttendanceSearch;
 import com.zzlbe.dao.search.SellerSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +24,8 @@ public class BusinessController {
     SellerMapper sellerMapper;
     @Autowired
     AreaMapper areaMapper;
+    @Autowired
+    AttendanceMapper attendanceMapper;
 
     /**
      * R5.0
@@ -118,6 +123,7 @@ public class BusinessController {
         sellerEntity.setPosition(position);
         sellerEntity.setPhone(phone);
         sellerEntity.setId(id);
+        sellerEntity.setRank(0);
 
         MD5Utils md = new MD5Utils();
         sellerEntity.setPassword(md.getMD5("123456"));
@@ -186,4 +192,39 @@ public class BusinessController {
         String str = JSON.toJSONString(areaEntities);
         return str;
     }
+
+
+    /**
+     * 后台查看-员工考勤-考勤管理
+     * @return
+     */
+    @GetMapping("attendce")
+    public ModelAndView attendce(Integer pageNo,Long id) {
+        ModelAndView mv=new ModelAndView();
+        AttendanceSearch attendanceSearch=new AttendanceSearch();
+        if(pageNo!=null)attendanceSearch.setPage(pageNo);
+        if(id!=null)attendanceSearch.setAtSellerId(id);
+
+        List<AttendanSearch> attendanSearches= attendanceMapper.select2ByPage(attendanceSearch);
+        Integer total=attendanceMapper.selectByPageTotal(attendanceSearch);
+        int page=attendanceSearch.getPage();//当前页
+        int size=attendanceSearch.getSize();//页码大小
+        int totalPage=total/size+1;
+        int[] arr=new int[totalPage];
+        for(int i=0;i<arr.length;i++){
+            arr[i]=i+1;
+        }
+        mv.addObject("total",total);
+        mv.addObject("totalPage",totalPage);
+        mv.addObject("page",page);
+        mv.addObject("arr",arr);
+        mv.addObject("size",size);
+        System.out.println("attendanSearches:"+attendanSearches.toString());
+        System.out.println("json:"+JSON.toJSONString(attendanSearches));
+        mv.addObject("attendanSearches",attendanSearches);
+        mv.setViewName("admin/r_attence.html");
+        return  mv;
+    }
+
+
 }

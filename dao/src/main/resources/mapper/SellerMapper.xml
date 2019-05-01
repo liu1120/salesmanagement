@@ -87,7 +87,7 @@
     </select>
 
     <select id="getSellerAll" resultMap="SellersellSearch">
-        SELECT sp_id as id,sp_realname as name from tb_seller WHERE sp_rank=0
+        SELECT sp_id as id,sp_realname as name from tb_seller
     </select>
 
     <select id="selectByPhoneNo" resultMap="BaseMap">

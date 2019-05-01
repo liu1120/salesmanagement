@@ -133,7 +133,7 @@ public class UserController {
         sentgiftEntity.setTophone(userEntity.getPhone());
         sentgiftEntity.setAddress(adid + "");
         sentgiftEntity.setType(0);
-        sentgiftEntity.setNum(1);
+        sentgiftEntity.setNum((long)1);
         sentgiftEntity.setCredit(giftEntity.getCredit());
         sentgiftEntity.setStatus(0);
         DateUtil du = new DateUtil();

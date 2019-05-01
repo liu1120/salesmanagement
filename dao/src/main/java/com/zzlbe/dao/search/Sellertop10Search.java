@@ -18,6 +18,6 @@ public class Sellertop10Search extends BasePageRequest {
     /**
      * 总交易量
      */
-    private double count;
+    private Double count;
 
 }

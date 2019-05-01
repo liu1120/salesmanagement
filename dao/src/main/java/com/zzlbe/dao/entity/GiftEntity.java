@@ -14,7 +14,7 @@ public class GiftEntity {
     private String describe;
     private Long credit;
     private Long num;
-    private int isshow;
+    private Integer isshow;
     private Date endtime;
     private String imgpath;
 }

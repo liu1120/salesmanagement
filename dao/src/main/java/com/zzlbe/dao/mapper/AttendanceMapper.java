@@ -1,6 +1,7 @@
 package com.zzlbe.dao.mapper;
 
 import com.zzlbe.dao.entity.AttendanceEntity;
+import com.zzlbe.dao.search.AttendanSearch;
 import com.zzlbe.dao.search.AttendanceSearch;
 import org.springframework.stereotype.Repository;
 
@@ -27,5 +28,8 @@ public interface AttendanceMapper {
     List<AttendanceEntity> selectByPage(AttendanceSearch search);
 
     Integer selectByPageTotal(AttendanceSearch search);
+
+    List<AttendanSearch> select2ByPage(AttendanceSearch search);//关联查询，新增一列name
+
 
 }

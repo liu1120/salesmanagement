@@ -13,7 +13,7 @@ public class SellersellSearch extends BasePageRequest {
     /**
      * id
      */
-    private long id;
+    private Long id;
     /**
      * 真实姓名
      */

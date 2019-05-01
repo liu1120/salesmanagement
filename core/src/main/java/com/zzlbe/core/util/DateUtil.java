@@ -37,6 +37,20 @@ public class DateUtil {
         return format.format(date);
     }
 
+    public static String getTime(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+        return format.format(date);
+    }
+
+    public static String getDate(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(date);
+    }
+
+    public String getDateTime(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(date);
+    }
     /**
      * 根据 hour 获取 Date
      */

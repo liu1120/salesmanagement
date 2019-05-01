@@ -6,8 +6,8 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class AreaVO {
-    private long provincecode;
-    private long citycode;
-    private long countycode;
-    private long towncode;
+    private Long provincecode;
+    private Long citycode;
+    private Long countycode;
+    private Long towncode;
 }

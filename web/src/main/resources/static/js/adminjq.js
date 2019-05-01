@@ -133,7 +133,7 @@ $(document).ready(function () {
         $('#single-select2').append(options);
     });
 
-    $.ajax({//下拉选择销售员
+    $.ajax({//下拉选择择销售员
         url: 'getSellerAll',
         type: "get",
         dataType: 'json',

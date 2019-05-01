@@ -8,10 +8,10 @@ import java.util.Date;
 @Data
 @Accessors(chain = true)
 public class GoodstopicEntity {
-    private long id;
-    private long goodsid;
+    private Long id;
+    private Long goodsid;
     private Date createtime;
     private String content;
-    private long uid;
+    private Long uid;
     private String uname;
 }

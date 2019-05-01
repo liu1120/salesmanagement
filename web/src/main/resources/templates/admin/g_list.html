@@ -246,11 +246,12 @@
 
 
 							<span style="float: left; padding: 5px">
-								总共&nbsp;<b th:text="${total}"></b>&nbsp;条</span>
-                                                <span style="float: left; padding: 5px">
-								当前&nbsp;<span style="color: red;" th:text="${page}">1</span>&nbsp;/&nbsp;
-                                                    <b th:text="${totalPage}">1</b>&nbsp;页&nbsp;&nbsp;
-                                                    </span>
+								总共&nbsp;<b th:text="${total}"></b>&nbsp;条
+                            </span>
+                            <span style="float: left; padding: 5px">
+								当前&nbsp;<span style="color: red;" th:text="${page}">1</span>
+                                &nbsp;/&nbsp; <b th:text="${totalPage}">1</b>&nbsp;页&nbsp;&nbsp;
+                            </span>
                                                 <nav aria-label="Page navigation" style="margin: 0 auto; width: 240px">
                                                     <ul class="pagination" style="margin: 0;">
                                                             <li th:each="array:${arr}">

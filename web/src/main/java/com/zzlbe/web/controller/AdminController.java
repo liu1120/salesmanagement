@@ -35,6 +35,8 @@ public class AdminController {
     OrderMapper orderMapper;
     @Autowired
     GoodsMapper goodsMapper;
+    @Autowired
+    AttendanceMapper attendanceMapper;
 
     //展示登录界面
     @RequestMapping("/login")
@@ -137,8 +139,12 @@ public class AdminController {
     }
 
     @RequestMapping("/test")
-    public String test() {
-        return "admin/test";
+    public List<AttendanSearch> test() {
+        AttendanceSearch attendanceSearch=new AttendanceSearch();
+        List<AttendanSearch> attendanSearches= attendanceMapper.select2ByPage(attendanceSearch);
+        System.out.println("attendanSearches:"+attendanSearches.toString());
+        System.out.println("attendanSearches:"+attendanSearches);
+        return attendanSearches;
     }
 
 
@@ -287,13 +293,6 @@ public class AdminController {
 
 
 
-
-    @GetMapping("attendce")//后台查看-考勤管理
-    public ModelAndView attendce() {
-        ModelAndView mv=new ModelAndView();
-        mv.setViewName("admin/r_attence.html");
-        return  mv;
-    }
 
 
     @GetMapping("left")//后台查看-出差审核

@@ -36,7 +36,7 @@ public class AddressEntity {
     /**
      * 用户id
      */
-    private long uid;
+    private Long uid;
 
     /**
      * 用户姓名
@@ -45,11 +45,11 @@ public class AddressEntity {
     /**
      * 用户手机号
      */
-    private long phone;
+    private Long phone;
 
     /**
      * 地址状态，0默认有效，1无效
      */
-    private int status;
+    private Integer status;
 
 }

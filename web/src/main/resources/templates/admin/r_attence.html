@@ -37,7 +37,7 @@
                 <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">
                     <img src="/static/imgs/avatar-1.png" class="avatar avatar-sm" alt="logo">
-                    <span class="small ml-1 d-md-down-none" id="loginname"   th:text="${login_username}"></span>
+                    <span class="small ml-1 d-md-down-none" id="loginname" th:text="${login_username}"></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">
@@ -198,224 +198,110 @@
                                     <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline"
                                          role="grid">
                                         <div class="row">
-                                            <div class="col-sm-4">
-                                                <div class="dataTables_length" id="DataTables_Table_0_length"><label>每页
-                                                    <select name="DataTables_Table_0_length"
-                                                            aria-controls="DataTables_Table_0"
-                                                            class="form-control input-sm">
-                                                        <option value="10">10</option>
-                                                        <option value="25">25</option>
-                                                        <option value="50">50</option>
-                                                        <option value="100">100</option>
-                                                    </select> 条记录</label></div>
+                                            <div class="col-sm-6">
+                                                <div>&nbsp;&nbsp;姓名&nbsp;&nbsp;</div>
+                                                <select id="single-seller" class="form-control" style="width:150px">
+                                                    <option>--请选择--</option>
+                                                </select>
                                             </div>
-                                            <div class="col-sm-4">
-                                                <div id="DataTables_Table_0_filter" class="dataTables_filter"><label>查找：<input
-                                                        type="search" class="form-control input-sm"
-                                                        aria-controls="DataTables_Table_0"></label></div>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                &nbsp;&nbsp;筛选&nbsp;<select id="single-select" class="form-control">
-                                                <option>全部</option>
-                                                <option>已批准</option>
-                                                <option>未批准</option>
-                                            </select>
-                                            </div>
+                                            <!--<div class="col-sm-5">-->
+                                                <!--&nbsp;&nbsp;类型&nbsp;-->
+                                                <!--<select id="select-attendencetype" class="form-control" style="width:100px">-->
+                                                    <!--<option value="0">&#45;&#45;请选择&#45;&#45;</option>-->
+                                                    <!--<option value="1">正常</option>-->
+                                                    <!--<option value="2">异常</option>-->
+                                                    <!--<option value="3">加班</option>-->
+                                                    <!--<option value="4">请假</option>-->
+                                                    <!--<option value="5">出差</option>-->
+                                                <!--</select>-->
+                                            <!--</div>-->
+                                            <!--<div class="col-sm-5">-->
+                                                <!--签到类别&nbsp;-->
+                                                <!--<select id="select-assigntype" class="form-control" style="width:100px">-->
+                                                    <!--<option value="0">&#45;&#45;请选择&#45;&#45;</option>-->
+                                                    <!--<option value="1">正常</option>-->
+                                                    <!--<option value="2">迟到</option>-->
+                                                    <!--<option value="3">未签到</option>-->
+                                                <!--</select>-->
+                                            <!--</div>-->
                                         </div>
                                         <table class="table table-striped table-bordered table-hover dataTables-example dataTable no-footer"
                                                id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
                                             <thead>
                                             <tr role="row">
-                                                <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-sort="ascending"
-                                                    aria-label="序号：激活排序列升序" style="width: 63px;">序号
-                                                </th>
                                                 <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="工号：激活排序列升序"
+                                                    rowspan="1" colspan="1" aria-label="工号："
                                                     style="width: 64px;">工号
                                                 </th>
                                                 <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="姓名：激活排序列升序"
+                                                    rowspan="1" colspan="1" aria-label="姓名："
                                                     style="width: 72px;">姓名
                                                 </th>
                                                 <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="日期：激活排序列升序"
+                                                    rowspan="1" colspan="1" aria-label="日期："
                                                     style="width: 118px;">日期
                                                 </th>
                                                 <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="时间：激活排序列升序"
+                                                    rowspan="1" colspan="1" aria-label="时间："
                                                     style="width: 64px;">时间
                                                 </th>
                                                 <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="上班签到时间：激活排序列升序"
+                                                    rowspan="1" colspan="1" aria-label="上班签到时间："
                                                     style="width: 147px;">上班签到时间
                                                 </th>
                                                 <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="签到类别：激活排序列升序"
+                                                    rowspan="1" colspan="1" aria-label="签到类别："
                                                     style="width: 106px;">签到类别
                                                 </th>
                                                 <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="下班签到时间：激活排序列升序"
+                                                    rowspan="1" colspan="1" aria-label="下班签到时间："
                                                     style="width: 148px;">下班签到时间
                                                 </th>
                                                 <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="签到类别：激活排序列升序"
+                                                    rowspan="1" colspan="1" aria-label="签到类别："
                                                     style="width: 107px;">签到类别
                                                 </th>
                                             </tr>
                                             </thead>
                                             <tbody>
 
-
-                                            <tr class="gradeA odd">
-                                                <td class="sorting_1">1</td>
-                                                <td class=" ">1001</td>
-                                                <td class=" ">admin</td>
-
-                                                <td class=" ">2018-12-04</td>
-                                                <td class=" ">加班</td>
-                                                <td class=" ">20:00:20</td>
-                                                <td class=" ">迟到</td>
-                                                <td class=" ">20:00:22</td>
-                                                <td class=" ">早退</td>
-
-                                            </tr>
-                                            <tr class="gradeA even">
-                                                <td class="sorting_1">2</td>
-                                                <td class=" ">1001</td>
-                                                <td class=" ">admin</td>
-
-                                                <td class=" ">2018-05-15</td>
-                                                <td class=" ">下午</td>
-                                                <td class=" ">17:46:21</td>
-                                                <td class=" ">迟到</td>
-                                                <td class=" ">17:46:24</td>
-                                                <td class=" ">早退</td>
-                                            </tr>
-                                            <tr class="gradeA odd">
-                                                <td class="sorting_1">3</td>
-                                                <td class=" ">1010</td>
-                                                <td class=" ">杨6</td>
-
-                                                <td class=" ">2017-08-06</td>
-                                                <td class=" ">下午</td>
-                                                <td class=" ">14:25:24</td>
-                                                <td class=" ">正常</td>
-                                                <td class=" "></td>
-                                                <td class=" ">未签到</td>
-                                            </tr>
-                                            <tr class="gradeA even">
-                                                <td class="sorting_1">4</td>
-                                                <td class=" ">1010</td>
-                                                <td class=" ">杨6</td>
-
-                                                <td class=" ">2017-07-12</td>
-                                                <td class=" ">加班</td>
-                                                <td class=" ">21:24:34</td>
-                                                <td class=" ">迟到</td>
-                                                <td class=" "></td>
-                                                <td class=" ">未签到</td>
-                                            </tr>
-                                            <tr class="gradeA odd">
-                                                <td class="sorting_1">5</td>
-                                                <td class=" ">1009</td>
-                                                <td class=" ">张4</td>
-
-                                                <td class=" ">2017-07-12</td>
-                                                <td class=" ">加班</td>
-                                                <td class=" ">21:02:35</td>
-                                                <td class=" ">迟到</td>
-                                                <td class=" "></td>
-                                                <td class=" ">未签到</td>
-                                            </tr>
-                                            <tr class="gradeA even">
-                                                <td class="sorting_1">6</td>
-                                                <td class=" ">1008</td>
-                                                <td class=" ">刘3</td>
-
-                                                <td class=" ">2017-07-12</td>
-                                                <td class=" ">下午</td>
-                                                <td class=" ">16:48:03</td>
-                                                <td class=" ">迟到</td>
-                                                <td class=" "></td>
-                                                <td class=" ">未签到</td>
-                                            </tr>
-                                            <tr class="gradeA odd">
-                                                <td class="sorting_1">7</td>
-                                                <td class=" ">1007</td>
-                                                <td class=" ">李5</td>
-
-                                                <td class=" ">2017-07-12</td>
-                                                <td class=" ">下午</td>
-                                                <td class=" ">15:51:24</td>
-                                                <td class=" ">迟到</td>
-                                                <td class=" "></td>
-                                                <td class=" ">未签到</td>
-                                            </tr>
-                                            <tr class="gradeA even">
-                                                <td class="sorting_1">8</td>
-                                                <td class=" ">1001</td>
-                                                <td class=" ">admin</td>
-
-                                                <td class=" ">2017-07-12</td>
-                                                <td class=" ">下午</td>
-                                                <td class=" ">15:34:58</td>
-                                                <td class=" ">迟到</td>
-                                                <td class=" "></td>
-                                                <td class=" ">未签到</td>
-                                            </tr>
-                                            <tr class="gradeA odd">
-                                                <td class="sorting_1">9</td>
-                                                <td class=" ">1009</td>
-                                                <td class=" ">张4</td>
-
-                                                <td class=" ">2017-07-12</td>
-                                                <td class=" ">下午</td>
-                                                <td class=" ">15:31:03</td>
-                                                <td class=" ">迟到</td>
-                                                <td class=" "></td>
-                                                <td class=" ">未签到</td>
-                                            </tr>
-                                            <tr class="gradeA even">
-                                                <td class="sorting_1">10</td>
-                                                <td class=" ">1009</td>
-                                                <td class=" ">张4</td>
-
-                                                <td class=" ">2017-07-12</td>
-                                                <td class=" ">上午</td>
-                                                <td class=" ">09:09:53</td>
-                                                <td class=" ">迟到</td>
-                                                <td class=" "></td>
-                                                <td class=" ">未签到</td>
+                                            <tr class="gradeA odd" th:each="attend:${attendanSearches}">
+                                                <td th:text="${attend.atSellerId}"></td>
+                                                <td th:text="${attend.name}"></td>
+                                                <td th:text="${attend.atDay}"></td>
+                                                <td th:text="${attend.atType}"></td>
+                                                <td th:text="${attend.atStart}"></td>
+                                                <td th:text="${attend.atStartType}"></td>
+                                                <td th:text="${attend.atEnd}"></td>
+                                                <td th:text="${attend.atEndType}"></td>
                                             </tr>
                                             </tbody>
                                         </table>
                                         <div class="row">
+                                            <!--<div class="col-sm-6">-->
+                                            <!--<div class="dataTables_info" id="DataTables_Table_0_info" role="alert"-->
+                                            <!--aria-live="polite" aria-relevant="all">显示 1 到 10 项，共 17 项-->
+                                            <!--</div>-->
+                                            <!--</div>-->
                                             <div class="col-sm-6">
-                                                <div class="dataTables_info" id="DataTables_Table_0_info" role="alert"
-                                                     aria-live="polite" aria-relevant="all">显示 1 到 10 项，共 17 项
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="dataTables_paginate paging_simple_numbers"
-                                                     id="DataTables_Table_0_paginate">
-                                                    <ul class="pagination">
-                                                        <li class="paginate_button previous disabled"
-                                                            aria-controls="DataTables_Table_0" tabindex="0"
-                                                            id="DataTables_Table_0_previous"><a href="#"
-                                                                                                style="width: 70px;height: 30px">上一页</a>
-                                                        </li>
-                                                        <li class="paginate_button active"
-                                                            aria-controls="DataTables_Table_0" tabindex="0"><a href="#">1</a>
-                                                        </li>
-                                                        <li class="paginate_button " aria-controls="DataTables_Table_0"
-                                                            tabindex="0"><a href="#">2</a></li>
-                                                        <li class="paginate_button next"
-                                                            aria-controls="DataTables_Table_0" tabindex="0"
-                                                            id="DataTables_Table_0_next"><a href="#" style="width: 70px;height: 30px">下一页</a>
+                                                <!--<div class="dataTables_paginate paging_simple_numbers"-->
+                                                <!--id="DataTables_Table_0_paginate">-->
+                                                <!--</div>-->
+                                                <span style="float: left; padding: 5px">
+								总共&nbsp;<b th:text="${total}"></b>&nbsp;条
+                            </span>
+                                                <span style="float: left; padding: 5px">
+								当前&nbsp;<span style="color: red;" th:text="${page}">1</span>
+                                &nbsp;/&nbsp; <b th:text="${totalPage}">1</b>&nbsp;页&nbsp;&nbsp;
+                            </span>
+                                                <nav aria-label="Page navigation" style="margin: 0 auto; width: 240px">
+                                                    <ul class="pagination" style="margin: 0;">
+                                                        <li th:each="array:${arr}">
+                                                            <a th:href="@{attendce(pageNo=${array})}"
+                                                               th:text="${array}">view</a>
                                                         </li>
                                                     </ul>
-                                                </div>
+                                                </nav>
                                             </div>
                                         </div>
                                     </div>
@@ -439,16 +325,16 @@
 <script type="text/javascript" src="/static/js/admin.js"></script>
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
-        var local_username=localStorage.getItem("login_username");
-        var e=document.getElementById("loginname");
-        console.log("local_username:"+local_username);
-        e.innerText=local_username;
+        var local_username = localStorage.getItem("login_username");
+        var e = document.getElementById("loginname");
+        console.log("local_username:" + local_username);
+        e.innerText = local_username;
 
         var login_username = [[${login_username}]];
-        console.log("login_username:"+login_username);
-        if(login_username!=undefined){
-            localStorage.setItem("login_username",login_username);
-            e.innerText=login_username;
+        console.log("login_username:" + login_username);
+        if (login_username != undefined) {
+            localStorage.setItem("login_username", login_username);
+            e.innerText = login_username;
         }
     }
 

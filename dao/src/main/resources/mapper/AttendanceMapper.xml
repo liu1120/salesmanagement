@@ -13,6 +13,18 @@
         <result column="at_end_type" property="atEndType"/>
     </resultMap>
 
+
+    <resultMap id="AttendanSearch" type="com.zzlbe.dao.search.AttendanSearch">
+        <result column="at_id" property="atId"/>
+        <result column="at_seller_id" property="atSellerId"/>
+        <result column="sp_realname" property="name"/>
+        <result column="at_day" property="atDay"/>
+        <result column="at_type" property="atType"/>
+        <result column="at_start" property="atStart"/>
+        <result column="at_start_type" property="atStartType"/>
+        <result column="at_end" property="atEnd"/>
+        <result column="at_end_type" property="atEndType"/>
+    </resultMap>
     <sql id="tableName">tb_attendance</sql>
 
     <sql id="columns">
@@ -46,6 +58,12 @@
         FROM
         <include refid="tableName"/>
         <include refid="condition"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
+    <select id="select2ByPage" resultMap="AttendanSearch">
+        select <include refid="columns"/>,sp_realname
+        from tb_seller t1 left join tb_attendance t2 on t1.sp_id = t2.at_seller_id GROUP BY at_id
         LIMIT #{firstIndex}, #{size}
     </select>
 
