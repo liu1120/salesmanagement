@@ -162,7 +162,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="" class="nav-link">
+                                <a href="/admin/left" class="nav-link">
                                     <i class="icon icon-puzzle"></i>&nbsp;&nbsp; 出差审核
                                 </a>
                             </li>
@@ -240,23 +240,21 @@
                                                 </tr>
                                                 </tbody>
                                             </table>
+
                                             <div>
-
-
-
-
-							<span style="float: left; padding: 5px">
-								总共&nbsp;<b th:text="${total}"></b>&nbsp;条
-                            </span>
-                            <span style="float: left; padding: 5px">
+							                    <span style="float: left; padding: 5px">
+                                                    总共&nbsp;<b th:text="${total}"></b>&nbsp;条
+                                                </span>
+                                                <span style="float: left; padding: 5px">
 								当前&nbsp;<span style="color: red;" th:text="${page}">1</span>
                                 &nbsp;/&nbsp; <b th:text="${totalPage}">1</b>&nbsp;页&nbsp;&nbsp;
                             </span>
                                                 <nav aria-label="Page navigation" style="margin: 0 auto; width: 240px">
                                                     <ul class="pagination" style="margin: 0;">
-                                                            <li th:each="array:${arr}">
-                                                                <a th:href="@{getAllgoods(pageNo=${array})}"  th:text="${array}">view</a>
-                                                            </li>
+                                                        <li th:each="array:${arr}">
+                                                            <a th:href="@{getAllgoods(pageNo=${array})}"
+                                                               th:text="${array}">view</a>
+                                                        </li>
                                                     </ul>
                                                 </nav>
                                             </div>
@@ -283,17 +281,17 @@
 <script type="text/javascript" src="/static/js/admin.js"></script>
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
-        var local_username=localStorage.getItem("login_username");
-        var e=document.getElementById("loginname");
-        console.log("local_username:"+local_username);
-        e.innerText=local_username;
+        var local_username = localStorage.getItem("login_username");
+        var e = document.getElementById("loginname");
+        console.log("local_username:" + local_username);
+        e.innerText = local_username;
 
         var login_username = [[${login_username}]];
-        console.log("login_username:"+login_username);
-        if(login_username!=undefined){
-            localStorage.setItem("login_username",login_username);
-            e.innerText=login_username;
-        }else{
+        console.log("login_username:" + login_username);
+        if (login_username != undefined) {
+            localStorage.setItem("login_username", login_username);
+            e.innerText = login_username;
+        } else {
             // if(login_username==undefined){
             //     document.write("<form action='/admin/index' method=post name=manageDepForm style='display:none'>");
             //     document.write("<input type=hidden name='username' value=''/>");//参数1
