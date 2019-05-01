@@ -26,6 +26,57 @@
         gi_imgpath
     </sql>
 
+    <sql id="condition">
+        <where>
+            <if test="giftName != null">
+                AND gi_name REGEXP #{giftName}
+            </if>
+            <if test="credit != null">
+                AND gi_credit = #{credit}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectById" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE
+        gi_id = #{id}
+    </select>
+
+    <select id="selectAll" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+    </select>
+
+    <select id="selectListByExample" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+    </select>
+
+    <select id="selectByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
+    <select id="selectByPageTotal" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+    </select>
 
     <insert id="insert"  useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
@@ -46,21 +97,4 @@
         )
     </insert>
 
-
-
-    <select id="selectById" resultMap="BaseMap">
-        SELECT
-        <include refid="columns"/>
-        FROM
-        <include refid="tableName"/>
-        WHERE
-        gi_id = #{id}
-    </select>
-
-    <select id="selectAll" resultMap="BaseMap">
-        SELECT
-        <include refid="columns"/>
-        FROM
-        <include refid="tableName"/>
-    </select>
 </mapper>
