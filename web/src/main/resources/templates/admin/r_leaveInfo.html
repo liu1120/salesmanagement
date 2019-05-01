@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/stylesOA.css">
 </head>
-<body class="sidebar-fixed header-fixed" onload="writeLoginInfo();ischeck()">
+<body class="sidebar-fixed header-fixed" onload="writeLoginInfo()">
 <div class="page-wrapper">
     <nav class="navbar page-header" style="padding-top: 0px">
         <a href="" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
@@ -188,109 +188,103 @@
                     <div class="col-md-12">
                         <!--模板结束11111-->
 
-                        <!--上班打卡-->
-                        <div class="col-sm-12">
-                            <div class="ibox float-e-margins">
-                                <div class="ibox-title">
-                                    <h5>员工考勤列表</h5>
-                                </div>
-                                <div class="ibox-content">
-                                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline"
-                                         role="grid">
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div>&nbsp;&nbsp;姓名&nbsp;&nbsp;</div>
-                                                <select id="single-seller" class="form-control" style="width:150px">
-                                                    <option>--请选择--</option>
-                                                </select>
-                                            </div>
+                        <div class="wrapper wrapper-content animated fadeInRight">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="ibox float-e-margins">
+                                        <div class="ibox-title">
+                                            <h5>查看员工出差信息</h5>
                                         </div>
-                                        <table class="table table-striped table-bordered table-hover dataTables-example dataTable no-footer"
-                                               id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
-                                            <thead>
-                                            <tr role="row">
-                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="工号："
-                                                    style="width: 64px;">工号
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="姓名："
-                                                    style="width: 72px;">姓名
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="日期："
-                                                    style="width: 118px;">日期
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="时间："
-                                                    style="width: 64px;">时间
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="上班签到时间："
-                                                    style="width: 147px;">上班签到时间
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="签到类别："
-                                                    style="width: 106px;">签到类别
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="下班签到时间："
-                                                    style="width: 148px;">下班签到时间
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="签到类别："
-                                                    style="width: 107px;">签到类别
-                                                </th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
+                                        <div class="ibox-content">
 
-                                            <tr class="gradeA odd" th:each="attend:${attendanSearches}">
-                                                <td th:text="${attend.atSellerId}"></td>
-                                                <td th:text="${attend.name}"></td>
-                                                <td th:text="${attend.atDay}"></td>
+                                            <!--<form method="post" class="form-horizontal" action="leftDisagree">-->
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">工号</label>
+                                                            <input class="form-control" value="" th:field="*{trip.trSellerId}" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">姓名</label>
+                                                            <input class="form-control" value="" th:field="*{trip.sellerName}" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">部门</label>
+                                                            <input class="form-control" value="" th:field="*{trip.post}"readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">职位</label>
+                                                            <input class="form-control" value="" th:field="*{trip.position}" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">起始时间</label>
+                                                            <input class="form-control" value="" th:field="*{trip.trStart}" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">结束时间</label>
+                                                            <input class="form-control" value="" th:field="*{trip.trStop}" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">出发地</label>
+                                                            <input class="form-control" value="" th:field="*{trip.trCity}" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">目的地</label>
+                                                            <input class="form-control" value="" th:field="*{trip.trToCity}" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">出差原因</label>
+                                                            <input class="form-control"  value="" th:field="*{trip.trIntent}" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                                <td th:if="${attend.atType} eq 1">正常上班</td>
-                                                <td th:if="${attend.atType} eq 2">异常打卡</td>
-                                                <td th:if="${attend.atType} eq 3">加班</td>
-                                                <td th:if="${attend.atType} eq 4">请假</td>
-                                                <td th:if="${attend.atType} eq 5">出差</td>
-                                                <td th:if="${attend.atType} eq 5">出差</td>
-
-
-                                                <td th:text="${attend.atStart}"></td>
-                                                <td th:if="${attend.atStartType} eq 1">正常</td>
-                                                <td th:if="${attend.atStartType} eq 2">迟到</td>
-                                                <td th:if="${attend.atStartType} eq 3">未签到</td>
-
-                                                <td th:text="${attend.atEnd}"></td>
-                                                <td th:if="${attend.atEndType} eq 1">正常</td>
-                                                <td th:if="${attend.atEndType} eq 2">迟到</td>
-                                                <td th:if="${attend.atEndType} eq 3">未签到</td>                                            </tr>
-                                            </tbody>
-                                        </table>
-                                        <div class="row">
-                                                <span style="float: left; padding: 5px">
-								                    总共&nbsp;<b th:text="${total}"></b>&nbsp;条
-                                                </span>
-                                                <span style="float: left; padding: 5px">
-                                                    当前&nbsp;<span style="color: red;" th:text="${page}">1</span>
-                                                    &nbsp;/&nbsp; <b th:text="${totalPage}">1</b>&nbsp;页&nbsp;&nbsp;
-                                                </span>
-                                                <nav aria-label="Page navigation" style="margin: 0 auto; width: 240px">
-                                                    <ul class="pagination" style="margin: 0;">
-                                                        <li th:each="array:${arr}">
-                                                            <a th:href="@{attendce(pageNo=${array})}"
-                                                               th:text="${array}">view</a>
-                                                        </li>
-                                                    </ul>
-                                                </nav>
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group">
+                                                    <div class="col-sm-10 col-sm-offset-8">
+                                                        <form method="post" action="leftDisagree" id="putInfo">
+                                                            <textarea id="textarea" name="textarea" class="form-control" style="display: none;min-height: 50px;width: 100%"  onfocus="if (value ==''){value='填写拒绝理由'}"></textarea>
+                                                            <br><br>
+                                                            <input type="hidden" value=""th:field="*{trip.trId}">
+                                                        </form>
+                                                    </div>
+                                                    <div class="col-sm-10 col-sm-offset-8">
+                                                        <a th:if="${trip.trState} eq 1" id="a1"  class="btn btn-info" onclick="writeInfo()">拒&nbsp;&nbsp;绝</a>
+                                                        <a class="btn btn-info" id="a2" style="display: none"  onclick="document:putInfo.submit()">提&nbsp;&nbsp;交</a>&nbsp;&nbsp;
+                                                        <a class="btn btn-success" id="a3" th:href="@{leftAgree(id=${trip.trId})}"  th:if="${trip.trState} eq 1" onclick="return(confirm('确定批准?'))">批&nbsp;&nbsp;准</a>&nbsp;&nbsp;
+                                                        <a class="btn btn-primary"  th:href="@{left}">返&nbsp;&nbsp;回</a>&nbsp;&nbsp;
+                                                    </div>
+                                                </div>
+                                            <!--</form>-->
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                         <!--模板开始222222-->
                     </div>
                 </div>
@@ -319,22 +313,16 @@
             e.innerText = login_username;
         }
     }
-    function ischeck() {
-        var id = [[${id}]];
-        console.log("id---"+id);
-        var s1 = document.getElementById("single-seller");
-        for (i = 0; i <= s1.options.length; i++) {
-            if (s1.options[i].value == id) {
-                s1.options[i].selected = true;
-            }
-        }
+    function writeInfo() {
+        var textarea=document.getElementById("textarea");
+        var a1=document.getElementById("a1");
+        var a2=document.getElementById("a2");
+        var a3=document.getElementById("a3");
+        textarea.style.display="block";
+        a1.style.display="none";
+        a2.style.display="block";
+        a3.style.display="none";
     }
-</script>
-<script>
-    $("#single-seller").change(function(){
-        var sellerid=$("#single-seller").val()
-        window.location.href="attendce?id="+sellerid;
-    });
 
 </script>
 </html>

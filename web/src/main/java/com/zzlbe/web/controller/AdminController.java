@@ -292,10 +292,6 @@ public class AdminController {
     }
 
 
-
-
-
-
     @GetMapping("question")//后台查看-技术咨询
     public ModelAndView question() {
         ModelAndView mv=new ModelAndView();
