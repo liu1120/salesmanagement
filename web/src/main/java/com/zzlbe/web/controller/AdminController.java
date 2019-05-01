@@ -144,6 +144,7 @@ public class AdminController {
         List<AttendanSearch> attendanSearches= attendanceMapper.select2ByPage(attendanceSearch);
         System.out.println("attendanSearches:"+attendanSearches.toString());
         System.out.println("attendanSearches:"+attendanSearches);
+        System.out.println("json:"+JSON.toJSONString(attendanSearches));
         return attendanSearches;
     }
 
@@ -193,7 +194,6 @@ public class AdminController {
         }
         List<GoodssellSearch> goodssellSearches= orderMapper.getSellerSell(sellerid);
         String str=JSON.toJSONString(goodssellSearches);
-        System.out.println("getSellerSell:"+str);
         return str;
     }
     @RequestMapping("sellersvolume")//当前月销售额
@@ -295,12 +295,6 @@ public class AdminController {
 
 
 
-    @GetMapping("left")//后台查看-出差审核
-    public ModelAndView left() {
-        ModelAndView mv=new ModelAndView();
-        mv.setViewName("admin/r_leave.html");
-        return  mv;
-    }
 
     @GetMapping("question")//后台查看-技术咨询
     public ModelAndView question() {

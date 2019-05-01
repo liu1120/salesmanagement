@@ -203,7 +203,10 @@ public class BusinessController {
         ModelAndView mv=new ModelAndView();
         AttendanceSearch attendanceSearch=new AttendanceSearch();
         if(pageNo!=null)attendanceSearch.setPage(pageNo);
-        if(id!=null)attendanceSearch.setAtSellerId(id);
+        if(id!=null){
+            attendanceSearch.setAtSellerId(id);
+            mv.addObject("id",id);
+        }
 
         List<AttendanSearch> attendanSearches= attendanceMapper.select2ByPage(attendanceSearch);
         Integer total=attendanceMapper.selectByPageTotal(attendanceSearch);
@@ -226,5 +229,16 @@ public class BusinessController {
         return  mv;
     }
 
+
+    /**
+     * 后台查看-出差审核
+     * @return
+     */
+    @GetMapping("left")
+    public ModelAndView left() {
+        ModelAndView mv=new ModelAndView();
+        mv.setViewName("admin/r_leave.html");
+        return  mv;
+    }
 
 }

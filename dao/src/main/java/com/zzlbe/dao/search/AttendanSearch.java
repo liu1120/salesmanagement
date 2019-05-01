@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.util.Date;
-
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -29,7 +27,7 @@ public class AttendanSearch extends BasePageRequest {//比AttendanceEntity新增
      * 打卡日期
      */
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    private Date atDay;
+    private String atDay;
     /**
      * 1正常上班，2异常打卡，3加班，4请假，5出差
      */
@@ -38,7 +36,7 @@ public class AttendanSearch extends BasePageRequest {//比AttendanceEntity新增
      * 上班打卡时间
      */
     @JsonFormat(timezone = "GMT+8", pattern = "HH:mm:ss")
-    private Date atStart;
+    private String atStart;
     /**
      * 上班打卡类型：1正常,2迟到,3未签到。默认未签到
      */
@@ -47,7 +45,7 @@ public class AttendanSearch extends BasePageRequest {//比AttendanceEntity新增
      * 下班打卡时间
      */
     @JsonFormat(timezone = "GMT+8", pattern = "HH:mm:ss")
-    private Date atEnd;
+    private String atEnd;
     /**
      * 下班打卡类型：1正常,2迟到,3未签到。默认未签到
      */

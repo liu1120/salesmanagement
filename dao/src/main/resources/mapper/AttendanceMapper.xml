@@ -63,7 +63,9 @@
 
     <select id="select2ByPage" resultMap="AttendanSearch">
         select <include refid="columns"/>,sp_realname
-        from tb_seller t1 left join tb_attendance t2 on t1.sp_id = t2.at_seller_id GROUP BY at_id
+        from tb_seller t1 left join tb_attendance t2 on t1.sp_id = t2.at_seller_id
+        <include refid="condition"/>
+        GROUP BY at_id
         LIMIT #{firstIndex}, #{size}
     </select>
 
