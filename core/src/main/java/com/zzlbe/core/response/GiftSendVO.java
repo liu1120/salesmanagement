@@ -1,13 +1,18 @@
-package com.zzlbe.dao.entity;
+package com.zzlbe.core.response;
 
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.util.Date;
 
+/**
+ * PROJECT: Sales
+ * DESCRIPTION: 已发放礼品信息
+ *
+ * @author amos
+ * @date 2019/5/1
+ */
 @Data
-@Accessors(chain = true)
-public class SentgiftEntity {
+public class GiftSendVO {
 
     private Long id;
     /**
@@ -54,4 +59,11 @@ public class SentgiftEntity {
      * 发放日期
      */
     private Date date;
+
+    /**
+     * 名称/图片
+     */
+    private String giftName;
+    private String giftImage;
+
 }

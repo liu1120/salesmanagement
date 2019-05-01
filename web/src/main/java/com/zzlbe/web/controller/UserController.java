@@ -128,12 +128,13 @@ public class UserController {
         long formid = areaMapper.selectOne(areavo.getTowncode()).getSpid();
 
         SentgiftEntity sentgiftEntity = new SentgiftEntity();
+        sentgiftEntity.setGiftId(id);
         sentgiftEntity.setToid(uid);//需要制定派送人
         sentgiftEntity.setFromid(formid);
         sentgiftEntity.setTophone(userEntity.getPhone());
         sentgiftEntity.setAddress(adid + "");
         sentgiftEntity.setType(0);
-        sentgiftEntity.setNum((long)1);
+        sentgiftEntity.setNum((long) 1);
         sentgiftEntity.setCredit(giftEntity.getCredit());
         sentgiftEntity.setStatus(0);
         DateUtil du = new DateUtil();

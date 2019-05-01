@@ -4,6 +4,7 @@
 
     <resultMap id="BaseMap" type="com.zzlbe.dao.entity.SentgiftEntity">
         <result column="sg_id" property="id"/>
+        <result column="sg_gift_id" property="giftId"/>
         <result column="sg_fromid" property="fromid"/>
         <result column="sg_toid" property="toid"/>
         <result column="sg_tophone" property="tophone"/>
@@ -19,6 +20,7 @@
 
     <sql id="columns">
         sg_id,
+        sg_gift_id,
         sg_fromid,
         sg_toid,
         sg_tophone,
@@ -31,6 +33,32 @@
         sg_date
     </sql>
 
+    <sql id="condition">
+        <where>
+            <if test="giftIds != null">
+                AND sg_gift_id IN
+                <foreach collection="giftIds" item="item" open="(" close=")" separator="," index="giftIds">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="giftId != null">
+                AND sg_gift_id = #{giftId}
+            </if>
+            <if test="credit != null">
+                AND sg_credit = #{credit}
+            </if>
+            <if test="fromid != null">
+                AND sg_fromid = #{fromid}
+            </if>
+            <if test="toid != null">
+                AND sg_toid = #{toid}
+            </if>
+            <if test="tophone != null">
+                AND sg_tophone = #{tophone}
+            </if>
+        </where>
+    </sql>
+
     <select id="selectById" resultMap="BaseMap">
         SELECT
         <include refid="columns"/>
@@ -38,12 +66,30 @@
         <include refid="tableName"/>
         WHERE sg_id = #{id}
     </select>
+
     <select id="selectByUid" resultMap="BaseMap">
         SELECT
         <include refid="columns"/>
         FROM
         <include refid="tableName"/>
         WHERE sg_toid = #{uid}
+    </select>
+
+    <select id="selectByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
+    <select id="selectByPageTotal" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
@@ -55,6 +101,7 @@
         VALUES
         (
         #{id},
+        #{giftId},
         #{fromid},
         #{toid},
         #{tophone},
