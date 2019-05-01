@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/stylesOA.css">
 </head>
-<body class="sidebar-fixed header-fixed" onload="writeLoginInfo();">
+<body class="sidebar-fixed header-fixed" onload="writeLoginInfo();alertMessage()">
 <div class="page-wrapper">
     <nav class="navbar page-header" style="padding-top: 0px">
         <a href="" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
@@ -295,9 +295,9 @@
                                                 <div class="form-group">
                                                     <div class="col-sm-4 col-sm-offset-8">
                                                         <!--document:loginForm.submit()-->
+                                                        <a th:href="@{clearAssign(id=${seller.id})}" class="btn btn-danger"  onclick="return(confirm('确定清理销售员所有的指定区域?'))">清理划区</a>&nbsp;&nbsp;
                                                         <a onclick="isCheck();" class="btn btn-primary">保&nbsp;&nbsp;存</a>&nbsp;&nbsp;
-                                                        <a href="/admin/info"
-                                                           class="btn btn-info">返&nbsp;&nbsp;回</a>
+                                                        <a href="/admin/info" class="btn btn-info">返&nbsp;&nbsp;回</a>&nbsp;&nbsp;
                                                     </div>
                                                 </div>
                                             </form>
@@ -343,6 +343,12 @@
             document:loginForm.submit();
         }else{
             alert("请勾选区域！");
+        }
+    }
+    function alertMessage() {
+        var message = [[${message}]];
+        if(message!=null){
+            alert("修改操作："+message);
         }
     }
 

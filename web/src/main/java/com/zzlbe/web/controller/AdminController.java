@@ -226,13 +226,6 @@ public class AdminController {
         return  mv;
     }
 
-    //促销活动  ---后续实现
-    @GetMapping("activity")//当前地区销售额
-    public ModelAndView activity() {
-        ModelAndView mv=new ModelAndView();
-        mv.setViewName("admin/ac_list.html");
-        return  mv;
-    }
     @GetMapping("suggest")//后台查看-投诉与建议
     public ModelAndView suggest() {
         ModelAndView mv=new ModelAndView();

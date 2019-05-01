@@ -18,4 +18,7 @@ public interface AreaMapper {
 
     //更新数据管理员信息
     void update(AreaEntity areaEntity);
+
+    //更新数据管理员信息,只更新负责区域
+    void update2(AreaEntity areaEntity);
 }

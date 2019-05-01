@@ -88,7 +88,7 @@ public class BusinessController {
     }
 
     @ResponseBody
-    @PostMapping("infoSave")//后台查看-保存修改某一员工信息
+    @PostMapping("infoSave")//后台-保存修改某一员工信息
     public ModelAndView infoSave(Long id, String name, String realname, String phone, String post, String position) {
         ModelAndView mv = new ModelAndView();
         SellerEntity sellerEntity = new SellerEntity();
@@ -142,7 +142,6 @@ public class BusinessController {
         ModelAndView mv = new ModelAndView();
         SellerEntity sellerEntity = sellerMapper.selectById(spid);
         mv.addObject("seller", sellerEntity);
-
         List<AreaEntity> areaEntities = areaMapper.selectBySpid(spid);
         mv.addObject("areas", areaEntities);
         if(areaEntities.size()>0){
@@ -154,7 +153,7 @@ public class BusinessController {
         return mv;
     }
 
-    @PostMapping("saveAssign")//后台查看-为员工划分区域进行保存
+    @PostMapping("saveAssign")//后台-为员工划分区域进行保存
     public ModelAndView saveAssign(@RequestParam("areaName") Long areaName[],Long id) {
         ModelAndView mv = new ModelAndView();
         AreaEntity areaEntity=new AreaEntity();
@@ -163,8 +162,24 @@ public class BusinessController {
             areaEntity.setCountycode(areaName[i]);
             areaMapper.update(areaEntity);
         }
-//        mv.setViewName("admin/r_divideArea.html");
         mv.addObject("id",id);
+        mv.setViewName("redirect:/admin/infoAssign");
+        return mv;
+    }
+
+    @GetMapping("clearAssign")//后台-为员工划分区域进行清除操作
+    public ModelAndView clearAssign(@RequestParam("id") Long spid) {
+        ModelAndView mv = new ModelAndView();
+        AreaEntity areaEntity=new AreaEntity();
+
+        List<AreaEntity> areaEntities = areaMapper.selectBySpid(spid);
+        for(int i=0;i<areaEntities.size();i++){//countycode逐个更新
+            areaEntity.setCountycode(areaEntities.get(i).getCountycode());
+            areaMapper.update2(areaEntity);
+        }
+
+        mv.addObject("id",spid);
+        mv.addObject("message","已清空");
         mv.setViewName("redirect:/admin/infoAssign");
         return mv;
     }
@@ -240,8 +255,8 @@ public class BusinessController {
         if(pageNo!=null)tripSearch.setPage(pageNo);
         if(type!=null&&type!=0){
             tripSearch.setTrState(type);
-            mv.addObject("type",type);
         }
+        mv.addObject("type",type);
 
         List<TripEntitySearch> tripSearches= tripMapper.select2ByPage(tripSearch);
         Integer total=tripMapper.selectByPageTotal(tripSearch);
