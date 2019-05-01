@@ -10,7 +10,7 @@ public interface AddressMapper {
 
     AddressEntity selectById(long id);//通过id查询
 
-    List<AddressEntity> selectByUid(long uid);//通过商品id查询评论
+    List<AddressEntity> selectByUid(long uid);
 
     void insert(AddressEntity addressEntity);//用户添加地址
 

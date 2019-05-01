@@ -64,7 +64,7 @@
     <sql id="condition">
         <where>
             <if test="orId != null">
-                AND or_id = #{orId}
+                AND or_id REGEXP #{orId}
             </if>
             <if test="orGoodsId != null">
                 AND or_goods_id = #{orGoodsId}

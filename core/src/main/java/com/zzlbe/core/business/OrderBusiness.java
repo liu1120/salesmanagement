@@ -1,10 +1,7 @@
 package com.zzlbe.core.business;
 
 import com.zzlbe.core.common.GenericResponse;
-import com.zzlbe.core.request.OrderCheckForm;
-import com.zzlbe.core.request.OrderForm;
-import com.zzlbe.core.request.OrderProcessForm;
-import com.zzlbe.core.request.PaymentForm;
+import com.zzlbe.core.request.*;
 import com.zzlbe.dao.search.OrderSearch;
 
 /**
@@ -93,5 +90,13 @@ public interface OrderBusiness {
      * @return GenericResponse
      */
     GenericResponse getTotalAmount();
+
+    /**
+     * 添加收货地址
+     *
+     * @param orderAddressForm 收货地址表单
+     * @return GenericResponse
+     */
+    GenericResponse orderAddress(OrderAddressForm orderAddressForm);
 
 }

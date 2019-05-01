@@ -6,14 +6,12 @@ import com.zzlbe.core.business.OrderBusiness;
 import com.zzlbe.core.common.ErrorCodeEnum;
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.constant.OrderStatusEnum;
-import com.zzlbe.core.request.OrderCheckForm;
-import com.zzlbe.core.request.OrderForm;
-import com.zzlbe.core.request.OrderProcessForm;
-import com.zzlbe.core.request.PaymentForm;
+import com.zzlbe.core.request.*;
 import com.zzlbe.dao.entity.*;
 import com.zzlbe.dao.mapper.*;
 import com.zzlbe.dao.search.AmountSearch;
 import com.zzlbe.dao.search.OrderSearch;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
@@ -49,7 +47,12 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
     @Override
     public GenericResponse preview(OrderForm orderForm) {
         // 校验用户
-        UserEntity userEntity = userMapper.selectById(orderForm.getOrUserId());
+        UserEntity userEntity;
+        if (orderForm.getOrderFlag()) {
+            userEntity = userMapper.selectByPhoneNo(orderForm.getPhoneNo());
+        } else {
+            userEntity = userMapper.selectById(orderForm.getOrUserId());
+        }
         if (userEntity == null) {
             return new GenericResponse<>(ErrorCodeEnum.USER_NOT_FOUND);
         }
@@ -119,7 +122,6 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         if (orderEntity == null) {
             return new GenericResponse(ErrorCodeEnum.ORDER_NOT_FOUND);
         }
-        // 订单状态：0未付款,1已付款，2待发货,3已发货,4已签收,5退货中,6已退货，7完成交易,8审核拒绝
         Integer orStatus = orderEntity.getOrStatus();
 
         // 1.未付款，订单信息均可修改
@@ -170,7 +172,7 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
             orderEntity.setOrStatus(2);
         } else {
             // TODO 审核拒绝, 需要退款
-            orderEntity.setOrStatus(8);
+            orderEntity.setOrStatus(9);
         }
         orderEntity.setOrType(orderCheckForm.getOrType());
         orderEntity.setOrRefuse(orderCheckForm.getOrRefuse());
@@ -205,7 +207,7 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         }
         // 订单状态：0未付款,1已付款，2待发货,3已发货,4已签收,5退货中,6已退货，7完成交易,8审核拒绝
         Integer orStatus = orderEntity.getOrStatus();
-        if (orStatus == 6 || orStatus == 7 || orStatus == 8) {
+        if (orStatus >= 6) {
             return new GenericResponse(ErrorCodeEnum.ORDER_NOT_FOUND);
         }
 
@@ -249,6 +251,12 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
             }
             return new GenericResponse<>(orderEntity);
         }
+        if (StringUtils.isNotBlank(orderSearch.getPhoneNo())) {
+            UserEntity userEntity = userMapper.selectByPhoneNo(orderSearch.getPhoneNo());
+            if (userEntity != null) {
+                orderSearch.setOrUserId(userEntity.getId());
+            }
+        }
 
         List<OrderEntity> orderEntities = orderMapper.selectListByExample(orderSearch);
 
@@ -257,6 +265,12 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
 
     @Override
     public GenericResponse findPageByExample(OrderSearch orderSearch) {
+        if (StringUtils.isNotBlank(orderSearch.getPhoneNo())) {
+            UserEntity userEntity = userMapper.selectByPhoneNo(orderSearch.getPhoneNo());
+            if (userEntity != null) {
+                orderSearch.setOrUserId(userEntity.getId());
+            }
+        }
         List<OrderEntity> orderEntities = orderMapper.selectByPage(orderSearch);
         Integer total = orderMapper.selectByPageTotal(orderSearch);
 
@@ -274,6 +288,27 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         List<AmountSearch> amountByMonth = orderMapper.getTotalAmountByMonth();
         double totalAmount = amountByMonth.stream().mapToDouble(AmountSearch::getAmt).sum();
         return new GenericResponse<>(totalAmount);
+    }
+
+    @Override
+    public GenericResponse orderAddress(OrderAddressForm orderAddressForm) {
+        AddressEntity addressEntity = new AddressEntity();
+
+        if (orderAddressForm.getPhone() != null) {
+            UserEntity userEntity = userMapper.selectByPhoneNo(orderAddressForm.getPhone() + "");
+            if (userEntity != null) {
+                addressEntity.setUid(userEntity.getId());
+            }
+        }
+
+        addressEntity.setUname(orderAddressForm.getName());
+        addressEntity.setPhone(orderAddressForm.getPhone());
+        addressEntity.setInfo(orderAddressForm.getInfo());
+        addressEntity.setAddress(orderAddressForm.getAddress());
+        addressEntity.setStatus(0);
+        addressMapper.insert(addressEntity);
+
+        return new GenericResponse<>(addressEntity);
     }
 
     /**

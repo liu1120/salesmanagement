@@ -77,4 +77,8 @@ public class OrderSearch extends BasePageRequest {
      * 拒绝理由
      */
     private String orRefuse;
+    /**
+     * 用户手机号（销售员下单时使用）
+     */
+    private String phoneNo;
 }

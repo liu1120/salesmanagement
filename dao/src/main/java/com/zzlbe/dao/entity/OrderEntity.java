@@ -66,7 +66,7 @@ public class OrderEntity {
      */
     private Integer orAddress;
     /**
-     * 订单状态：0未付款,1已付款，2待发货,3已发货,4已签收,5退货中,6已退货，7完成交易,8审核拒绝
+     * 订单状态：0未付款，1已付款，2待发货，3已发货，4已签收，5退货中，6已退货，7完成交易，8已完成评价，9审核拒绝
      */
     private Integer orStatus;
     /**
