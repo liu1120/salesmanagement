@@ -45,7 +45,7 @@ public class GoodsEntity {
     /**
      * 农化产品点击量
      */
-    private String point;
+    private Integer point;
     /**
      * 更新时间
      */

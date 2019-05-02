@@ -37,7 +37,7 @@
                 <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">
                     <img src="/static/imgs/avatar-1.png" class="avatar avatar-sm" alt="logo">
-                    <span class="small ml-1 d-md-down-none" id="loginname"   th:text="${login_username}"></span>
+                    <span class="small ml-1 d-md-down-none" id="loginname" th:text="${login_username}"></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">
@@ -150,7 +150,7 @@
 
                         <ul class="nav-dropdown-items">
                             <li class="nav-item">
-                                <a href="/admin/info" class="nav-link active">
+                                <a href="/admin/info" class="nav-link">
                                     <i class="icon icon-puzzle"></i> &nbsp;&nbsp;信息管理
                                 </a>
                             </li>
@@ -162,7 +162,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="/admin/left" class="nav-link">
+                                <a href="/admin/left" class="nav-link active">
                                     <i class="icon icon-puzzle"></i>&nbsp;&nbsp; 出差审核
                                 </a>
                             </li>
@@ -193,81 +193,98 @@
                                 <div class="col-sm-12">
                                     <div class="ibox float-e-margins">
                                         <div class="ibox-title">
-                                            <h5>查看员工信息</h5>
+                                            <h5>查看员工出差信息</h5>
                                         </div>
                                         <div class="ibox-content">
 
-                                            <form method="post" class="form-horizontal" action="">
+                                            <!--<form method="post" class="form-horizontal" action="leftDisagree">-->
                                                 <div class="row">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-5">
                                                         <div class="form-group">
-                                                            <label
-                                                                   class="form-control-label">用户名</label>
-                                                            <input id="sp_name" class="form-control"
-                                                                   value="" th:field="*{seller.name}" readonly>
+                                                            <label class="form-control-label">工号</label>
+                                                            <input class="form-control" value="" th:field="*{trip.trSellerId}" readonly>
                                                         </div>
                                                     </div>
-
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-5">
                                                         <div class="form-group">
-                                                            <label
-                                                                   class="form-control-label">真实姓名</label>
-                                                            <input id="sp_realname" class="form-control"
-                                                                   value="" th:field="*{seller.realname}"  readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label
-                                                                   class="form-control-label">手机号</label>
-                                                            <input id="sp_phone" class="form-control"
-                                                                   value=""  th:field="*{seller.phone}"  readonly>
+                                                            <label class="form-control-label">姓名</label>
+                                                            <input class="form-control" value="" th:field="*{trip.sellerName}" readonly>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-5">
                                                         <div class="form-group">
-                                                            <label
-                                                                   class="form-control-label">部门</label>
-                                                            <input id="sp_post" class="form-control"
-                                                                   value="" th:field="*{seller.post}" readonly>
+                                                            <label class="form-control-label">部门</label>
+                                                            <input class="form-control" value="" th:field="*{trip.post}"readonly>
                                                         </div>
                                                     </div>
-
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-5">
                                                         <div class="form-group">
-                                                            <label
-                                                                   class="form-control-label">职位</label>
-                                                            <input id="sp_position" class="form-control"
-                                                                   value="" th:field="*{seller.position}" readonly>
+                                                            <label class="form-control-label">职位</label>
+                                                            <input class="form-control" value="" th:field="*{trip.position}" readonly>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5">
                                                         <div class="form-group">
-                                                            <label
-                                                                   class="form-control-label">工号</label>
-                                                            <input id="sp_number" class="form-control"
-                                                                   value="" th:field="*{seller.id}" readonly>
+                                                            <label class="form-control-label">起始时间</label>
+                                                            <input class="form-control" value="" th:field="*{trip.trStart}" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">结束时间</label>
+                                                            <input class="form-control" value="" th:field="*{trip.trStop}" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">出发地</label>
+                                                            <input class="form-control" value="" th:field="*{trip.trCity}" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">目的地</label>
+                                                            <input class="form-control" value="" th:field="*{trip.trToCity}" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">出差原因</label>
+                                                            <input class="form-control"  value="" th:field="*{trip.trIntent}" readonly>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="hr-line-dashed"></div>
                                                 <div class="form-group">
-                                                    <div class="col-sm-4 col-sm-offset-8">
-                                                        <a th:href="@{infoUpdate(id=${seller.id})}" class="btn btn-primary">修&nbsp;&nbsp;改</a>&nbsp;&nbsp;
-                                                        <a href="/admin/info" class="btn btn-info">返&nbsp;&nbsp;回</a>
+                                                    <div class="col-sm-10 col-sm-offset-8">
+                                                        <form method="post" action="leftDisagree" id="putInfo">
+                                                            <textarea id="textarea" name="textarea" class="form-control" style="display: none;min-height: 50px;width: 100%"  onfocus="if (value ==''){value='填写拒绝理由'}"></textarea>
+                                                            <br><br>
+                                                            <input type="hidden" value=""th:field="*{trip.trId}">
+                                                        </form>
+                                                    </div>
+                                                    <div class="col-sm-10 col-sm-offset-8">
+                                                        <a th:if="${trip.trState} eq 1" id="a1"  class="btn btn-info" onclick="writeInfo()">拒&nbsp;&nbsp;绝</a>
+                                                        <a class="btn btn-info" id="a2" style="display: none"  onclick="document:putInfo.submit()">提&nbsp;&nbsp;交</a>&nbsp;&nbsp;
+                                                        <a class="btn btn-success" id="a3" th:href="@{leftAgree(id=${trip.trId})}"  th:if="${trip.trState} eq 1" onclick="return(confirm('确定批准?'))">批&nbsp;&nbsp;准</a>&nbsp;&nbsp;
+                                                        <a class="btn btn-primary"  th:href="@{left}">返&nbsp;&nbsp;回</a>&nbsp;&nbsp;
                                                     </div>
                                                 </div>
-                                            </form>
+                                            <!--</form>-->
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
                         <!--模板开始222222-->
                     </div>
                 </div>
@@ -284,17 +301,27 @@
 <script type="text/javascript" src="/static/js/admin.js"></script>
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
-        var local_username=localStorage.getItem("login_username");
-        var e=document.getElementById("loginname");
-        console.log("local_username:"+local_username);
-        e.innerText=local_username;
+        var local_username = localStorage.getItem("login_username");
+        var e = document.getElementById("loginname");
+        console.log("local_username:" + local_username);
+        e.innerText = local_username;
 
         var login_username = [[${login_username}]];
-        console.log("login_username:"+login_username);
-        if(login_username!=undefined){
-            localStorage.setItem("login_username",login_username);
-            e.innerText=login_username;
+        console.log("login_username:" + login_username);
+        if (login_username != undefined) {
+            localStorage.setItem("login_username", login_username);
+            e.innerText = login_username;
         }
+    }
+    function writeInfo() {
+        var textarea=document.getElementById("textarea");
+        var a1=document.getElementById("a1");
+        var a2=document.getElementById("a2");
+        var a3=document.getElementById("a3");
+        textarea.style.display="block";
+        a1.style.display="none";
+        a2.style.display="block";
+        a3.style.display="none";
     }
 
 </script>

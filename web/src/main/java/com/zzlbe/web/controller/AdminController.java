@@ -226,13 +226,6 @@ public class AdminController {
         return  mv;
     }
 
-    //促销活动  ---后续实现
-    @GetMapping("activity")//当前地区销售额
-    public ModelAndView activity() {
-        ModelAndView mv=new ModelAndView();
-        mv.setViewName("admin/ac_list.html");
-        return  mv;
-    }
     @GetMapping("suggest")//后台查看-投诉与建议
     public ModelAndView suggest() {
         ModelAndView mv=new ModelAndView();
@@ -240,59 +233,6 @@ public class AdminController {
         mv.setViewName("admin/z_suggest.html");
         return  mv;
     }
-
-    @GetMapping("getAllgoods")//后台查看-商品列表
-    public ModelAndView getAllgoods(Integer pageNo) {
-        GoodsSearch goodsSearch=new GoodsSearch();
-        if (pageNo!=null){
-            goodsSearch.setPage(pageNo);
-        }
-        ModelAndView mv=new ModelAndView();
-        List<GoodsEntity> goodsEntities=goodsMapper.selectAllByPage(goodsSearch);
-
-        Integer total=goodsMapper.selectTotal();
-        int page=goodsSearch.getPage();//当前页
-        int size=goodsSearch.getSize();//页码大小
-
-        int totalPage=total/size+1;
-        int[] arr=new int[totalPage];
-        for(int i=0;i<arr.length;i++){
-            arr[i]=i+1;
-        }
-        mv.addObject("totalPage",totalPage);
-        mv.addObject("total",total);
-        mv.addObject("arr",arr);
-        mv.addObject("page",page);
-        mv.addObject("size",size);
-        mv.addObject("goodsEntities",goodsEntities);
-        mv.setViewName("admin/g_list.html");
-        return  mv;
-    }
-
-
-    @GetMapping("addGoods")//后台-增加商品
-    public ModelAndView getAllgoods() {
-        ModelAndView mv=new ModelAndView();
-        mv.setViewName("admin/g_infoAdd.html");
-        return  mv;
-    }
-
-    @GetMapping("order")//后台查看-订单列表
-    public ModelAndView order() {
-        ModelAndView mv=new ModelAndView();
-        mv.setViewName("admin/or_list.html");
-        return  mv;
-    }
-
-    @GetMapping("orderservice")//后台查看-订单售后
-    public ModelAndView orderservice() {
-        ModelAndView mv=new ModelAndView();
-        mv.setViewName("admin/se_list.html");
-        return  mv;
-    }
-
-
-
 
 
 

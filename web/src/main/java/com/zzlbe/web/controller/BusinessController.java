@@ -4,12 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.zzlbe.core.util.MD5Utils;
 import com.zzlbe.dao.entity.AreaEntity;
 import com.zzlbe.dao.entity.SellerEntity;
+import com.zzlbe.dao.entity.TripEntity;
 import com.zzlbe.dao.mapper.AreaMapper;
 import com.zzlbe.dao.mapper.AttendanceMapper;
 import com.zzlbe.dao.mapper.SellerMapper;
-import com.zzlbe.dao.search.AttendanSearch;
-import com.zzlbe.dao.search.AttendanceSearch;
-import com.zzlbe.dao.search.SellerSearch;
+import com.zzlbe.dao.mapper.TripMapper;
+import com.zzlbe.dao.search.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +26,8 @@ public class BusinessController {
     AreaMapper areaMapper;
     @Autowired
     AttendanceMapper attendanceMapper;
+    @Autowired
+    TripMapper tripMapper;
 
     /**
      * R5.0
@@ -58,7 +60,6 @@ public class BusinessController {
         mv.addObject("page", page);
         mv.addObject("sellerEntities", sellerEntities);
 
-        System.out.println("sellerEntities:" + sellerEntities);
         mv.setViewName("admin/r_info.html");
         return mv;
     }
@@ -87,7 +88,7 @@ public class BusinessController {
     }
 
     @ResponseBody
-    @PostMapping("infoSave")//后台查看-保存修改某一员工信息
+    @PostMapping("infoSave")//后台-保存修改某一员工信息
     public ModelAndView infoSave(Long id, String name, String realname, String phone, String post, String position) {
         ModelAndView mv = new ModelAndView();
         SellerEntity sellerEntity = new SellerEntity();
@@ -141,7 +142,6 @@ public class BusinessController {
         ModelAndView mv = new ModelAndView();
         SellerEntity sellerEntity = sellerMapper.selectById(spid);
         mv.addObject("seller", sellerEntity);
-
         List<AreaEntity> areaEntities = areaMapper.selectBySpid(spid);
         mv.addObject("areas", areaEntities);
         if(areaEntities.size()>0){
@@ -153,7 +153,7 @@ public class BusinessController {
         return mv;
     }
 
-    @PostMapping("saveAssign")//后台查看-为员工划分区域进行保存
+    @PostMapping("saveAssign")//后台-为员工划分区域进行保存
     public ModelAndView saveAssign(@RequestParam("areaName") Long areaName[],Long id) {
         ModelAndView mv = new ModelAndView();
         AreaEntity areaEntity=new AreaEntity();
@@ -162,8 +162,24 @@ public class BusinessController {
             areaEntity.setCountycode(areaName[i]);
             areaMapper.update(areaEntity);
         }
-//        mv.setViewName("admin/r_divideArea.html");
         mv.addObject("id",id);
+        mv.setViewName("redirect:/admin/infoAssign");
+        return mv;
+    }
+
+    @GetMapping("clearAssign")//后台-为员工划分区域进行清除操作
+    public ModelAndView clearAssign(@RequestParam("id") Long spid) {
+        ModelAndView mv = new ModelAndView();
+        AreaEntity areaEntity=new AreaEntity();
+
+        List<AreaEntity> areaEntities = areaMapper.selectBySpid(spid);
+        for(int i=0;i<areaEntities.size();i++){//countycode逐个更新
+            areaEntity.setCountycode(areaEntities.get(i).getCountycode());
+            areaMapper.update2(areaEntity);
+        }
+
+        mv.addObject("id",spid);
+        mv.addObject("message","已清空");
         mv.setViewName("redirect:/admin/infoAssign");
         return mv;
     }
@@ -222,8 +238,6 @@ public class BusinessController {
         mv.addObject("page",page);
         mv.addObject("arr",arr);
         mv.addObject("size",size);
-        System.out.println("attendanSearches:"+attendanSearches.toString());
-        System.out.println("json:"+JSON.toJSONString(attendanSearches));
         mv.addObject("attendanSearches",attendanSearches);
         mv.setViewName("admin/r_attence.html");
         return  mv;
@@ -235,9 +249,74 @@ public class BusinessController {
      * @return
      */
     @GetMapping("left")
-    public ModelAndView left() {
+    public ModelAndView left(Integer pageNo,Integer type) {
         ModelAndView mv=new ModelAndView();
+        TripSearch tripSearch=new TripSearch();
+        if(pageNo!=null)tripSearch.setPage(pageNo);
+        if(type!=null&&type!=0){
+            tripSearch.setTrState(type);
+        }
+        mv.addObject("type",type);
+
+        List<TripEntitySearch> tripSearches= tripMapper.select2ByPage(tripSearch);
+        Integer total=tripMapper.selectByPageTotal(tripSearch);
+        int size=tripSearch.getSize();//页码大小
+        int page=tripSearch.getPage();//当前页
+        int totalPage=total/size+1;
+        int[] arr=new int[totalPage];
+        for(int i=0;i<arr.length;i++){
+            arr[i]=i+1;
+        }
+        mv.addObject("total",total);
+        mv.addObject("totalPage",totalPage);
+        mv.addObject("size",size);
+        mv.addObject("page",page);
+        mv.addObject("arr",arr);
+        mv.addObject("tripSearches",tripSearches);
         mv.setViewName("admin/r_leave.html");
+        return  mv;
+    }
+
+
+
+    /**
+     * 后台查看-出差信息查看(具体某人请假信息信息)
+     * @return
+     */
+    @GetMapping("leftInfo")
+    public ModelAndView leftInfo(Long id) {
+        ModelAndView mv=new ModelAndView();
+        TripEntitySearch tripEntitySearch=tripMapper.select2ById(id);
+        mv.addObject("trip",tripEntitySearch);
+        mv.setViewName("admin/r_leaveInfo.html");
+        return  mv;
+    }
+
+    @GetMapping("leftAgree")
+    public ModelAndView leftAgree(Long id,Integer type) {//传入请假的那条信息id
+        ModelAndView mv=new ModelAndView();
+        TripEntity tripEntity=new TripEntity();
+        tripEntity.setTrId(id);//获得那条假条
+        if(type!=null){
+            tripEntity.setTrState(type);//有状态，则传入状态
+        }else{
+            tripEntity.setTrState(2);//否则写入状态，2同意
+        }
+        tripMapper.update(tripEntity);
+        mv.setViewName("redirect:/admin/left");
+        return  mv;
+    }
+
+    @PostMapping("leftDisagree")
+    public ModelAndView leftDisagree(@RequestParam("textarea") String textarea,@RequestParam("trId")  Long id) {//传入请假的那条信息id
+        ModelAndView mv=new ModelAndView();
+        TripEntity tripEntity=new TripEntity();
+        tripEntity.setTrId(id);//获得那条假条
+        tripEntity.setTrState(3);//有状态，则传入状态
+        tripEntity.setTrReason(textarea);
+        System.out.println("tripEntity:"+tripEntity);
+        tripMapper.update(tripEntity);
+        mv.setViewName("redirect:/admin/left");
         return  mv;
     }
 

@@ -15,6 +15,22 @@
         <result column="tr_reason" property="trReason"/>
     </resultMap>
 
+    <resultMap id="TripEntitySearch" type="com.zzlbe.dao.search.TripEntitySearch">
+        <result column="tr_id" property="trId"/>
+        <result column="tr_city" property="trCity"/>
+        <result column="tr_to_city" property="trToCity"/>
+        <result column="tr_type" property="trType"/>
+        <result column="tr_intent" property="trIntent"/>
+        <result column="tr_start" property="trStart"/>
+        <result column="tr_stop" property="trStop"/>
+        <result column="tr_seller_id" property="trSellerId"/>
+        <result column="tr_state" property="trState"/>
+        <result column="tr_reason" property="trReason"/>
+        <result column="sp_realname" property="sellerName"/>
+        <result column="sp_post" property="post"/>
+        <result column="sp_position" property="position"/>
+    </resultMap>
+
     <sql id="tableName">tb_trip</sql>
 
     <sql id="columns">
@@ -71,6 +87,13 @@
         LIMIT #{firstIndex}, #{size}
     </select>
 
+
+    <select id="select2ByPage" resultMap="TripEntitySearch">
+        select <include refid="columns"/>,sp_realname from tb_trip t1 left join tb_seller t2 on t1.tr_seller_id = t2.sp_id
+        <include refid="condition"/>
+        GROUP BY tr_id
+        LIMIT #{firstIndex}, #{size}
+    </select>
     <select id="selectByPageTotal" resultType="java.lang.Integer">
         SELECT
         COUNT(*)
@@ -85,6 +108,11 @@
         FROM
         <include refid="tableName"/>
         WHERE tr_id = #{id}
+    </select>
+
+    <select id="select2ById" resultMap="TripEntitySearch">
+        select <include refid="columns"/>,sp_realname,sp_post,sp_position from tb_trip t1 left join tb_seller t2 on t1.tr_seller_id = t2.sp_id
+        where tr_id=#{id}
     </select>
 
     <delete id="delete">

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/stylesOA.css">
 </head>
-<body class="sidebar-fixed header-fixed" onload="writeLoginInfo()">
+<body class="sidebar-fixed header-fixed" onload="writeLoginInfo();ischeck()">
 <div class="page-wrapper">
     <nav class="navbar page-header" style="padding-top: 0px">
         <a href="" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
@@ -163,7 +163,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="/admin/left" class="nav-link">
+                                <a href="/admin/left" class="nav-link active">
                                     <i class="icon icon-puzzle"></i>&nbsp;&nbsp; 出差审核
                                 </a>
                             </li>
@@ -201,17 +201,12 @@
                                                  role="grid">
                                                 <div class="row">
 
-                                                    <div class="col-sm-4">
-                                                        <div id="DataTables_Table_0_filter" class="dataTables_filter">
-                                                            <label>查找：<input type="search" class="form-control input-sm"
-                                                                             aria-controls="DataTables_Table_0"></label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        &nbsp;&nbsp;选择&nbsp;<select id="single-select" class="form-control">
-                                                        <option>全部</option>
-                                                        <option>已批准</option>
-                                                        <option>未批准</option>
+                                                    <div class="col-sm-6">
+                                                        &nbsp;&nbsp;选择&nbsp;<select id="select-type" class="form-control" style="width:100px">
+                                                        <option value="1">全部</option>
+                                                        <option value="1">待处理</option>
+                                                        <option value="2">同意</option>
+                                                        <option value="3">拒绝</option>
                                                     </select>
                                                     </div>
 
@@ -221,187 +216,81 @@
                                                        aria-describedby="DataTables_Table_0_info">
                                                     <thead>
                                                     <tr role="row">
-                                                        <th class="sorting_asc" tabindex="0"
+                                                        <th class="sorting" tabindex="0"
                                                             aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                                            aria-sort="ascending" aria-label="序号：激活排序列升序"
-                                                            style="width: 71px;">序号
+                                                            aria-label="工号：" style="width: 71px;">工号
                                                         </th>
                                                         <th class="sorting" tabindex="0"
                                                             aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                                            aria-label="姓名：激活排序列升序" style="width: 71px;">姓名
+                                                            aria-label="姓名：" style="width: 71px;">姓名
                                                         </th>
                                                         <th class="sorting" tabindex="0"
                                                             aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                                            aria-label="开始日期：激活排序列升序" style="width: 131px;">开始日期
+                                                            aria-label="开始日期：" style="width: 131px;">开始日期
                                                         </th>
                                                         <th class="sorting" tabindex="0"
                                                             aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                                            aria-label="结束日期：激活排序列升序" style="width: 131px;">结束日期
+                                                            aria-label="结束日期：" style="width: 131px;">结束日期
                                                         </th>
                                                         <th class="sorting" tabindex="0"
                                                             aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                                            aria-label="天数：激活排序列升序" style="width: 71px;">天数
+                                                            aria-label="类型：" style="width: 72px;">类型
                                                         </th>
                                                         <th class="sorting" tabindex="0"
                                                             aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                                            aria-label="类型：激活排序列升序" style="width: 72px;">类型
+                                                            aria-label="出差原因：" style="width: 241px;">出差原因
                                                         </th>
                                                         <th class="sorting" tabindex="0"
                                                             aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                                            aria-label="出差原因：激活排序列升序" style="width: 241px;">出差原因
+                                                            aria-label="审批状态：" style="width: 119px;">审批状态
                                                         </th>
                                                         <th class="sorting" tabindex="0"
                                                             aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                                            aria-label="审批状态：激活排序列升序" style="width: 119px;">审批状态
+                                                            aria-label="">操作
                                                         </th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
 
+                                                    <tr class="gradeA odd" th:each="trip:${tripSearches}">
+                                                        <td th:text="${trip.trSellerId}"></td>
+                                                        <td th:text="${trip.sellerName}"></td>
+                                                        <td th:text="${trip.trStart}"></td>
+                                                        <td th:text="${trip.trStop}"></td>
 
-                                                    <tr class="gradeA odd">
-                                                        <td class="sorting_1">1</td>
-                                                        <td class=" ">李5</td>
+                                                        <td th:text="${trip.trType}"></td>
+                                                        <td th:text="${trip.trIntent}"></td>
 
-                                                        <td class=" ">2018-12-01</td>
-                                                        <td class=" ">2018-12-01</td>
-                                                        <td class=" ">2</td>
-                                                        <td class=" ">项目出差</td>
-                                                        <td class=" ">家中有事</td>
-                                                        <td class=" ">未批准</td>
-                                                    </tr>
-                                                    <tr class="gradeA even">
-                                                        <td class="sorting_1">2</td>
-                                                        <td class=" ">张4</td>
 
-                                                        <td class=" ">2018-05-16</td>
-                                                        <td class=" ">2018-05-16</td>
-                                                        <td class=" ">2</td>
-                                                        <td class=" ">项目出差</td>
-                                                        <td class=" ">心情不好，上个毛班。</td>
-                                                        <td class=" ">已批准</td>
-                                                    </tr>
-                                                    <tr class="gradeA odd">
-                                                        <td class="sorting_1">3</td>
-                                                        <td class=" ">张4</td>
+                                                        <td th:if="${trip.trState} eq 1">待处理</td>
+                                                        <td th:if="${trip.trState} eq 2">已同意</td>
+                                                        <td th:if="${trip.trState} eq 3">拒绝</td>
 
-                                                        <td class=" ">2017-08-09</td>
-                                                        <td class=" ">2017-08-09</td>
-                                                        <td class=" ">3</td>
-                                                        <td class=" ">项目出差</td>
-                                                        <td class=" ">出去打猎</td>
-                                                        <td class=" ">未批准</td>
-                                                    </tr>
-                                                    <tr class="gradeA even">
-                                                        <td class="sorting_1">4</td>
-                                                        <td class=" ">张4</td>
+                                                        <td id="@{${trip.trSellerId}}">
 
-                                                        <td class=" ">2017-08-06</td>
-                                                        <td class=" ">2017-08-06</td>
-                                                        <td class=" ">5</td>
-                                                        <td class=" ">项目出差</td>
-                                                        <td class=" ">出去打猎</td>
-                                                        <td class=" ">已批准</td>
-                                                    </tr>
-                                                    <tr class="gradeA odd">
-                                                        <td class="sorting_1">5</td>
-                                                        <td class=" ">刘3</td>
-
-                                                        <td class=" ">2017-07-14</td>
-                                                        <td class=" ">2017-07-14</td>
-                                                        <td class=" ">3</td>
-                                                        <td class=" ">项目出差</td>
-                                                        <td class=" ">真的有点事</td>
-                                                        <td class=" ">已批准</td>
-                                                    </tr>
-                                                    <tr class="gradeA even">
-                                                        <td class="sorting_1">6</td>
-                                                        <td class=" ">张2</td>
-
-                                                        <td class=" ">2017-07-13</td>
-                                                        <td class=" ">2017-07-13</td>
-                                                        <td class=" ">1</td>
-                                                        <td class=" ">项目出差</td>
-                                                        <td class=" ">真的有点事</td>
-                                                        <td class=" ">已批准</td>
-                                                    </tr>
-                                                    <tr class="gradeA odd">
-                                                        <td class="sorting_1">7</td>
-                                                        <td class=" ">李5</td>
-
-                                                        <td class=" ">2017-07-11</td>
-                                                        <td class=" ">2017-07-11</td>
-                                                        <td class=" ">1</td>
-                                                        <td class=" ">项目出差</td>
-                                                        <td class=" ">家中有事</td>
-                                                        <td class=" ">未批准</td>
-                                                    </tr>
-                                                    <tr class="gradeA even">
-                                                        <td class="sorting_1">8</td>
-                                                        <td class=" ">唐y</td>
-
-                                                        <td class=" ">2017-07-11</td>
-                                                        <td class=" ">2017-07-11</td>
-                                                        <td class=" ">1</td>
-                                                        <td class=" ">项目出差</td>
-                                                        <td class=" ">回家看看</td>
-                                                        <td class=" ">已批准</td>
-                                                    </tr>
-                                                    <tr class="gradeA odd">
-                                                        <td class="sorting_1">9</td>
-                                                        <td class=" ">刘3</td>
-
-                                                        <td class=" ">2017-07-10</td>
-                                                        <td class=" ">2017-07-10</td>
-                                                        <td class=" ">2</td>
-                                                        <td class=" ">出差</td>
-                                                        <td class=" ">随领导出差</td>
-                                                        <td class=" ">已批准</td>
-                                                    </tr>
-                                                    <tr class="gradeA even">
-                                                        <td class="sorting_1">10</td>
-                                                        <td class=" ">张2</td>
-
-                                                        <td class=" ">2017-07-08</td>
-                                                        <td class=" ">2017-07-08</td>
-                                                        <td class=" ">1</td>
-                                                        <td class=" ">项目出差</td>
-                                                        <td class=" ">摊上事了</td>
-                                                        <td class=" ">已批准</td>
-                                                    </tr>
+                                                            <a th:href="@{leftInfo(id=${trip.trId})}" class="btn btn-info">查看</a>
+                                                            <a class="btn btn-primary" th:href="@{leftAgree(id=${trip.trId})}"  th:if="${trip.trState} eq 1" onclick="return(confirm('确定批准?'))">批准</a>
+                                                        </td>
                                                     </tbody>
                                                 </table>
                                                 <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="dataTables_info" id="DataTables_Table_0_info"
-                                                             role="alert" aria-live="polite" aria-relevant="all">显示 1 到
-                                                            10 项，共 11 项
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="dataTables_paginate paging_simple_numbers"
-                                                             id="DataTables_Table_0_paginate">
-                                                            <ul class="pagination">
-                                                                <li class="paginate_button previous disabled"
-                                                                    aria-controls="DataTables_Table_0" tabindex="0"
-                                                                    id="DataTables_Table_0_previous"><a href="#"
-                                                                                                        style="width: 70px;height: 30px">上一页</a>
-                                                                </li>
-                                                                <li class="paginate_button active"
-                                                                    aria-controls="DataTables_Table_0" tabindex="0"><a
-                                                                        href="#">1</a></li>
-                                                                <li class="paginate_button "
-                                                                    aria-controls="DataTables_Table_0" tabindex="0"><a
-                                                                        href="#">2</a></li>
-                                                                <li class="paginate_button next"
-                                                                    aria-controls="DataTables_Table_0" tabindex="0"
-                                                                    id="DataTables_Table_0_next"><a href="#"
-                                                                                                    style="width: 70px;height: 30px">下一页</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
+                                                <span style="float: left; padding: 5px">
+								                    总共&nbsp;<b th:text="${total}"></b>&nbsp;条
+                                                </span>
+                                                    <span style="float: left; padding: 5px">
+                                                    当前&nbsp;<span style="color: red;" th:text="${page}">1</span>
+                                                    &nbsp;/&nbsp; <b th:text="${totalPage}">1</b>&nbsp;页&nbsp;&nbsp;
+                                                </span>
+                                                    <nav aria-label="Page navigation" style="margin: 0 auto; width: 240px">
+                                                        <ul class="pagination" style="margin: 0;">
+                                                            <li th:each="array:${arr}">
+                                                                <a th:href="@{left(pageNo=${array})}"
+                                                                   th:text="${array}">view</a>
+                                                            </li>
+                                                        </ul>
+                                                    </nav>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -430,7 +319,6 @@
         var e=document.getElementById("loginname");
         console.log("local_username:"+local_username);
         e.innerText=local_username;
-
         var login_username = [[${login_username}]];
         console.log("login_username:"+login_username);
         if(login_username!=undefined){
@@ -438,6 +326,23 @@
             e.innerText=login_username;
         }
     }
+    function ischeck() {
+        var id = [[${type}]];
+        var s1 = document.getElementById("select-type");
+        for (i = 0; i <= s1.options.length; i++) {
+            if (s1.options[i].value == id) {
+                s1.options[i].selected = true;
+            }
+        }
+    }
+</script>
+<script>
+    $("#select-type").change(function(){
+        var type=$("#select-type").val()
+        window.location.href="left?type="+type;
+    });
+
+
 
 </script>
 </html>
