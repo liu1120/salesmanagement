@@ -108,7 +108,7 @@ public class TradeController {
     @RequestMapping("updateGoods")//后台-修改商品
     public ModelAndView updateGoods() {
         ModelAndView mv=new ModelAndView();
-        mv.setViewName("admin/g_infoAdd.html");//跳到查询单个页面
+        mv.setViewName("admin/g_infoUpdate.html");//跳到查询单个页面
         return  mv;
     }
 
