@@ -19,17 +19,17 @@ public class AreaDTO {
 
     private Long code;
 
-    private String name;
+    private String city;
 
-    public AreaDTO(Long code, String name) {
+    public AreaDTO(Long code, String city) {
         this.code = code;
-        this.name = name;
-        this.children = new HashMap<>();
-        this.list = new ArrayList<>();
+        this.city = city;
+        this.childrenMap = new HashMap<>();
+        this.children = new ArrayList<>();
     }
 
-    private Map<Long, AreaDTO> children;
+    private Map<Long, AreaDTO> childrenMap;
 
-    private List<AreaDTO> list;
+    private List<AreaDTO> children;
 
 }

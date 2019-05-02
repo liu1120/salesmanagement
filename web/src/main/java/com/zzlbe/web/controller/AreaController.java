@@ -83,29 +83,29 @@ public class AreaController {
             }
 
             // 城市 Map
-            Map<Long, AreaDTO> cityMap = province.getChildren();
+            Map<Long, AreaDTO> cityMap = province.getChildrenMap();
             AreaDTO city = cityMap.get(entity.getCitycode());
             if (city == null) {
                 city = new AreaDTO(entity.getCitycode(), entity.getCityname());
-                province.getList().add(city);
+                province.getChildren().add(city);
                 cityMap.put(entity.getCitycode(), city);
             }
 
             // 县级市 Map
-            Map<Long, AreaDTO> countyMap = city.getChildren();
+            Map<Long, AreaDTO> countyMap = city.getChildrenMap();
             AreaDTO county = countyMap.get(entity.getCountycode());
             if (county == null) {
                 county = new AreaDTO(entity.getCountycode(), entity.getCountyname());
-                city.getList().add(county);
+                city.getChildren().add(county);
                 countyMap.put(entity.getCountycode(), county);
             }
 
             // 乡镇 Map
-            Map<Long, AreaDTO> townMap = county.getChildren();
+            Map<Long, AreaDTO> townMap = county.getChildrenMap();
             AreaDTO town = townMap.get(entity.getTowncode());
             if (town == null) {
                 town = new AreaDTO(entity.getTowncode(), entity.getTownname());
-                county.getList().add(town);
+                county.getChildren().add(town);
                 townMap.put(entity.getTowncode(), town);
             }
         });
@@ -119,12 +119,12 @@ public class AreaController {
 
     private String removeChildren(List<AreaDTO> areaDTOList) throws IOException {
         areaDTOList.forEach(area1 -> {
-            area1.setChildren(null);
-            List<AreaDTO> area1List = area1.getList();
+            area1.setChildrenMap(null);
+            List<AreaDTO> area1List = area1.getChildren();
             area1List.forEach(area2 -> {
-                area2.setChildren(null);
-                List<AreaDTO> area2List = area2.getList();
-                area2List.forEach(area3 -> area3.setChildren(null));
+                area2.setChildrenMap(null);
+                List<AreaDTO> area2List = area2.getChildren();
+                area2List.forEach(area3 -> area3.setChildrenMap(null));
             });
         });
 
