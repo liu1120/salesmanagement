@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/stylesOA.css">
 </head>
-<body class="sidebar-fixed header-fixed" onload="writeLoginInfo();formattime()">
+<body class="sidebar-fixed header-fixed" onload="writeLoginInfo();alertMessage();">
 <div class="page-wrapper">
     <nav class="navbar page-header" style="padding-top: 0px">
         <a href="" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
@@ -134,6 +134,7 @@
                                 <a href="/admin/order" class="nav-link">
                                     <i class="icon icon-energy"></i> &nbsp;&nbsp;订单列表
                                 </a>
+
                             </li>
                             <li class="nav-item">
                                 <a href="/admin/orderservice" class="nav-link">
@@ -212,7 +213,7 @@
                                                     <th>最低价</th>
                                                     <th>点击量</th>
                                                     <th>是否展示</th>
-                                                    <th>访问量</th>
+                                                    <th>库存</th>
                                                     <th>操作</th>
                                                 </tr>
                                                 </thead>
@@ -231,11 +232,12 @@
 
                                                     <td th:if="${goods.isShow} eq 1">展示</td>
                                                     <td th:if="${goods.isShow} ne 1">不展示</td>
-                                                    <td th:text="${goods.num}" class="datetime">2017-07-05</td>
+                                                    <td th:text="${goods.num}" class="datetime"></td>
                                                     <td id="@{${goods.id}}">
-                                                        <a href="" class="btn btn-info">查看</a>&nbsp;&nbsp;
-                                                        <a href="" class="btn btn-primary">修改</a>&nbsp;&nbsp;
-                                                        <a onclick="deleteGoods()" class="btn btn-danger delete">下架</a>
+                                                        <a th:href="@{selectGoodsById(id=${goods.id})}" class="btn btn-info">查看</a>&nbsp;&nbsp;
+                                                        <a th:href="@{updateGoods(id=${goods.id})}" class="btn btn-primary">修改</a>&nbsp;&nbsp;
+                                                        <a th:href="@{deleteGoods(id=${goods.id})}" onclick="return(confirm('确定下架?'))" class="btn btn-danger delete" th:if="${goods.isShow} eq 1">下架</a>
+                                                        <a th:href="@{deleteGoods(id=${goods.id})}" class="btn btn-warning delete" th:if="${goods.isShow} eq 0">上架</a>
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -280,6 +282,13 @@
 <script type="text/javascript" src="/static/js/adminjq.js"></script>
 <script type="text/javascript" src="/static/js/admin.js"></script>
 <script type="text/javascript" th:inline="javascript">
+    function alertMessage() {
+        var message = [[${message}]];
+        console.log("message:"+message);
+        if(message!=null){
+            alert(message);
+        }
+    }
     function writeLoginInfo() {
         var local_username = localStorage.getItem("login_username");
         var e = document.getElementById("loginname");
@@ -291,16 +300,9 @@
         if (login_username != undefined) {
             localStorage.setItem("login_username", login_username);
             e.innerText = login_username;
-        } else {
-            // if(login_username==undefined){
-            //     document.write("<form action='/admin/index' method=post name=manageDepForm style='display:none'>");
-            //     document.write("<input type=hidden name='username' value=''/>");//参数1
-            //     document.write("<input type=hidden name='password' value=''/>");//参数2
-            //     document.write("</form>");
-            //     document.manageDepForm.submit();
-            // }
         }
     }
+
 
 </script>
 </html>

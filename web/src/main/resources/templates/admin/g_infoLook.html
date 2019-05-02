@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <!--<meta http-equiv="X-UA-Compatible" content="ie=edge">-->
-    <meta http-equiv="Content-Type" content="multipart/form-data; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>主页</title>
     <link rel="stylesheet" href="/static/vendor/simple-line-icons/css/simple-line-icons.css">
     <link rel="stylesheet" href="/static/vendor/font-awesome/css/fontawesome-all.min.css">
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/stylesOA.css">
 </head>
-<body class="sidebar-fixed header-fixed" onload="writeLoginInfo();">
+<body class="sidebar-fixed header-fixed" onload="writeLoginInfo()">
 <div class="page-wrapper">
     <nav class="navbar page-header" style="padding-top: 0px">
         <a href="" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
@@ -62,7 +61,7 @@
                     <li class="nav-title">导航</li>
 
                     <li class="nav-item">
-                        <a href="/admin/index" class="nav-link">
+                        <a href="/admin/index" class="nav-link active">
                             <i class="icon icon-speedometer"></i> 仪表盘
                         </a>
                     </li>
@@ -84,6 +83,11 @@
                                     <i class="icon icon-graph"></i>&nbsp;&nbsp;销售员业绩
                                 </a>
                             </li>
+                            <!--<li class="nav-item">-->
+                            <!--<a href="/admin/areavolume" class="nav-link">-->
+                            <!--<i class="icon icon-graph"></i>&nbsp;&nbsp;地区销量-->
+                            <!--</a>-->
+                            <!--</li>-->
                         </ul>
                     </li>
                     <!--活动管理模块-->
@@ -122,7 +126,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/admin/addGoods" class="nav-link  active">
+                                <a href="/admin/addGoods" class="nav-link">
                                     <i class="icon icon-energy"></i> &nbsp;&nbsp;增加新农产品
                                 </a>
                             </li>
@@ -183,29 +187,21 @@
                 <div class="row">
                     <div class="col-md-12">
                         <!--模板结束11111-->
+
                         <div class="wrapper wrapper-content animated fadeInRight">
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="ibox float-e-margins">
                                         <div class="ibox-title">
-                                            <h5>添加农产品</h5>
+                                            <h5>查看农产品详情</h5>
                                         </div>
                                         <div class="ibox-content">
-                                            <form action="fileUpload" id="fileUpload" name="fileUpload" method="post"
-                                                  enctype="multipart/form-data">
-                                                <p>请选择图片: <input type="file" name="fileName" id="fileName"/></p>
-                                                <a class="btn btn-info" id="submitButton">添加</a>
-                                            </form>
-                                            <form method="post" class="form-horizontal" id="goodsInfo" action="saveGoodsInfo">
+
+                                            <form method="post" class="form-horizontal" action="">
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <img id="imgs" src="" style="width: 100px;height: 100px;display: none">
-                                                            <input id="path" name="path" type="hidden" value="">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
+                                                            <img th:src="@{${goods.newImgPath}}" style="height: 100px;width: 100px"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -214,17 +210,52 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label class="form-control-label">商品名</label>
-                                                            <input name="name" class="form-control"
-                                                                   value="40%氧乐果乳油">
+                                                            <input id="go_name" class="form-control"
+                                                                   value="" th:field="*{goods.name}" readonly>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label
-                                                                    class="form-control-label">分类</label>
-                                                            <input name="sort" class="form-control"
-                                                                   value="高乐">
+                                                                   class="form-control-label">分类</label>
+                                                            <input class="form-control"
+                                                                   value="" th:field="*{goods.sort}"readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label
+                                                                   class="form-control-label">型号</label>
+                                                            <input class="form-control"
+                                                                   value="" th:field="*{goods.version}" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label
+                                                                   class="form-control-label">点击量</label>
+                                                            <input id="go_point" class="form-control"
+                                                                   value="" th:field="*{goods.point}"readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label
+                                                                   class="form-control-label">库存</label>
+                                                            <input id="go_num" class="form-control"
+                                                                   value="" th:field="*{goods.num}" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label
+                                                                   class="form-control-label">更新时间</label>
+                                                            <input id="go_updatetime" class="form-control"
+                                                                   value="" th:field="*{goods.updateTime}" readonly>
                                                         </div>
                                                     </div>
 
@@ -234,103 +265,69 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label
-                                                                    class="form-control-label">型号</label>
-                                                            <input name="version" class="form-control"
-                                                                   value="40%">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label
-                                                                    class="form-control-label">库存</label>
-                                                            <input name="num" class="form-control"
-                                                                   value="999">
-                                                            <input type="hidden" id="ueInfo" name="ueInfo" class="form-control"
-                                                                   value="">
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label
-                                                                    class="form-control-label">销售价格</label>
-                                                            <input name="price" class="form-control"
-                                                                   value="123">
+                                                                   class="form-control-label">销售价格</label>
+                                                            <input id="go_price" class="form-control"
+                                                                   value="" th:field="*{goods.price}" readonly>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label
-                                                                    class="form-control-label">销售底价</label>
-                                                            <input name="minprice" class="form-control"
-                                                                   value="79">
+                                                                   class="form-control-label">销售底价</label>
+                                                            <input id="go_minprice" class="form-control"
+                                                                   value="" th:field="*{goods.minPrice}" readonly>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label
                                                                     class="form-control-label">是否上架展示？</label>
-                                                            <div class="form-group">
-                                                                <select id="single-select" name="isshow" class="form-control">
-                                                                    <option value="1">展示</option>
-                                                                    <option  value="0">暂不展示</option>
-                                                                </select>
-                                                            </div>
+                                                            <input id="go_isshow" class="form-control"
+                                                                   th:if="${goods.isShow} eq 1" value="展示" readonly>
+                                                            <input id="go_isshow" class="form-control"
+                                                                   th:if="${goods.isShow} eq 0" value="不展示" readonly>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label
-                                                                    class="form-control-label">积分</label>
-                                                            <input name="credit" class="form-control"
-                                                                   value="123">
-                                                        </div>
-                                                    </div>
+
                                                 </div>
-                                            </form>
-                                                <form method="post" class="form-horizontal" name="upfile" enctype="multipart/form-data" action="fileUpload3">
 
                                                 <div class="row">
                                                     <div class="col-md-10">
-                                                        <h3>添加产品介绍</h3>
+                                                        <h3>产品介绍</h3>
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-md-12">
-                                                         <script id="editor" type="text/plain" style="width:99.9%;min-height:560px;"></script>
-                                                     </div>
+                                                    <div class="col-md-10">
+                                                        <div class="form-group" value="" th:utext="${goods.introduce}">
+
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                                <div class="hr-line-dashed"></div>
                                                 <div class="form-group">
-                                                     <div class="col-sm-4 col-sm-offset-8">
-                                                           <a id="submitInfo" class="btn btn-primary">保&nbsp;&nbsp;存</a>&nbsp;&nbsp;
-                                                           <a href="" class="btn btn-info">返&nbsp;&nbsp;回</a>
-                                                      </div>
+                                                    <div class="col-sm-4 col-sm-offset-8">
+                                                        <a th:href="@{updateGoods(id=${goods.id})}" class="btn btn-primary">修&nbsp;&nbsp;改</a>&nbsp;&nbsp;
+                                                        <a th:href="@{getAllgoods}" class="btn btn-info">返&nbsp;&nbsp;回</a>
+                                                    </div>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
-                                 </div>
-                             </div>
+                                </div>
+                            </div>
                         </div>
-
-                            <!--模板开始222222-->
-                        </div>
+                        <!--模板开始222222-->
                     </div>
                 </div>
-             </div>
-         </div>
-          <script src="/static/vendor/jquery/jquery.min.js"></script>
-          <script src="/static/vendor/popper.js/popper.min.js"></script>
-          <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
-        <!--<script src="/static/vendor/Chart.js/chart.min.js"></script>-->
-         <script src="/static/js/carbon.js"></script>
+            </div>
+        </div>
     </div>
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/popper.js/popper.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/js/carbon.js"></script>
+</div>
 </body>
 <script type="text/javascript" src="/static/js/adminjq.js"></script>
 <script type="text/javascript" src="/static/js/admin.js"></script>
@@ -350,186 +347,4 @@
     }
 
 </script>
-
-<script type="text/javascript" charset="utf-8" src="/static/ue/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="/static/ue/ueditor.all.min.js"></script>
-<!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
-<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
-<script type="text/javascript" charset="utf-8" src="/static/ue/lang/zh-cn/zh-cn.js"></script>
-
-
-<script type="text/javascript">
-    UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
-    UE.Editor.prototype.getActionUrl = function(action) {
-        console.log("action::"+action);
-        if (action == 'uploadimage' || action == 'uploadscrawl' || action == 'uploadimage'||action == 'fileUpload3') {
-            return 'http://localhost:8080/admin/fileUpload3';//此处写自定义的图片上传路径
-        } else if (action == 'uploadvideo') {
-            return 'http://a.b.com/video.php';
-        } else {
-            return this._bkGetActionUrl.call(this, action);
-        }
-    }
-</script>
-<script type="text/javascript">
-    //实例化编辑器
-    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
-    var ue = UE.getEditor('editor');
-
-    function isFocus(e) {
-        alert(UE.getEditor('editor').isFocus());
-        UE.dom.domUtils.preventDefault(e)
-    }
-    function setblur(e) {
-        UE.getEditor('editor').blur();
-        UE.dom.domUtils.preventDefault(e)
-    }
-    function insertHtml() {
-        var value = prompt('插入html代码', '');
-        UE.getEditor('editor').execCommand('insertHtml', value)
-    }
-    function createEditor() {
-        enableBtn();
-        UE.getEditor('editor');
-    }
-    function getAllHtml() {
-        alert(UE.getEditor('editor').getAllHtml())
-    }
-    function getContent() {
-        var arr = [];
-        arr.push("使用editor.getContent()方法可以获得编辑器的内容");
-        arr.push("内容为：");
-        arr.push(UE.getEditor('editor').getContent());
-        alert(arr.join("\n"));
-    }
-    function getPlainTxt() {
-        var arr = [];
-        arr.push("使用editor.getPlainTxt()方法可以获得编辑器的带格式的纯文本内容");
-        arr.push("内容为：");
-        arr.push(UE.getEditor('editor').getPlainTxt());
-        alert(arr.join('\n'))
-    }
-    function setContent(isAppendTo) {
-        var arr = [];
-        arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
-        UE.getEditor('editor').setContent('欢迎使用ueditor', isAppendTo);
-        alert(arr.join("\n"));
-    }
-    function setDisabled() {
-        UE.getEditor('editor').setDisabled('fullscreen');
-        disableBtn("enable");
-    }
-
-    function setEnabled() {
-        UE.getEditor('editor').setEnabled();
-        enableBtn();
-    }
-
-    function getText() {
-        //当你点击按钮时编辑区域已经失去了焦点，如果直接用getText将不会得到内容，所以要在选回来，然后取得内容
-        var range = UE.getEditor('editor').selection.getRange();
-        range.select();
-        var txt = UE.getEditor('editor').selection.getText();
-        alert(txt)
-    }
-
-    function getContentTxt() {
-        var arr = [];
-        arr.push("使用editor.getContentTxt()方法可以获得编辑器的纯文本内容");
-        arr.push("编辑器的纯文本内容为：");
-        arr.push(UE.getEditor('editor').getContentTxt());
-        alert(arr.join("\n"));
-    }
-    function hasContent() {
-        var arr = [];
-        arr.push("使用editor.hasContents()方法判断编辑器里是否有内容");
-        arr.push("判断结果为：");
-        arr.push(UE.getEditor('editor').hasContents());
-        alert(arr.join("\n"));
-    }
-    function setFocus() {
-        UE.getEditor('editor').focus();
-    }
-    function deleteEditor() {
-        disableBtn();
-        UE.getEditor('editor').destroy();
-    }
-    function disableBtn(str) {
-        var div = document.getElementById('btns');
-        var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
-        for (var i = 0, btn; btn = btns[i++];) {
-            if (btn.id == str) {
-                UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
-            } else {
-                btn.setAttribute("disabled", "true");
-            }
-        }
-    }
-    function enableBtn() {
-        var div = document.getElementById('btns');
-        var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
-        for (var i = 0, btn; btn = btns[i++];) {
-            UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
-        }
-    }
-
-    function getLocalData() {
-        alert(UE.getEditor('editor').execCommand("getlocaldata"));
-    }
-
-    function clearLocalData() {
-        UE.getEditor('editor').execCommand("clearlocaldata");
-        alert("已清空草稿箱")
-    }
-
-</script>
-
-<script type="text/javascript">
-    $("#submitButton").click(function () {
-        var filename = document.getElementById("fileName").value;
-        if ($.trim(filename) == "") {
-            alert("请选择要上传的文件");
-            return;
-        }
-        var formData = new FormData(document.getElementById("fileUpload"));
-        console.log("name::"+name);
-        $.ajax({
-            url: 'fileUpload',
-            type: 'POST',
-            cache: false,
-            data: formData,
-            dataType: 'json',
-            processData: false,
-            contentType: false,
-            success: function(res) { //成功
-                var e1=document.getElementById('imgs');
-                var e2=document.getElementById('path');
-                e1.style.display='block';
-                e1.src=res.filePath;
-                e2.value=res.fileName;
-                console.log("res.toString:"+res.toString());
-            },error: function(res) { //失败的话
-                alert(res.msg);
-            }
-        })
-    });
-</script>
-
-<script type="text/javascript">
-    //这段要放在文本编辑器的实例化之后
-    $("#submitInfo").click(function () {
-        // if (!UE.getEditor('editor').hasContents()){
-        //     alert('请先填写内容!');
-        // }
-        var e1=document.getElementById("ueInfo");
-        e1.value=UE.getEditor('editor').getContent();
-        console.log("e1.value:"+e1.value);
-        var form = document.getElementById('goodsInfo');
-        console.log("form:"+form.toString());
-        form.submit();
-
-    });
-
-</script>
-
 </html>
