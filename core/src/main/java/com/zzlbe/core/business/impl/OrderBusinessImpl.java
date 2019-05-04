@@ -7,10 +7,12 @@ import com.zzlbe.core.common.ErrorCodeEnum;
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.constant.OrderStatusEnum;
 import com.zzlbe.core.request.*;
+import com.zzlbe.core.response.OrderVO;
 import com.zzlbe.dao.entity.*;
 import com.zzlbe.dao.mapper.*;
 import com.zzlbe.dao.search.AmountSearch;
 import com.zzlbe.dao.search.CustomerSearch;
+import com.zzlbe.dao.search.GoodsSearch;
 import com.zzlbe.dao.search.OrderSearch;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -18,8 +20,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * PROJECT: sales management
@@ -62,12 +63,7 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
     @Override
     public GenericResponse preview(OrderForm orderForm) {
         // 校验用户
-        UserEntity userEntity;
-        if (orderForm.getOrderFlag()) {
-            userEntity = userMapper.selectByPhoneNo(orderForm.getPhoneNo());
-        } else {
-            userEntity = userMapper.selectById(orderForm.getOrUserId());
-        }
+        UserEntity userEntity = getUserEntity(orderForm);
         if (userEntity == null) {
             return new GenericResponse<>(ErrorCodeEnum.USER_NOT_FOUND);
         }
@@ -315,7 +311,14 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
             if (orderEntity == null) {
                 return new GenericResponse(ErrorCodeEnum.ORDER_NOT_FOUND);
             }
-            return new GenericResponse<>(orderEntity);
+            OrderVO orderVO = new OrderVO();
+            BeanUtils.copyProperties(orderEntity, orderVO);
+            GoodsEntity goodsEntity = goodsMapper.selectById(orderEntity.getOrGoodsId());
+            if (goodsEntity != null) {
+                orderVO.setName(goodsEntity.getName());
+                orderVO.setNewImgPath(goodsEntity.getNewImgPath());
+            }
+            return new GenericResponse<>(orderVO);
         }
         if (StringUtils.isNotBlank(orderSearch.getPhoneNo())) {
             UserEntity userEntity = userMapper.selectByPhoneNo(orderSearch.getPhoneNo());
@@ -325,8 +328,9 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         }
 
         List<OrderEntity> orderEntities = orderMapper.selectListByExample(orderSearch);
+        List<OrderVO> orderVOS = parseOrderVOS(orderEntities);
 
-        return new GenericResponse<>(orderEntities);
+        return new GenericResponse<>(orderVOS);
     }
 
     @Override
@@ -340,7 +344,7 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         List<OrderEntity> orderEntities = orderMapper.selectByPage(orderSearch);
         Integer total = orderMapper.selectByPageTotal(orderSearch);
 
-        return genericPageResponse(orderEntities, total);
+        return genericPageResponse(parseOrderVOS(orderEntities), total);
     }
 
     @Override
@@ -392,6 +396,36 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
     }
 
     /**
+     * 增加商品信息
+     *
+     * @param orderEntities List<OrderEntity>
+     * @return List<OrderVO>
+     */
+    private List<OrderVO> parseOrderVOS(List<OrderEntity> orderEntities) {
+        Set<Long> goodsIds = new TreeSet<>();
+        List<OrderVO> orderVOS = new ArrayList<>();
+        orderEntities.forEach(orderEntity -> {
+            OrderVO orderVO = new OrderVO();
+            BeanUtils.copyProperties(orderEntity, orderVO);
+            orderVOS.add(orderVO);
+            goodsIds.add(orderEntity.getOrGoodsId());
+        });
+        GoodsSearch goodsSearch = new GoodsSearch();
+        goodsSearch.setIds(goodsIds);
+        List<GoodsEntity> goodsEntities = goodsMapper.selectListByExample(goodsSearch);
+
+        Map<Long, GoodsEntity> goodsEntityMap = new HashMap<>(goodsEntities.size());
+        goodsEntities.forEach(goodsEntity -> goodsEntityMap.put(goodsEntity.getId(), goodsEntity));
+
+        orderVOS.forEach(orderVO -> {
+            GoodsEntity goodsEntity = goodsEntityMap.get(orderVO.getOrGoodsId());
+            orderVO.setName(goodsEntity.getName());
+            orderVO.setNewImgPath(goodsEntity.getNewImgPath());
+        });
+        return orderVOS;
+    }
+
+    /**
      * 根据地址获取指定销售员
      *
      * @param addressId 地址ID
@@ -410,6 +444,22 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
             return null;
         }
         return areaEntity.getSpid();
+    }
+
+    /**
+     * 根据销售员下单或者用户下单获取用户信息
+     *
+     * @param orderForm OrderForm
+     * @return UserEntity
+     */
+    private UserEntity getUserEntity(OrderForm orderForm) {
+        UserEntity userEntity;
+        if (orderForm.getOrderFlag()) {
+            userEntity = userMapper.selectByPhoneNo(orderForm.getPhoneNo());
+        } else {
+            userEntity = userMapper.selectById(orderForm.getOrUserId());
+        }
+        return userEntity;
     }
 
     /**
@@ -441,11 +491,12 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         /*
          * 校验用户
          */
-        if (!orderForm.getOrUserId().equals(orderEntity.getOrUserId())) {
-            UserEntity userEntity = userMapper.selectById(orderForm.getOrUserId());
-            if (userEntity == null) {
-                return new GenericResponse<>(ErrorCodeEnum.USER_NOT_FOUND);
-            }
+        UserEntity userEntity = getUserEntity(orderForm);
+        if (userEntity == null) {
+            return new GenericResponse<>(ErrorCodeEnum.USER_NOT_FOUND);
+        }
+        if (!userEntity.getId().equals(orderEntity.getOrUserId())) {
+            orderForm.setOrUserId(userEntity.getId());
         }
 
         /*
