@@ -10,6 +10,7 @@ import com.zzlbe.core.request.*;
 import com.zzlbe.dao.entity.*;
 import com.zzlbe.dao.mapper.*;
 import com.zzlbe.dao.search.AmountSearch;
+import com.zzlbe.dao.search.CustomerSearch;
 import com.zzlbe.dao.search.OrderSearch;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -33,6 +34,8 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
     @Resource
     private OrderMapper orderMapper;
     @Resource
+    private CustomerMapper customerMapper;
+    @Resource
     private UserMapper userMapper;
     @Resource
     private GoodsMapper goodsMapper;
@@ -43,6 +46,18 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
     @Resource
     private AreaMapper areaMapper;
 
+    /**
+     * 订单审核状态
+     * 1：审核通过
+     * 0：审核拒绝
+     */
+    private static final Integer ORDER_AUDIT_SUCCESS = 1;
+    private static final Integer ORDER_AUDIT_FAIL = 2;
+    /**
+     * 订单申请售后原因：1退货 || 2退款
+     */
+    private static final Integer ORDER_SALE_RETURN = 1;
+    private static final Integer ORDER_SALE_REFUND = 2;
 
     @Override
     public GenericResponse preview(OrderForm orderForm) {
@@ -66,6 +81,7 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         // 基础信息设置
         OrderEntity orderEntity = new OrderEntity();
         BeanUtils.copyProperties(orderForm, orderEntity);
+        orderEntity.setOrUserId(userEntity.getId());
         orderEntity.setOrSay("0");
         orderEntity.setOrDatetime(new Date());
 
@@ -99,7 +115,7 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         }
 
         // 订单状态：0未付款,1已付款，2待发货,3已发货,4已签收,5退货中,6已退货，7完成交易
-        orderEntity.setOrStatus(0);
+        orderEntity.setOrStatus(OrderStatusEnum.UN_PAID.getCode());
 
         return new GenericResponse<>(orderEntity);
     }
@@ -122,17 +138,19 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         if (orderEntity == null) {
             return new GenericResponse(ErrorCodeEnum.ORDER_NOT_FOUND);
         }
+        // 订单状态，参考 OrderStatusEnum
         Integer orStatus = orderEntity.getOrStatus();
 
         // 1.未付款，订单信息均可修改
-        if (orStatus == 0) {
+        if (OrderStatusEnum.UN_PAID.getCode().equals(orStatus)) {
             GenericResponse unpaidModifyOrder = unpaidModifyOrder(orderForm, orderEntity);
             if (!unpaidModifyOrder.successful()) {
                 return unpaidModifyOrder;
             }
             orderEntity = (OrderEntity) unpaidModifyOrder.getBody();
 
-        } else if (orStatus == 1 || orStatus == 2) {
+        } else if (OrderStatusEnum.PAID.getCode().equals(orStatus)
+                || OrderStatusEnum.UN_SHIPPED.getCode().equals(orStatus)) {
             // 2.已付款，未发货可修改收货地址和备注（暂只支持销售员修改地址，如果想让用户修改地址，可放开下边代码）
             Integer orderAddress = orderForm.getOrAddress();
             /*GenericResponse userModifyAddress = notShippedModifyAddress(orderEntity, orderAddress);
@@ -161,21 +179,31 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         if (orderEntity == null) {
             return new GenericResponse(ErrorCodeEnum.ORDER_NOT_FOUND);
         }
-        if (orderEntity.getOrStatus() != 1) {
+        if (orderEntity.getOrType() != 0) {
+            return new GenericResponse(ErrorCodeEnum.ORDER_CHECKED);
+        }
+        if (OrderStatusEnum.UN_PAID.getCode().equals(orderEntity.getOrStatus())) {
             return new GenericResponse(ErrorCodeEnum.ORDER_CHECK_UNPAID);
         }
         if (!orderEntity.getOrSellerId().equals(orderCheckForm.getOrSellerId())) {
             return new GenericResponse(ErrorCodeEnum.ORDER_MODIFY_SELLER_ERROR);
         }
 
-        if (orderCheckForm.getOrType() == 1) {
-            orderEntity.setOrStatus(2);
-        } else {
-            // TODO 审核拒绝, 需要退款
-            orderEntity.setOrStatus(9);
-        }
         orderEntity.setOrType(orderCheckForm.getOrType());
-        orderEntity.setOrRefuse(orderCheckForm.getOrRefuse());
+        if (ORDER_AUDIT_SUCCESS.equals(orderCheckForm.getOrType())) {
+            // 审核通过，并且已付款，商品进入待发货
+            if (OrderStatusEnum.PAID.getCode().equals(orderEntity.getOrStatus())) {
+                orderEntity.setOrStatus(OrderStatusEnum.UN_SHIPPED.getCode());
+            }
+        } else if (ORDER_AUDIT_FAIL.equals(orderCheckForm.getOrType())) {
+            orderEntity.setOrRefuse(orderCheckForm.getOrRefuse());
+            orderEntity.setOrStatus(OrderStatusEnum.AFTER_SALE.getCode());
+            // 审核拒绝，订单进入售后
+            GenericResponse afterSale = afterSale(orderEntity);
+            if (!afterSale.successful()) {
+                return afterSale;
+            }
+        }
         orderMapper.update(orderEntity);
 
         return GenericResponse.SUCCESS;
@@ -188,12 +216,20 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
             return new GenericResponse(ErrorCodeEnum.ORDER_NOT_FOUND);
         }
 
+        if (!OrderStatusEnum.UN_PAID.getCode().equals(orderEntity.getOrStatus())) {
+            return new GenericResponse(ErrorCodeEnum.ORDER_PAYMENT_PAYED);
+        }
+
         if (orderEntity.getOrTotalAmount().compareTo(paymentForm.getPaymentAmount()) != 0) {
             return new GenericResponse(ErrorCodeEnum.ORDER_PAYMENT_ERROR);
         }
 
         // 订单状态：0未付款,1已付款，2待发货,3已发货,4已签收,5退货中,6已退货，7完成交易
-        orderEntity.setOrStatus(1);
+        if (orderEntity.getOrType() == 0) {
+            orderEntity.setOrStatus(OrderStatusEnum.PAID.getCode());
+        } else if (orderEntity.getOrType() == 1) {
+            orderEntity.setOrStatus(OrderStatusEnum.UN_SHIPPED.getCode());
+        }
         orderMapper.update(orderEntity);
 
         return GenericResponse.SUCCESS;
@@ -205,34 +241,64 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         if (orderEntity == null) {
             return new GenericResponse(ErrorCodeEnum.ORDER_NOT_FOUND);
         }
-        // 订单状态：0未付款,1已付款，2待发货,3已发货,4已签收,5退货中,6已退货，7完成交易,8审核拒绝
-        Integer orStatus = orderEntity.getOrStatus();
-        if (orStatus >= 6) {
-            return new GenericResponse(ErrorCodeEnum.ORDER_NOT_FOUND);
+
+        // [售后完成/已完成评价]的订单不允许修改
+        if (OrderStatusEnum.AFTER_SALE_FINISH.getCode().equals(orderEntity.getOrStatus())
+                || OrderStatusEnum.ASSESSED_FINISH.getCode().equals(orderEntity.getOrStatus())) {
+            return new GenericResponse(ErrorCodeEnum.ORDER_FINISH);
         }
 
-        OrderStatusEnum orderStatus = orderProcessForm.getStatus();
-        if (orderStatus == null) {
+        OrderStatusEnum orderStatusEnum = orderProcessForm.getStatus();
+        if (orderStatusEnum == null) {
             return new GenericResponse(ErrorCodeEnum.ORDER_TRANSFER);
         }
 
-        switch (orderStatus) {
-            case SHIP:
-                orderEntity.setOrStatus(3);
+        switch (orderStatusEnum) {
+            // 发货/签收/售后
+            case SHIPPED:
+                if (OrderStatusEnum.UN_SHIPPED.getCode().equals(orderEntity.getOrStatus())) {
+                    orderEntity.setOrStatus(orderStatusEnum.getCode());
+                } else {
+                    return new GenericResponse(ErrorCodeEnum.ORDER_STATUS_ERROR);
+                }
                 break;
             case SIGNING:
-                orderEntity.setOrStatus(4);
-                break;
-            case AFTER_SALE:
-                orderEntity.setOrStatus(5);
-                orderEntity.setOrWords(orderProcessForm.getOrWords());
-                break;
-            case FINISH_SALE:
-                orderEntity.setOrStatus(6);
+                if (OrderStatusEnum.SHIPPED.getCode().equals(orderEntity.getOrStatus())) {
+                    orderEntity.setOrStatus(orderStatusEnum.getCode());
+                } else {
+                    return new GenericResponse(ErrorCodeEnum.ORDER_STATUS_ERROR);
+                }
                 break;
             case FINISH:
-                orderEntity.setOrStatus(7);
+                if (OrderStatusEnum.SIGNING.getCode().equals(orderEntity.getOrStatus())) {
+                    orderEntity.setOrStatus(orderStatusEnum.getCode());
+                } else {
+                    return new GenericResponse(ErrorCodeEnum.ORDER_STATUS_ERROR);
+                }
                 break;
+
+            // 申请售后
+            case AFTER_SALE:
+                GenericResponse afterSale = afterSale(orderEntity);
+                if (afterSale.successful()) {
+                    orderEntity.setOrStatus(OrderStatusEnum.AFTER_SALE.getCode());
+                    orderEntity.setOrWords(orderProcessForm.getSaleMessage());
+                    break;
+                } else {
+                    return afterSale;
+                }
+
+            case AFTER_SALE_FINISH:
+                // 售后完成
+                GenericResponse saleFinish = saleFinish(orderEntity,
+                        orderProcessForm.getAfterSaleType(), orderProcessForm.getSaleMessage());
+                if (saleFinish.successful()) {
+                    orderEntity.setOrStatus(OrderStatusEnum.AFTER_SALE_FINISH.getCode());
+                    orderEntity.setOrWords(orderProcessForm.getSaleMessage());
+                    break;
+                } else {
+                    return saleFinish;
+                }
             default:
                 break;
         }
@@ -309,6 +375,14 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         addressMapper.insert(addressEntity);
 
         return new GenericResponse<>(addressEntity);
+    }
+
+    @Override
+    public GenericResponse afterSalePage(CustomerSearch customerSearch) {
+        List<CustomerEntity> customerEntities = customerMapper.selectByPage(customerSearch);
+        Integer total = customerMapper.selectByPageTotal(customerSearch);
+
+        return genericPageResponse(customerEntities, total);
     }
 
     /**
@@ -421,12 +495,81 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
     }
 
     /**
+     * 申请售后
+     * 现仅支持（退货/审核拒绝退款）
+     *
+     * @param orderEntity OrderEntity
+     * @return GenericResponse
+     */
+    private GenericResponse afterSale(OrderEntity orderEntity) {
+        // 订单编号
+        Long orderId = orderEntity.getOrId();
+        // 售后原因：1退货（默认），2审核拒绝退款
+        int reason = ORDER_SALE_RETURN;
+        if (ORDER_AUDIT_FAIL.equals(orderEntity.getOrType())) {
+            reason = ORDER_SALE_REFUND;
+        }
+        CustomerEntity customerEntity = customerMapper.selectByOrder(orderId, reason);
+        if (customerEntity != null) {
+            if (reason == ORDER_SALE_REFUND) {
+                return new GenericResponse(ErrorCodeEnum.ORDER_AFTER_SALE_REFUND_PROCESSING);
+            } else {
+                return new GenericResponse(ErrorCodeEnum.ORDER_AFTER_SALE_PROCESSING);
+            }
+        }
+
+        customerEntity = new CustomerEntity();
+        customerEntity.setCuOrderId(orderEntity.getOrId());
+        customerEntity.setCuUserId(orderEntity.getOrUserId());
+        customerEntity.setCuSellerId(orderEntity.getOrSellerId());
+        customerEntity.setCuGoodsId(orderEntity.getOrGoodsId());
+        customerEntity.setCuGoodsCount(orderEntity.getOrCount());
+        // 售后原因
+        customerEntity.setCuReason(reason);
+        // 操作类型：1申请提交 | 2申请通过 | 3申请拒绝
+        customerEntity.setCuType(1);
+        customerEntity.setCuTime(new Date());
+        customerEntity.setCuMoney(orderEntity.getOrTotalAmount());
+
+        customerMapper.insert(customerEntity);
+
+        return GenericResponse.SUCCESS;
+    }
+
+    /**
+     * 售后完成
+     *
+     * @param orderEntity OrderEntity
+     * @return GenericResponse
+     */
+    private GenericResponse saleFinish(OrderEntity orderEntity, Integer cuType, String description) {
+        // 售后原因：1退货（默认），2审核拒绝退款
+        int reason = ORDER_SALE_RETURN;
+        if (ORDER_AUDIT_FAIL.equals(orderEntity.getOrType())) {
+            reason = ORDER_SALE_REFUND;
+        }
+        CustomerEntity customerEntity = customerMapper.selectByOrder(orderEntity.getOrId(), reason);
+        if (customerEntity == null) {
+            return new GenericResponse(ErrorCodeEnum.ORDER_AFTER_SALE_NOT_FOUND);
+        }
+        // 操作类型：1申请提交 | 2申请通过 | 3申请拒绝
+        customerEntity.setCuType(cuType);
+        customerEntity.setCuTime(new Date());
+        customerEntity.setCuDescription(description);
+
+        customerMapper.update(customerEntity);
+
+        return GenericResponse.SUCCESS;
+    }
+
+    /**
      * 未发货修改收货地址 >>> (只适用于用户修改收货地址) 暂时用不到
      *
      * @param orderEntity  修改后的订单信息
      * @param orderAddress 收货地址
      * @return 修改收货地址结果
      */
+    @SuppressWarnings("ALL")
     private GenericResponse notShippedModifyAddress(OrderEntity orderEntity, Integer orderAddress) {
         // 修改了地址，此时要更新指定销售员
         if (!orderAddress.equals(orderEntity.getOrAddress())) {

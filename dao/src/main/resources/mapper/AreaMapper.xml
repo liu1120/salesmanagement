@@ -29,9 +29,10 @@
         ar_townname,
         ar_sp_id
     </sql>
-    <select id="" resultMap="BaseMap">
+
+    <!--<select id="" resultMap="BaseMap">
         SELECT * FROM tb_area WHERE ar_sp_id =#{spid}
-    </select>
+    </select>-->
 
     <select id="selectBySpid" resultMap="BaseMap">
         SELECT
@@ -40,7 +41,13 @@
         <include refid="tableName"/>
         WHERE ar_sp_id = #{id}
         group by ar_countycode
+    </select>
 
+    <select id="selectAll" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
     </select>
 
     <select id="selectProvince" resultMap="BaseMap">

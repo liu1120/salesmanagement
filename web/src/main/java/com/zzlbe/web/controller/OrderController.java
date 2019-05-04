@@ -3,6 +3,7 @@ package com.zzlbe.web.controller;
 import com.zzlbe.core.business.OrderBusiness;
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.request.*;
+import com.zzlbe.dao.search.CustomerSearch;
 import com.zzlbe.dao.search.OrderSearch;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -99,6 +100,15 @@ public class OrderController {
     public GenericResponse process(@RequestBody OrderProcessForm processForm) {
 
         return orderBusiness.process(processForm);
+    }
+
+    /**
+     * 售后列表
+     */
+    @RequestMapping("afterSalePage")
+    public GenericResponse afterSalePage(@RequestBody CustomerSearch customerSearch) {
+
+        return orderBusiness.afterSalePage(customerSearch);
     }
 
     /**

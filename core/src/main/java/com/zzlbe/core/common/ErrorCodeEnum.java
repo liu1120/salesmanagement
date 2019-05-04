@@ -55,6 +55,12 @@ public enum ErrorCodeEnum {
     ORDER_MODIFY_CHANGE_SELLER("5010", "暂不支持修改销售员"),
     ORDER_TRANSFER("5010", "运输中，请耐心等待"),
     ORDER_FINISH("5011", "订单状态不允许修改"),
+    ORDER_PAYMENT_PAYED("5012", "订单已支付，请勿重复操作"),
+    ORDER_AFTER_SALE_PROCESSING("5013", "售后处理中，请等待"),
+    ORDER_AFTER_SALE_REFUND_PROCESSING("5014", "订单退款中，请等待"),
+    ORDER_AFTER_SALE_NOT_FOUND("5015", "售后订单不存在"),
+    ORDER_CHECKED("5016", "订单已审核完成"),
+    ORDER_STATUS_ERROR("5017", "当前订单状态不支持本操作"),
 
     /**
      * 考勤相关

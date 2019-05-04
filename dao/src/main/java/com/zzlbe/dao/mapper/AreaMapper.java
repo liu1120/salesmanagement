@@ -7,16 +7,35 @@ import java.util.List;
 
 @Repository
 public interface AreaMapper {
-    List<AreaEntity> selectBySpid(long spid);//销售员id查询所派送/管理区域（多个）
+
+    /**
+     * 查询所有数据
+     *
+     * @return 所有数据
+     */
+    List<AreaEntity> selectAll();
+
+    /**
+     * 销售员id查询所派送/管理区域（多个）
+     */
+    List<AreaEntity> selectBySpid(Long spid);
+
     List<AreaEntity> selectProvince();
-    List<AreaEntity> selectCity(long provincecode);
-    List<AreaEntity> selectCounty(long citycode);
-    List<AreaEntity> selectTown(long countycode);
+
+    List<AreaEntity> selectCity(Long provincecode);
+
+    List<AreaEntity> selectCounty(Long citycode);
+
+    List<AreaEntity> selectTown(Long countycode);
 //    AreaEntity selectspid(long towncode);
 
-    AreaEntity selectOne(long towncode);
+    AreaEntity selectOne(Long towncode);
 
-    //更新数据管理员信息
+    /**
+     * 更新数据管理员信息
+     *
+     * @param areaEntity AreaEntity
+     */
     void update(AreaEntity areaEntity);
 
     //更新数据管理员信息,只更新负责区域
