@@ -11,4 +11,8 @@ public interface GoodssortMapper {
     List<GoodssortEntity> selectAll();
 
     GoodssortEntity selectById(long id);
+
+    void insert(GoodssortEntity goodssortEntity);
+//
+    void update(GoodssortEntity goodssortEntity);
 }

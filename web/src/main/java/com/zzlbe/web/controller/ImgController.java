@@ -28,6 +28,8 @@ public class ImgController {
 
     @Autowired
     GoodsMapper goodsMapper;
+
+
     @Autowired
     public ImgController(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
@@ -41,7 +43,6 @@ public class ImgController {
     @PostMapping("fileUpload")
     @ResponseBody
     public String fileUpload(@RequestParam("fileName") MultipartFile file, Map<String, Object> map){
-        System.out.println("file1:"+file);
         // 要上传的目标文件存放路径
         String localPath = "E:/Files/Photos";
         // 上传成功或者失败的提示
@@ -57,6 +58,7 @@ public class ImgController {
         map.put("fileName", file.getOriginalFilename());
         map.put("filePath", "/Photos/"+file.getOriginalFilename());
         String str=JSON.toJSONString(map);
+        System.out.println("strstrstrstr:"+str);
         return str;
     }
 
@@ -109,4 +111,5 @@ public class ImgController {
                         "        }";
         return config;
     }
+
 }

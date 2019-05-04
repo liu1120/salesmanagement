@@ -7,13 +7,12 @@
         <result column="gd_name" property="name"/>
     </resultMap>
 
-    <sql id="tableName">tb_goodsSort</sql>
+    <sql id="tableName">tb_goodssort</sql>
 
     <sql id="columns">
         gd_id,
         gd_name
     </sql>
-
 
     <select id="selectAll" resultMap="BaseMap">
         SELECT
@@ -28,7 +27,31 @@
         FROM
         <include refid="tableName"/>
         WHERE
-        gd_ids = #{id}
+        gd_id = #{id}
     </select>
 
+    <update id="update">
+        UPDATE
+        <include refid="tableName"/>
+        <set>
+            <if test="name != null">
+                gd_name = #{name},
+            </if>
+        </set>
+        WHERE
+        gd_id = #{id}
+    </update>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+        <include refid="tableName"/>
+        (
+        <include refid="columns"/>
+        )
+        VALUES
+        (
+        #{id},
+        #{name}
+        )
+    </insert>
 </mapper>

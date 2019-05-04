@@ -1,7 +1,9 @@
 package com.zzlbe.web.controller;
 
+import com.zzlbe.core.util.DateUtil;
 import com.zzlbe.dao.entity.GoodsEntity;
 import com.zzlbe.dao.mapper.GoodsMapper;
+import com.zzlbe.dao.mapper.GoodssortMapper;
 import com.zzlbe.dao.search.GoodsSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ public class TradeController {
 
     @Autowired
     GoodsMapper goodsMapper;
+    GoodssortMapper goodssortMapper;
 
     @GetMapping("getAllgoods")//后台查看-商品列表
     public ModelAndView getAllgoods(Integer pageNo) {
@@ -76,11 +79,11 @@ public class TradeController {
         goodsEntity.setUpdateTime(new Date());
         goodsMapper.insert(goodsEntity);
 
-        System.out.println("goodsEntity=="+goodsEntity.toString());
         mv.addObject("message","商品"+goodsEntity.getName()+"添加成功");
         mv.setViewName("redirect:/admin/getAllgoods");
         return  mv;
     }
+
 
     @RequestMapping("deleteGoods")//后台-下架商品
     public ModelAndView deleteGoods(@RequestParam("id") long id) {
@@ -99,16 +102,49 @@ public class TradeController {
     public ModelAndView selectGoodsById(@RequestParam("id") long id) {
         ModelAndView mv=new ModelAndView();
         GoodsEntity goodsEntity=goodsMapper.selectById(id);
-        System.out.println("goodsEntity:"+goodsEntity.getIntroduce());
+
         mv.addObject("goods",goodsEntity);
+        Date date=goodsEntity.getUpdateTime();
+        DateUtil du=new DateUtil();
+        String dateStr=du.getDateTime(date);
+        mv.addObject("time",dateStr);
         mv.setViewName("admin/g_infoLook.html");
         return  mv;
     }
 
-    @RequestMapping("updateGoods")//后台-修改商品
-    public ModelAndView updateGoods() {
+    @RequestMapping("updateGoods")//后台-修改商品 修改农产品详情
+    public ModelAndView updateGoods(@RequestParam("id") long id) {
         ModelAndView mv=new ModelAndView();
+        GoodsEntity goodsEntity=goodsMapper.selectById(id);
+//        List<GoodssortEntity> GoodssortEntities = goodssortMapper.selectAll();
+//        mv.addObject("GoodssortEntities",GoodssortEntities);
+        mv.addObject("goods",goodsEntity);
         mv.setViewName("admin/g_infoUpdate.html");//跳到查询单个页面
+        return  mv;
+    }
+
+    @RequestMapping("saveUpdateGoodsInfo")//后台-更新商品update 进行保存
+    public ModelAndView saveUpdateGoodsInfo(String name,@RequestParam("id") Long id, String sort, String version, Integer num, String introduce, BigDecimal price, BigDecimal minprice, Integer credit) {
+        ModelAndView mv=new ModelAndView();
+        GoodsEntity goodsEntity=new GoodsEntity();
+//        goodsEntity.setNewImgPath("/Photos/"+path);
+        goodsEntity.setName(name);
+        goodsEntity.setId(id);
+        goodsEntity.setSort(sort);
+        goodsEntity.setVersion(version);
+        goodsEntity.setNum(num);
+        goodsEntity.setIntroduce(introduce);
+        goodsEntity.setUpdateTime(new Date());
+        goodsEntity.setPrice(price);
+        goodsEntity.setMinPrice(minprice);
+        goodsEntity.setCredit(credit);
+        goodsMapper.update(goodsEntity);
+
+        System.out.println("goodsEntity-=-=-=-=-="+goodsEntity.toString());
+        mv.addObject("message","商品"+goodsEntity.getName()+"修改成功");
+        mv.addObject("id",goodsEntity.getId());
+//        mv.setViewName("admin/g_infoLook.html");
+        mv.setViewName("redirect:/admin/selectGoodsById");
         return  mv;
     }
 

@@ -1,22 +1,22 @@
 $(document).ready(function () {
 //使用Ajax获取json数据 折线统计图传入goodsid 查询商品销量
-    $("#single-select2").change(function(){
-        var goodsid=$("#single-select2").val()
+    $("#single-select2").change(function () {
+        var goodsid = $("#single-select2").val()
         $.ajax({
             url: 'getGoodSell',
             type: "get",
-            data:{goodsid:goodsid},
+            data: {goodsid: goodsid},
             dataType: 'json',
         }).done(function (results) {
             // 将获取到的json数据分别存放到两个数组中
-            var labels = [], data=[];
-            for(var i=0;i<results.length;i++){ //第一层循环取到各个list
+            var labels = [], data = [];
+            for (var i = 0; i < results.length; i++) { //第一层循环取到各个list
                 labels.push(results[i].month);
                 data.push(results[i].count);
             }
             // 设置图表的数据
             var tempData = {
-                labels : labels,
+                labels: labels,
                 datasets: [{
                     label: '销售量',
                     labels: ["Red", "Blue", "Cyan", "Green", "Purple", "Orange"],
@@ -57,24 +57,24 @@ $(document).ready(function () {
      * 下拉触发 Ajax
      * 获取json数据 折线统计图传入goodsid 查询商品销量
      */
-    $("#single-seller").change(function(){
-        var sellerid=$("#single-seller").val()
+    $("#single-seller").change(function () {
+        var sellerid = $("#single-seller").val()
         // console.log("==="+$("#bar-chart").html());
         $.ajax({
             url: 'getSellerSell',
             type: "get",
-            data:{sellerid:sellerid},
+            data: {sellerid: sellerid},
             dataType: 'json',
         }).done(function (results) {
             // 将获取到的json数据分别存放到两个数组中
-            var labels = [], data=[];
-            for(var i=0;i<results.length;i++){ //第一层循环取到各个list
+            var labels = [], data = [];
+            for (var i = 0; i < results.length; i++) { //第一层循环取到各个list
                 labels.push(results[i].month);
                 data.push(results[i].count);
             }
             // 设置图表的数据
             var tempData = {
-                labels : labels,
+                labels: labels,
                 datasets: [{
                     label: '销售量',
                     labels: ["Red", "Blue", "Cyan", "Green", "Purple", "Orange"],
@@ -114,7 +114,7 @@ $(document).ready(function () {
         });
     });
 
-    var jsonData = $.ajax({//下拉选择商品
+    var jsonData = $.ajax({//择商品
         url: 'selectAllGoods',
         type: "get",
         dataType: 'json',
@@ -153,7 +153,6 @@ $(document).ready(function () {
     });
 
 
-
     $.ajax({//得到销售员总销售额前10
         url: 'getSellerTop10',
         type: "get",
@@ -185,32 +184,32 @@ $(document).ready(function () {
     });
 
 
-
-    $("#suggest-select").change(function(){
-        var option=$("#suggest-select").val()
-        console.log("option:"+option)
+    $("#suggest-select").change(function () {
+        var option = $("#suggest-select").val()
+        console.log("option:" + option)
         $.ajax({
             url: 'questionSelect',
             type: "get",
-            data:{option:option},
+            data: {option: option},
             dataType: 'json',
         }).done(function (results) {
             $("#suggestid").html('');
 
-            for(var i=0;i<results.length;i++){ //第一层循环取到各个list
-                var url="questionInfo?id="+results[i].id;
-                if (option==0){
-                    $("#suggestid").append('<div><label>'+results[i].createTime+'</label><div class="alert alert-warning"><a href="'+url+'">'+results[i].title+'</a>&nbsp;&nbsp;&nbsp;<a style="color:red">待处理</a></div><br></div>')
-                }else if(option==1){
-                    $("#suggestid").append('<div><label>'+results[i].createTime+'</label><div class="alert alert-warning"><a href="'+url+'">'+results[i].title+'</a>&nbsp;&nbsp;&nbsp;<a style="color:black">未处理</a></div><br></div>')
-                }else{
-                    $("#suggestid").append('<div><label>'+results[i].createTime+'</label><div class="alert alert-success"><a href="'+url+'">'+results[i].title+'</a>&nbsp;&nbsp;&nbsp;<a style="color:black">已处理</a></div><br></div>')
+            for (var i = 0; i < results.length; i++) { //第一层循环取到各个list
+                var url = "questionInfo?id=" + results[i].id;
+                if (option == 0) {
+                    $("#suggestid").append('<div><label>' + results[i].createTime + '</label><div class="alert alert-warning"><a href="' + url + '">' + results[i].title + '</a>&nbsp;&nbsp;&nbsp;<a style="color:red">待处理</a></div><br></div>')
+                } else if (option == 1) {
+                    $("#suggestid").append('<div><label>' + results[i].createTime + '</label><div class="alert alert-warning"><a href="' + url + '">' + results[i].title + '</a>&nbsp;&nbsp;&nbsp;<a style="color:black">未处理</a></div><br></div>')
+                } else {
+                    $("#suggestid").append('<div><label>' + results[i].createTime + '</label><div class="alert alert-success"><a href="' + url + '">' + results[i].title + '</a>&nbsp;&nbsp;&nbsp;<a style="color:black">已处理</a></div><br></div>')
                 }
             }
-
         });
 
     });
+
+
 });
 
 
