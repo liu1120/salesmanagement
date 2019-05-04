@@ -34,8 +34,35 @@
 
     <sql id="condition">
         <where>
-            <if test="name != null">
-                AND u_name = #{name}
+            <if test="cuOrderId != null">
+                AND cu_order_id = #{cuOrderId}
+            </if>
+            <if test="cuUserId != null">
+                AND cu_user_id = #{cuUserId}
+            </if>
+            <if test="cuSellerId != null">
+                AND cu_seller_id = #{cuSellerId}
+            </if>
+            <if test="cuGoodsId != null">
+                AND cu_goods_id = #{cuGoodsId}
+            </if>
+            <if test="cuGoodsCount != null">
+                AND cu_goods_count = #{cuGoodsCount}
+            </if>
+            <if test="cuReason != null">
+                AND cu_reason = #{cuReason}
+            </if>
+            <if test="cuType != null">
+                AND cu_type = #{cuType}
+            </if>
+            <if test="cuTimeStr != null">
+                AND cu_time = #{cuTimeStr}
+            </if>
+            <if test="cuDescription != null">
+                AND cu_description REGEXP #{cuDescription}
+            </if>
+            <if test="cuMoney != null">
+                AND cu_money = #{cuMoney}
             </if>
         </where>
     </sql>
@@ -46,6 +73,14 @@
         FROM
         <include refid="tableName"/>
         WHERE cuId = #{id}
+    </select>
+
+    <select id="selectByOrder" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE cu_order_id = #{orderId} AND cu_reason = #{reason}
     </select>
 
     <select id="selectByPage" resultMap="BaseMap">

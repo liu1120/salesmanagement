@@ -66,7 +66,7 @@ public class OrderSearch extends BasePageRequest {
      */
     private Integer orAddress;
     /**
-     * 0未付款,1已付款，2待发货,3已发货,4已签收,5退货中,6已退货，7完成交易, 8完成评价，9审核拒绝
+     * 0未付款,1已付款，2待发货,3已发货,4已签收,5退货中,6已退货，7完成交易, 8完成评价
      */
     private Integer orStatus;
     /**

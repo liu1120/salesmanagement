@@ -1,5 +1,7 @@
 package com.zzlbe.dao.entity;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -10,7 +12,7 @@ import java.util.Date;
  * @author duGraceful
  * @date 2019/4/13
  */
-@SuppressWarnings("ALL")
+@Data
 public class CustomerEntity {
 
     /**
@@ -36,9 +38,9 @@ public class CustomerEntity {
     /**
      * 商品数量
      */
-    private Long cuGoodsCount;
+    private Integer cuGoodsCount;
     /**
-     * 1退货
+     * 1退货，2审核拒绝退款
      */
     private Integer cuReason;
     /**

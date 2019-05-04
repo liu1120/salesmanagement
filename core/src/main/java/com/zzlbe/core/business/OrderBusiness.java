@@ -2,6 +2,7 @@ package com.zzlbe.core.business;
 
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.request.*;
+import com.zzlbe.dao.search.CustomerSearch;
 import com.zzlbe.dao.search.OrderSearch;
 
 /**
@@ -99,4 +100,11 @@ public interface OrderBusiness {
      */
     GenericResponse orderAddress(OrderAddressForm orderAddressForm);
 
+    /**
+     * 售后列表
+     *
+     * @param customerSearch CustomerSearch
+     * @return GenericResponse
+     */
+    GenericResponse afterSalePage(CustomerSearch customerSearch);
 }

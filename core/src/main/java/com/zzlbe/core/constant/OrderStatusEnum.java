@@ -9,23 +9,33 @@ package com.zzlbe.core.constant;
  */
 public enum OrderStatusEnum {
 
-    /***/
-    CREATE("已创建"),
-    PAYMENT("已支付"),
-    CHECK("已审核"),
-    SHIP("已发货"),
-    SIGNING("已签收"),
-    AFTER_SALE("售后处理中"),
-    FINISH_SALE("售后处理完成"),
-    FINISH("交易完成");
+    /**
+     * @see com.zzlbe.dao.entity.OrderEntity#orStatus
+     * 订单状态：0未付款，1已付款，2待发货，3已发货，4已签收，5退货中，6已退货，7完成交易，8已完成评价
+     */
+    UN_PAID(0, "未付款"),
+    PAID(1, "已付款"),
+    UN_SHIPPED(2, "待发货"),
+    SHIPPED(3, "已发货"),
+    SIGNING(4, "已签收"),
+    AFTER_SALE(5, "售后处理中"),
+    AFTER_SALE_FINISH(6, "售后完成"),
+    FINISH(7, "完成交易"),
+    ASSESSED_FINISH(8, "已完成评价");
 
-    private final String status;
+    private final Integer code;
+    private final String message;
 
-    OrderStatusEnum(String status) {
-        this.status = status;
+    OrderStatusEnum(Integer code, String message) {
+        this.code = code;
+        this.message = message;
     }
 
-    public String getStatus() {
-        return status;
+    public Integer getCode() {
+        return code;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

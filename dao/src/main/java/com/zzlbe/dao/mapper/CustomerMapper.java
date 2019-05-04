@@ -2,6 +2,7 @@ package com.zzlbe.dao.mapper;
 
 import com.zzlbe.dao.entity.CustomerEntity;
 import com.zzlbe.dao.search.CustomerSearch;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public interface CustomerMapper {
     void update(CustomerEntity customerEntity);
 
     CustomerEntity selectById(Long id);
+
+    CustomerEntity selectByOrder(@Param("orderId") Long orderId, @Param("reason") Integer reason);
 
     List<CustomerEntity> selectByPage(CustomerSearch customerSearch);
 

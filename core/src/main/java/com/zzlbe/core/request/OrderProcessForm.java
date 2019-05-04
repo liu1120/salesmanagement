@@ -18,12 +18,17 @@ public class OrderProcessForm {
      */
     private Long orId;
     /**
-     * 下单留言
-     */
-    private String orWords;
-    /**
      * 订单状态
      */
     private OrderStatusEnum status;
 
+    /**
+     * 售后相关：售后留言
+     */
+    private String saleMessage;
+
+    /**
+     * 售后处理相关：2审核通过 || 3审核拒绝
+     */
+    private Integer afterSaleType;
 }

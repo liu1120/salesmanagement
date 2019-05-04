@@ -18,10 +18,6 @@ import java.math.BigDecimal;
 public class CustomerSearch extends BasePageRequest {
 
     /**
-     * 自增ID
-     */
-    private Long cuId;
-    /**
      * 订单编号
      */
     private Long cuOrderId;
