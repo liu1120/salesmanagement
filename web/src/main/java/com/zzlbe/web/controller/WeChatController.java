@@ -35,4 +35,6 @@ public class WeChatController {
         return userBusiness.weChatLogin(wxLoginRequest);
     }
 
+    // TODO 增加接口绑定手机号
+
 }

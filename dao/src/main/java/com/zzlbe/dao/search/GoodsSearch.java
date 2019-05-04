@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 
 
@@ -16,6 +17,10 @@ public class GoodsSearch extends BasePageRequest {
      * 农化产品id
      */
     private Long id;
+    /**
+     * 农化产品id
+     */
+    private Collection<Long> ids;
     /**
      * 农化产品名字
      */
@@ -64,7 +69,6 @@ public class GoodsSearch extends BasePageRequest {
      * 农化产品积分
      */
     private Integer credit;
-
 
 
 }

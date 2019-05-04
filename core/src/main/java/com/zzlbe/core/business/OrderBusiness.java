@@ -101,6 +101,14 @@ public interface OrderBusiness {
     GenericResponse orderAddress(OrderAddressForm orderAddressForm);
 
     /**
+     * 获取收货地址
+     *
+     * @param id 地址id
+     * @return GenericResponse
+     */
+    GenericResponse orderAddress(Long id);
+
+    /**
      * 售后列表
      *
      * @param customerSearch CustomerSearch

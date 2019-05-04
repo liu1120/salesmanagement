@@ -56,6 +56,12 @@
             <if test="credit != null">
                 AND go_credit = #{credit}
             </if>
+            <if test="ids != null">
+                AND go_id IN
+                <foreach collection="ids" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
         </where>
     </sql>
 
@@ -113,6 +119,14 @@
         <include refid="tableName"/>
         <include refid="condition"/>
         LIMIT 1
+    </select>
+
+    <select id="selectListByExample" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
     </select>
 
     <select id="selectGoodsByName" resultMap="BaseMap">

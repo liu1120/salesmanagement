@@ -23,6 +23,8 @@ public interface GoodsMapper {
 
     GoodsEntity selectByExample(GoodsEntity search);
 
+    List<GoodsEntity> selectListByExample(GoodsSearch goodsSearch);
+
     List<GoodsEntity> selectAllByPage(GoodsSearch goodsSearch);
 
     List<GoodsEntity> selectAll();
@@ -31,7 +33,7 @@ public interface GoodsMapper {
 
     List<GoodsEntity> selectGoodsByName(String goodsname);
 
-    List<GoodsEntity> getGoodsBySort(long sortid);
+    List<GoodsEntity> getGoodsBySort(Long sortid);
 
     /**
      * 分页查询方法
