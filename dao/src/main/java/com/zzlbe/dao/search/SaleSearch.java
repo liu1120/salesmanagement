@@ -1,16 +1,18 @@
-package com.zzlbe.dao.entity;
+package com.zzlbe.dao.search;
 
+import com.zzlbe.dao.page.BasePageRequest;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-public class SaleEntity {
+public class SaleSearch extends BasePageRequest {
 
-    private Long id;
     /**
      * 销售类型：1正常（默认），2打折，3满减，4满送
      */
@@ -20,8 +22,7 @@ public class SaleEntity {
      */
     private BigDecimal discount;
     /**
-     * 0 默认全局sa_area_id不开放；
-     * 1 销售员申请，sa_area_id启用
+     * 0默认全局sa_area_id不开放；1销售员申请，sa_area_id启用
      */
     private Integer start;
     /**
@@ -41,20 +42,16 @@ public class SaleEntity {
      */
     private Date overTime;
     /**
-     * 开启活动区域
+     * 开启活动区域（多个，中间用英文分号[`;`]隔开）
      */
     private String areaIds;
     /**
-     * 1 默认同意，0 不同意
+     * 开启活动区域(单个)
+     */
+    private String areaId;
+    /**
+     * 0默认同意，1不同意
      */
     private Boolean status;
 
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
 }

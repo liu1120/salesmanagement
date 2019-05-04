@@ -9,10 +9,12 @@
         <result column="sa_start" property="start"/>
         <result column="sa_reach" property="reach"/>
         <result column="sa_minus" property="minus"/>
-        <result column="sa_startime" property="startime"/>
-        <result column="sa_overtime" property="overtime"/>
-        <result column="sa_area_ids" property="areaids"/>
-        <result column="sa_isOk" property="isOk"/>
+        <result column="sa_start_time" property="startTime"/>
+        <result column="sa_over_time" property="overTime"/>
+        <result column="sa_area_ids" property="areaIds"/>
+        <result column="sa_status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
     </resultMap>
 
     <sql id="tableName">tb_sale</sql>
@@ -24,19 +26,111 @@
         sa_start,
         sa_reach,
         sa_minus,
-        sa_startime,
-        sa_overtime,
+        sa_start_time,
+        sa_over_time,
         sa_area_ids,
-        sa_isOk
+        sa_status,
+        create_time,
+        update_time
     </sql>
 
-    <select id="selectSaleById" resultMap="BaseMap">
+    <sql id="condition">
+        <where>
+            <if test="type != null">
+                AND sa_type = #{type}
+            </if>
+            <if test="discount != null">
+                AND sa_discount = #{discount}
+            </if>
+            <if test="start != null">
+                AND sa_start = #{start}
+            </if>
+            <if test="reach != null">
+                AND sa_reach = #{reach}
+            </if>
+            <if test="minus != null">
+                AND sa_minus = #{minus}
+            </if>
+            <if test="startTime != null">
+                AND sa_start_time <![CDATA[ >= ]]> #{startTime}
+            </if>
+            <if test="overTime != null">
+                AND sa_over_time <![CDATA[ <= ]]> #{overTime}
+            </if>
+            <if test="areaIds != null">
+                AND sa_area_ids = #{areaIds}
+            </if>
+            <if test="areaId != null">
+                AND sa_area_ids REGEXP #{areaId}
+            </if>
+            <if test="status != null">
+                AND sa_status = #{status}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectById" resultMap="BaseMap">
         SELECT
         <include refid="columns"/>
         FROM
         <include refid="tableName"/>
-        WHERE sa_id = #{goodsid}
+        WHERE sa_id = #{id}
     </select>
+
+    <select id="selectByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
+    <select id="selectByPageTotal" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+    </select>
+
+    <update id="update">
+        UPDATE
+        <include refid="tableName"/>
+        <set>
+            <if test="type != null">
+                sa_type = #{type},
+            </if>
+            <if test="discount != null">
+                sa_discount = #{discount},
+            </if>
+            <if test="start != null">
+                sa_start = #{start},
+            </if>
+            <if test="reach != null">
+                sa_reach = #{reach},
+            </if>
+            <if test="minus != null">
+                sa_minus = #{minus},
+            </if>
+            <if test="startTime != null">
+                sa_start_time = #{startTime},
+            </if>
+            <if test="overTime != null">
+                sa_over_time = #{overTime},
+            </if>
+            <if test="areaIds != null">
+                sa_area_ids = #{areaIds},
+            </if>
+            <if test="status != null">
+                sa_status = #{status},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        WHERE sa_id = #{id}
+    </update>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
@@ -52,10 +146,12 @@
         #{start},
         #{reach},
         #{minus},
-        #{startime},
-        #{overtime},
-        #{areaids},
-        #{isOk}
+        #{startTime},
+        #{overTime},
+        #{areaIds},
+        #{status},
+        #{createTime},
+        #{updateTime}
         )
     </insert>
 

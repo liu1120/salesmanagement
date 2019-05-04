@@ -76,6 +76,14 @@ public enum ErrorCodeEnum {
     SUGGEST_CLOSE_ERROR("7002", "关闭主题失败, 主题不存在!"),
     SUGGEST_CLOSE_ERROR_NOT_SPONSOR("7003", "关闭主题失败, 非发起人操作关闭!"),
 
+    /**
+     * 活动相关
+     */
+    // ACTIVITY("8000", "活动"),
+    ACTIVITY_DISCOUNT_NOT_NULL("8001", "打折活动，折扣不能为空"),
+    ACTIVITY_MINUS_NOT_NULL("8002", "满减活动，起价和满减金额皆不能为空"),
+    ACTIVITY_EXIST("8003", "相同活动已存在"),
+
     ;
 
     ErrorCodeEnum(String code, String msg) {

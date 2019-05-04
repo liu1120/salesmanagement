@@ -172,7 +172,7 @@ public class UserController {
 
     @GetMapping(value = "getSaleGoodsById")//通过商品id查找促销商品
     public SaleEntity getSaleGoodsById(@RequestParam("goodsid") long goodsid) {
-        SaleEntity saleEntity = saleMapper.selectSaleById(goodsid);
+        SaleEntity saleEntity = saleMapper.selectById(goodsid);
         return saleEntity;
     }
 
