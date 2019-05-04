@@ -378,6 +378,12 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
     }
 
     @Override
+    public GenericResponse orderAddress(Long id) {
+
+        return new GenericResponse<>(addressMapper.selectById(id));
+    }
+
+    @Override
     public GenericResponse afterSalePage(CustomerSearch customerSearch) {
         List<CustomerEntity> customerEntities = customerMapper.selectByPage(customerSearch);
         Integer total = customerMapper.selectByPageTotal(customerSearch);

@@ -67,6 +67,18 @@ public class OrderController {
     }
 
     /**
+     * 获取收货地址
+     *
+     * @param id 地址id
+     * @return AddressEntity
+     */
+    @GetMapping(value = "orderAddress")
+    public GenericResponse orderAddress(@RequestParam("id") Long id) {
+
+        return orderBusiness.orderAddress(id);
+    }
+
+    /**
      * 修改订单
      */
     @RequestMapping("modify")
