@@ -193,7 +193,8 @@
                                         <div class="ibox-content">
                                             <form action="fileUpload" id="fileUpload" name="fileUpload" method="post"
                                                   enctype="multipart/form-data">
-                                                <p>请选择图片: <input type="file" name="fileName" id="fileName"/></p>
+                                                <p> <input type="file" name="fileName" id="fileName" /></p>
+                                                <br>
                                                 <a class="btn btn-info" id="submitButton">添加</a>
                                             </form>
                                             <form method="post" class="form-horizontal" id="goodsInfo" action="saveGoodsInfo">
@@ -221,10 +222,9 @@
 
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label
-                                                                    class="form-control-label">分类</label>
-                                                            <input name="sort" class="form-control"
-                                                                   value="">
+                                                            <label class="form-control-label">分类</label>
+                                                            <select id="sort-select" name="sort" class="form-control">
+                                                            </select>
                                                         </div>
                                                     </div>
 
@@ -234,7 +234,7 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label
-                                                                    class="form-control-label">型号</label>
+                                                                    class="form-control-label">品牌</label>
                                                             <input name="version" class="form-control"
                                                                    value="">
                                                         </div>
@@ -328,7 +328,6 @@
           <script src="/static/vendor/jquery/jquery.min.js"></script>
           <script src="/static/vendor/popper.js/popper.min.js"></script>
           <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
-        <!--<script src="/static/vendor/Chart.js/chart.min.js"></script>-->
          <script src="/static/js/carbon.js"></script>
     </div>
 </body>
@@ -513,23 +512,42 @@
             }
         })
     });
+    $.ajax({//下拉选择分类
+        url: '/user/getGoodsSort',
+        type: "get",
+        dataType: 'json',
+    }).done(function (results) {
+        console.log("results:"+results);
+
+        $('#sort-select').html('');
+        var options = '';
+        options += '';
+        for (var i = 0; i < results.length; i++) {
+            options += '<option value="' + results[i].id + '">' + results[i].name + '</option>';
+        }
+        $('#sort-select').append(options);
+    }).fail(function (error) {
+        $('#sort-select').html('');
+        var options = '';
+        options += '<option value="">--请选择--</option>';
+        $('#sort-select').append(options);
+    });//下拉选择商品分类
+
 </script>
 
 <script type="text/javascript">
     //这段要放在文本编辑器的实例化之后
     $("#submitInfo").click(function () {
-        // if (!UE.getEditor('editor').hasContents()){
-        //     alert('请先填写内容!');
-        // }
         var e1=document.getElementById("ueInfo");
         e1.value=UE.getEditor('editor').getContent();
         console.log("e1.value:"+e1.value);
         var form = document.getElementById('goodsInfo');
         console.log("form:"+form.toString());
         form.submit();
-
     });
 
 </script>
+
+
 
 </html>

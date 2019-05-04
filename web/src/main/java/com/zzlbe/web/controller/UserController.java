@@ -104,6 +104,13 @@ public class UserController {
         return list;
     }
 
+    @GetMapping(value = "getGoodsSortName")//查找商品分类对应的name ==admin位置报错  adminadminadmin
+    public String getGoodsSortName(Long id) {
+        GoodssortEntity goodssortEntity = goodssortMapper.selectById(id);
+        System.out.println("goodssortEntity.getName():"+goodssortEntity.getName());
+        return goodssortEntity.getName();
+    }
+
     /**
      * 用户使用积分兑换产品只可兑换一份礼品
      * 用户的积分大于礼品积分，处理：减去用户积分，产生送礼品。

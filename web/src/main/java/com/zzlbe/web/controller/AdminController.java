@@ -52,7 +52,6 @@ public class AdminController {
     public ModelAndView index(@RequestParam("login_username") String uname,@RequestParam("username") String username, @RequestParam("password") String password) {
         ModelAndView mav = new ModelAndView();
         if(uname!=null&&uname!=""){//本地已经登陆
-            System.out.println("本地已经登陆:"+uname);
             mav.addObject("login_username",uname);
             int usernum=userMapper.userCount();//用户总人数
             System.out.println("用户总人数:"+usernum);
