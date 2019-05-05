@@ -42,7 +42,7 @@
 
                 <div class="dropdown-menu dropdown-menu-right">
 
-                    <a href="/admin/seleinfo" class="dropdown-item">
+                    <a href="/admin/selfinfo" id="selfinfo"  class="dropdown-item">
                         <i class="fa fa-user"></i> 个人信息
                     </a>
 
@@ -200,7 +200,7 @@
                                                  role="grid">
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label for="normal-input"
+                                                        <label
                                                                class="form-control-label">状态</label>
                                                         <select id="go_type" class="form-control" >
                                                             <option grade="1" value="1">全部</option>
@@ -369,6 +369,9 @@
             localStorage.setItem("login_username",login_username);
             e.innerText=login_username;
         }
+        var selfinfo=document.getElementById("selfinfo");
+        selfinfo.href="/admin/selfinfo?str="+e.innerText;
+        console.log("selfinfo.href"+selfinfo.href)
     }
 
 </script>

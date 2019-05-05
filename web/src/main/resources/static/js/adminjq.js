@@ -187,29 +187,8 @@ $(document).ready(function () {
     $("#suggest-select").change(function () {
         var option = $("#suggest-select").val()
         console.log("option:" + option)
-        $.ajax({
-            url: 'questionSelect',
-            type: "get",
-            data: {option: option},
-            dataType: 'json',
-        }).done(function (results) {
-            $("#suggestid").html('');
-
-            for (var i = 0; i < results.length; i++) { //第一层循环取到各个list
-                var url = "questionInfo?id=" + results[i].id;
-                if (option == 0) {
-                    $("#suggestid").append('<div><label>' + results[i].createTime + '</label><div class="alert alert-warning"><a href="' + url + '">' + results[i].title + '</a>&nbsp;&nbsp;&nbsp;<a style="color:red">待处理</a></div><br></div>')
-                } else if (option == 1) {
-                    $("#suggestid").append('<div><label>' + results[i].createTime + '</label><div class="alert alert-warning"><a href="' + url + '">' + results[i].title + '</a>&nbsp;&nbsp;&nbsp;<a style="color:black">未处理</a></div><br></div>')
-                } else {
-                    $("#suggestid").append('<div><label>' + results[i].createTime + '</label><div class="alert alert-success"><a href="' + url + '">' + results[i].title + '</a>&nbsp;&nbsp;&nbsp;<a style="color:black">已处理</a></div><br></div>')
-                }
-            }
-        });
-
+        self.location.href="/admin/question?status="+option;
     });
-
-
 });
 
 

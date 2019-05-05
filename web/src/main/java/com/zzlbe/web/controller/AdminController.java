@@ -3,6 +3,7 @@ package com.zzlbe.web.controller;
 import com.alibaba.fastjson.JSON;
 import com.zzlbe.core.business.OrderBusiness;
 import com.zzlbe.core.common.GenericResponse;
+import com.zzlbe.core.util.DateUtil;
 import com.zzlbe.core.util.MD5Utils;
 import com.zzlbe.dao.entity.GoodsEntity;
 import com.zzlbe.dao.entity.SellerEntity;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -234,60 +236,104 @@ public class AdminController {
     }
 
 
-
-    @GetMapping("question")//后台查看-技术咨询
-    public ModelAndView question() {
-        ModelAndView mv=new ModelAndView();
+    @GetMapping("question")//产看技术咨询列表
+    public ModelAndView question(Integer pageNo,Integer status) {
+        ModelAndView mv = new ModelAndView();
         SuggestSearch suggestSearch=new SuggestSearch();
-
+        if (pageNo != null) {
+            suggestSearch.setPage(pageNo);
+        }
+        if (status != null&&status!=8) {
+            suggestSearch.setStatus(status);
+        }
         suggestSearch.setType(2);
-        List<SuggestEntity> suggestEntities=suggestMapper.selectAllBy(suggestSearch);
-//        List<String> date=null;
-//        String str;
-//        for(int i=0;i<suggestEntities.size();i++){
-//            str=getDateByStr3(suggestEntities.get(i).getCreateTime());
-//            date.add(str);
-//        }
-//        mv.addObject("date",date);
-        mv.addObject("suggestEntities",suggestEntities);
+        List<SuggestQuerySearch> suggestQuerySearches=suggestMapper.select2ByPage(suggestSearch);
+        Integer total = suggestMapper.selectByPageTotal(suggestSearch);
+        int size = suggestSearch.getSize(); //页码大小
+        int page = suggestSearch.getPage(); //当前页
+        int totalPage = total / size + 1;
+        int[] arr = new int[totalPage];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = i + 1;
+        }
+        mv.addObject("arr", arr);
+        mv.addObject("totalPage", totalPage);
+        mv.addObject("total", total);
+        mv.addObject("size", size);
+        mv.addObject("page", page);
+        mv.addObject("suggestQuerySearches",suggestQuerySearches);
+        System.out.println("suggestQuerySearches:"+suggestQuerySearches);
         mv.setViewName("admin/z_consult.html");
-        return  mv;
-    }
-    @GetMapping("questionSelect")//后台查看-技术咨询 json
-    @ResponseBody
-    public String questionSelect(Integer option) {
-        SuggestSearch suggestSearch=new SuggestSearch();
-        suggestSearch.setType(2);
-        suggestSearch.setStatus(option);
-        List<SuggestEntity> suggestEntities=suggestMapper.selectAllBy(suggestSearch);
-        String str=JSON.toJSONString(suggestEntities);
-        return  str;
+        return mv;
     }
 
+    @PostMapping("sendSuggestInfo")//建议消息，发送
+    public ModelAndView sendSuggestInfo(Integer result,String sellerId,String info,long id) {
+        SellerEntity sellerEntity=sellerMapper.selectSeller(sellerId);
+        SuggestTopicEntity suggestTopicEntity=new SuggestTopicEntity();
+        System.out.println("name");
+        suggestTopicEntity.setSuggestId(id);
+        suggestTopicEntity.setUserId(sellerEntity.getId());
+        suggestTopicEntity.setUserName(sellerEntity.getName());
+        if(info!=null&&!(info.equals(""))){
+            suggestTopicEntity.setContent(info);
+        }
+        suggestTopicEntity.setCreateTime(new Date());
+
+        suggestTopicMapper.insert(suggestTopicEntity);
+
+        SuggestEntity suggestEntity=suggestMapper.selectById(id);
+        if(suggestEntity.getStatus()!=2){//状态不为好  就更新  咨询主题
+            suggestEntity.setStatus(result);
+        }
+
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("id",id);//主问题
+        mv.setViewName("redirect:/admin/questionInfo");
+        return mv;
+    }
 
 
-    @GetMapping("questionInfo")//后台查看-查看具体某一问题咨询
+    @GetMapping("questionInfo")//后台查看-查看具体某一问题咨询  类型1 技术咨询
     public ModelAndView questionInfo(@RequestParam("id") Long id) {
 
-        SuggestEntity suggestEntity=new SuggestEntity();
-        suggestEntity.setStatus(1);
-        suggestMapper.insert(suggestEntity);//更新此问题状态->解决中
-
-        suggestEntity=suggestMapper.selectById(id);//获得此问题具体信息
+        SuggestEntity suggestEntity=suggestMapper.selectById(id);//获得此问题具体信息
 
         SuggestTopicSearch suggestTopicSearch=new SuggestTopicSearch();//获取此咨询问题的所有咨询
         suggestTopicSearch.setSuggestId(suggestEntity.getId());
-        List<SuggestTopicEntity> suggestTopicEntities=suggestTopicMapper.selectByPage(suggestTopicSearch);
+        suggestTopicSearch.setSize(100);
+        List<SuggestTopicQuerySearch> SuggestTopicQuerySearches=suggestTopicMapper.select2ByPage(suggestTopicSearch);
 
         ModelAndView mv=new ModelAndView();
-        mv.addObject("suggestEntity",suggestEntity);
+        DateUtil du=new DateUtil();
+        String date=du.getDateTime(suggestEntity.getUpdateTime());
+        mv.addObject("suggestEntity",suggestEntity);//主问题
+        mv.addObject("date",date);
 
-        mv.addObject("suggestTopicEntities",suggestTopicEntities);
-        System.out.println("suggestTopicEntities:"+suggestTopicEntities.toString());
+        mv.addObject("suggestTopicEntities",SuggestTopicQuerySearches);//子问题
         mv.setViewName("admin/z_consultDetail.html");
         return  mv;
     }
 
+
+    @GetMapping("selfinfo")//后台查看-个人信息修改
+    public ModelAndView selfinfo(@RequestParam("str") String name) {
+
+        ModelAndView mv=new ModelAndView();
+        SellerSearch sellerSearch=new SellerSearch();
+        sellerSearch.setName(name);
+        Integer in=sellerMapper.selectByPageTotal(sellerSearch);//根据name查询个人信息信息
+        if(in<1){//查无此人
+            System.out.println("需要重新登录");
+            mv.setViewName("admin/z_clear.html");
+        }else{//有此人，查出此人
+            SellerEntity sellerEntity=sellerMapper.selectSeller(sellerSearch.getName());
+            System.out.println("不需要重新登录");
+            mv.addObject("seller",sellerEntity);
+            mv.setViewName("admin/r_infoSelf.html");
+        }
+        return  mv;
+    }
 
     @GetMapping("gift")//后台查看-礼品领取记录
     public ModelAndView gift() {

@@ -42,7 +42,7 @@
 
                 <div class="dropdown-menu dropdown-menu-right">
 
-                    <a href="/admin/seleinfo" class="dropdown-item">
+                    <a href="/admin/selfinfo" id="selfinfo"  class="dropdown-item">
                         <i class="fa fa-user"></i> 个人信息
                     </a>
 
@@ -282,6 +282,9 @@
             localStorage.setItem("login_username",login_username);
             e.innerText=login_username;
         }
+        var selfinfo=document.getElementById("selfinfo");
+        selfinfo.href="/admin/selfinfo?str="+e.innerText;
+        console.log("selfinfo.href"+selfinfo.href)
     }
 
 </script>

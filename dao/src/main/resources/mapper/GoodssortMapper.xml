@@ -7,7 +7,7 @@
         <result column="gd_name" property="name"/>
     </resultMap>
 
-    <sql id="tableName">tb_goodssort</sql>
+    <sql id="tableName">tb_goodsSort</sql>
 
     <sql id="columns">
         gd_id,

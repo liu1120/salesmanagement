@@ -14,7 +14,18 @@
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
     </resultMap>
-
+    <resultMap id="SuggestQuerySearch" type="com.zzlbe.dao.search.SuggestQuerySearch">
+        <result column="su_id" property="id"/>
+        <result column="su_type" property="type"/>
+        <result column="su_title" property="title"/>
+        <result column="su_content" property="content"/>
+        <result column="su_user_id" property="userId"/>
+        <result column="su_goods_name" property="goodsName"/>
+        <result column="su_seller_id" property="sellerId"/>
+        <result column="su_status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
     <sql id="tableName">tb_suggest</sql>
 
     <sql id="columns">
@@ -65,6 +76,14 @@
     </select>
 
     <select id="selectByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+    <select id="select2ByPage" resultMap="SuggestQuerySearch">
         SELECT
         <include refid="columns"/>
         FROM

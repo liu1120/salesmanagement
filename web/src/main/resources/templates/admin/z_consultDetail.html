@@ -37,12 +37,12 @@
                 <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">
                     <img src="/static/imgs/avatar-1.png" class="avatar avatar-sm" alt="logo">
-                    <span class="small ml-1 d-md-down-none" id="loginname"   th:text="${login_username}"></span>
+                    <span class="small ml-1 d-md-down-none" id="loginname" th:text="${login_username}"></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">
 
-                    <a href="/admin/seleinfo" class="dropdown-item">
+                    <a href="/admin/selfinfo" id="selfinfo" class="dropdown-item">
                         <i class="fa fa-user"></i> 个人信息
                     </a>
 
@@ -83,11 +83,6 @@
                                     <i class="icon icon-graph"></i>&nbsp;&nbsp;销售员业绩
                                 </a>
                             </li>
-                            <!--<li class="nav-item">-->
-                            <!--<a href="/admin/areavolume" class="nav-link">-->
-                            <!--<i class="icon icon-graph"></i>&nbsp;&nbsp;地区销量-->
-                            <!--</a>-->
-                            <!--</li>-->
                         </ul>
                     </li>
                     <!--活动管理模块-->
@@ -200,84 +195,88 @@
                                             <div class="row">
                                                 <div class="col-md-10">
                                                     <div class="form-group">
-                                                        <label for="disabled-input" class="form-control-label">咨询对象</label>
+                                                        <label for="disabled-input"
+                                                               class="form-control-label">咨询对象</label>
                                                         <input id="disabled-input" class="form-control"
-                                                              value="" th:field="*{suggestEntity.goodsName}" disabled="">
+                                                               value="" th:field="*{suggestEntity.goodsName}"
+                                                               disabled="">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-10">
                                                 <div class="form-group">
-                                                    <label class="form-control-label"  th:text="|咨询时间:${suggestEntity.createTime}|"></label><br>
-                                                    <label class="form-control-label"  th:if="${suggestEntity.status==0}">咨询状态：处理中</label><br>
-                                                    <label class="form-control-label"  th:if="${suggestEntity.status==1}">咨询状态：处理中</label><br>
-                                                    <label class="form-control-label"  th:if="${suggestEntity.status==2}">咨询状态：已解决</label><br>
-                                                    <label class="form-control-label">咨询原因：</label>
+                                                    <label class="form-control-label"
+                                                           th:text="|咨询时间:${date}|"></label><br>
+                                                    <label class="form-control-label"
+                                                           th:if="${suggestEntity.status==0}">咨询状态：处理中</label><br>
+                                                    <label class="form-control-label"
+                                                           th:if="${suggestEntity.status==1}">咨询状态：处理中</label><br>
+                                                    <label class="form-control-label"
+                                                           th:if="${suggestEntity.status==2}">咨询状态：已解决</label><br>
+                                                    <label class="form-control-label">咨询内容：</label>
                                                     <div>
                                                         <p class="form-control-plaintext"
-                                                           style="background-color: whitesmoke"  th:text="${suggestEntity.content}">
+                                                           style="background-color: whitesmoke"
+                                                           th:text="${suggestEntity.content}">
                                                         </p>
                                                     </div>
 
-
-                                                    <div th:each="suggest:${suggestEntities}">
-                                                        <div th:if="${suggest.name ne '12点1刻'}">
-                                                            <label th:text="${suggest.createTime}"></label>
-                                                            <div class="alert alert-warning" th:if="${suggest.status==0}">
-                                                                <a th:href="@{questionInfo(id=${suggest.id})}" th:text="${suggest.title}"></a>&nbsp;&nbsp;&nbsp;<a style="color:red">待处理</a>
-                                                            </div>
+                                                    <div th:each="suggestTopic:${suggestTopicEntities}">
+                                                        <!--不相等  左边-->
+                                                        <div th:if="${suggestTopic.userId} ne ${suggestEntity.sellerId}"
+                                                             th:text="|${suggestTopic.userName}  ${suggestTopic.createTime}|">
+                                                            <br><br>
                                                         </div>
-                                                            <label th:text="${suggest.createTime}"></label>
-                                                            <div class="alert alert-warning" th:if="${suggest.status==0}">
-                                                                <a th:href="@{questionInfo(id=${suggest.id})}" th:text="${suggest.title}"></a>&nbsp;&nbsp;&nbsp;<a style="color:red">待处理</a>
-                                                            </div>
-                                                    </div>
-
-
-                                                    <div  th:each="suggestTopic:${suggestTopicEntities}"><br>
                                                         <p class="form-control-plaintext"
-                                                           style="background-color: whitesmoke" th:text="|${suggestTopic.content}更新于：${suggestTopic.createTime}|">
+                                                           th:if="${suggestTopic.userId} ne ${suggestEntity.sellerId}"
+                                                           style="background-color: whitesmoke;"
+                                                           th:text="${suggestTopic.content}">
                                                         </p>
 
-                                                    </div>
-                                                    <div><br>2019-02-03 12：16：36<p class="form-control-plaintext"
-                                                                  style="background-color: whitesmoke">
-                                                        这药真的怎么使？！！这药怎么使？！！这药怎么使？！！这药怎么使？！！</p>
-                                                    </div>
-                                                    <div style="margin-left: 200px">
-                                                        <br>
-                                                        2019-02-04 14：15：56
-                                                        <p class="form-control-plaintext"
-                                                           style="background-color: whitesmoke">
-                                                            <a href="#" style="color: #6ce26c">点此，技关xx于术</a>查看技术文章。</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                        <!--相等  右边-->
+                                                        <div style="margin-left: 200px"
+                                                             th:text="|${suggestTopic.userName}  ${suggestTopic.createTime}|"
+                                                             th:if="${suggestTopic.userId} eq ${suggestEntity.sellerId}">
+                                                            <br><br>
+                                                        </div>
 
-                                        <div class="row mt-10">
-                                            <div class="col-md-10">
-                                                <div class="form-group">
-                                                    <label for="textarea">填写回复消息：</label>
-                                                    <textarea id="textarea" class="form-control" rows=" 6"></textarea>
+                                                        <p class="form-control-plaintext"
+                                                           th:if="${suggestTopic.userId} eq ${suggestEntity.sellerId}"
+                                                           style="background-color: whitesmoke;margin-left: 200px"
+                                                           th:text="${suggestTopic.content}">
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="single-select">问题查处理结果：</label>
-                                            <select id="single-select" class="form-control">
-                                                <option  value ="1">正在解决中......</option>
-                                                <option  value ="2">已完成，解决</option>
-                                            </select>
-                                        </div>
-                                        <!--<div class="col-md-10">-->
-                                        <button class="btn btn-success">发送</button>
-                                        <!--</div>-->
+                                        <form action="sendSuggestInfo" name="suggestInfo" id="suggestInfo" method="post">
+                                            <div class="row mt-10">
+                                                <div class="col-md-10">
+                                                    <div class="form-group">
+                                                        <label for="textarea">填写回复消息：</label>
+                                                        <textarea id="textarea" name="info" class="form-control"
+                                                                  rows=" 6" onblur="refresh()"></textarea>
+                                                        <input name="name" type="hidden"  id="sellerId"      value="" th:field="*{suggestEntity.sellerId}" >
+                                                        <input name="id" type="hidden" value="" th:field="*{suggestEntity.id}" >
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="single-select">问题查处理结果：</label>
+                                                <select id="single-select" name="result" class="form-control">
+                                                    <option value="1">正在解决中......</option>
+                                                    <option value="2">已完成，解决</option>
+                                                </select>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <a class="btn btn-info" th:href="@{question}" >返回</a>
+                        <button class="btn btn-success" onclick="document:suggestInfo.submit()">发送</button>
                         <!--模板开始222222-->
                     </div>
                 </div>
@@ -294,25 +293,28 @@
 <script type="text/javascript" src="/static/js/admin.js"></script>
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
-        var local_username=localStorage.getItem("login_username");
-        var e=document.getElementById("loginname");
-        console.log("local_username:"+local_username);
-        e.innerText=local_username;
+        var local_username = localStorage.getItem("login_username");
+        var e = document.getElementById("loginname");
+        console.log("local_username:" + local_username);
+        e.innerText = local_username;
 
         var login_username = [[${login_username}]];
-        console.log("login_username:"+login_username);
-        if(login_username!=undefined){
-            localStorage.setItem("login_username",login_username);
-            e.innerText=login_username;
-        }else{
-            // if(login_username==undefined){
-            //     document.write("<form action='/admin/index' method=post name=manageDepForm style='display:none'>");
-            //     document.write("<input type=hidden name='username' value=''/>");//参数1
-            //     document.write("<input type=hidden name='password' value=''/>");//参数2
-            //     document.write("</form>");
-            //     document.manageDepForm.submit();
-            // }
+        console.log("login_username:" + login_username);
+        if (login_username != undefined) {
+            localStorage.setItem("login_username", login_username);
+            e.innerText = login_username;
         }
+        var selfinfo = document.getElementById("selfinfo");
+        selfinfo.href = "/admin/selfinfo?str=" + e.innerText;
+        console.log("selfinfo.href" + selfinfo.href);
+        var se=document.getElementById("sellerId");
+        se.value=e.innerText;
+    }
+    function refresh() {
+        function test(){
+            document:suggestInfo.submit()
+        }
+        setInterval(test, 5000);
     }
 
 </script>

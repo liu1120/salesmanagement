@@ -40,7 +40,7 @@
                     <span class="small ml-1 d-md-down-none" id="loginname" th:text="${login_username}"></span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a href="/admin/seleinfo" class="dropdown-item">
+                    <a href="/admin/selfinfo" id="selfinfo"  class="dropdown-item">
                         <i class="fa fa-user"></i> 个人信息
                     </a>
 
@@ -323,7 +323,26 @@
 <script type="text/javascript" src="/static/js/adminjq.js"></script>
 <script type="text/javascript" src="/static/js/admin.js"></script>
 
-
+                                                                <script type="text/javascript">
+                                                                    $.ajax({//下拉选择分类
+                                                                        url: '/user/getGoodsSort',
+                                                                        type: "get",
+                                                                        dataType: 'json',
+                                                                    }).done(function (results) {
+                                                                        $('#sort-select').html('');
+                                                                        var options = '';
+                                                                        options += '';
+                                                                        for (var i = 0; i < results.length; i++) {
+                                                                            options += '<option value="' + results[i].id + '">' + results[i].name + '</option>';
+                                                                        }
+                                                                        $('#sort-select').append(options);
+                                                                    }).fail(function (error) {
+                                                                        $('#sort-select').html('');
+                                                                        var options = '';
+                                                                        options += '<option value="">--请选择--</option>';
+                                                                        $('#sort-select').append(options);
+                                                                    });//下拉选择商品分类
+                                                                </script>
 <!--ue-->
 <script type="text/javascript" charset="utf-8" src="/static/ue/ueditor.config.js"></script>
 <script type="text/javascript" charset="utf-8" src="/static/ue/ueditor.all.min.js"></script>
@@ -457,26 +476,7 @@
 
 </script>
 
-<script type="text/javascript">
-    $.ajax({//下拉选择分类
-        url: '/user/getGoodsSort',
-        type: "get",
-        dataType: 'json',
-    }).done(function (results) {
-        $('#sort-select').html('');
-        var options = '';
-        options += '';
-        for (var i = 0; i < results.length; i++) {
-            options += '<option value="' + results[i].id + '">' + results[i].name + '</option>';
-        }
-        $('#sort-select').append(options);
-    }).fail(function (error) {
-        $('#sort-select').html('');
-        var options = '';
-        options += '<option value="">--请选择--</option>';
-        $('#sort-select').append(options);
-    });//下拉选择商品分类
-</script>
+
 
 <script type="text/javascript">
     //这段要放在文本编辑器的实例化之后
@@ -509,10 +509,17 @@
             localStorage.setItem("login_username", login_username);
             e.innerText = login_username;
         }
+        var selfinfo=document.getElementById("selfinfo");
+        selfinfo.href="/admin/selfinfo?str="+e.innerText;
+        console.log("selfinfo.href"+selfinfo.href)
 
+        var e1=document.getElementById("ueInfo").value;
+        UE.getEditor('editor').setContent(e1);
 
         var ele1=document.getElementById("go_brand");//下拉被选
         var ele2=document.getElementById("sort-select");
+        console.log("ele1:"+ele1.value);
+        console.log("ele2:"+ele2);
         for (i = 0; i <= ele2.options.length; i++) {
             if (ele2.options[i].value == ele1.value) {
                 ele2.options[i].selected = true;
@@ -521,52 +528,7 @@
             }
         }
 
-        var e1=document.getElementById("ueInfo").value;
-        UE.getEditor('editor').setContent(e1);
     }
-    // function read(){//444
-    //     var file = document.getElementById("fileName");//newfile 3
-    //     var imgDiv = document.getElementById("imgDiv");
-    //     imgDiv.innerHTML='';
-    //     for(var i=0;i<file.files.length;i++){
-    //         let reader = new FileReader();
-    //         var file1 = file.files[i];
-    //         reader.readAsDataURL (file1);
-    //         reader.onload = function (result) {
-    //             //reader对象的result属性存储流读取的数据
-    //             imgDiv.innerHTML += '<img src="' + reader.result + '" style="height: 100px;width: 100px"/>'
-    //             // console.log(reader.result) // 打印出转换后的base64
-    //         }
-    //     }
-    //
-    //     var ele=document.getElementById('oldImg');
-    //     console.log("oldImg:"+ele.toString())
-    //     ele.style.display='none';
-    //     var formData = new FormData(document.getElementById("goodsInfo"));
-    //     for(let [key,value] of formData.entries()){
-    //         console.log(key +"=:"+ value)
-    //     }
-    //     $.ajax({
-    //         url: 'fileUpload',
-    //         type: 'POST',
-    //         cache: false,
-    //         data: formData,
-    //         dataType: 'json',
-    //         processData: false,
-    //         contentType: false,
-    //         success: function(res) { //成功
-    //             console.log("res.toString:"+res.toString());
-    //             var e1=document.getElementById('imgs');
-    //             var e2=document.getElementById('path');
-    //             e1.style.display='block';
-    //             e1.src=res.filePath;
-    //             e2.value=res.fileName;
-    //         },error: function(res) { //失败的话
-    //             alert(res.msg);
-    //         }
-    //     })
-    // }
-
 </script>
 
 </html>

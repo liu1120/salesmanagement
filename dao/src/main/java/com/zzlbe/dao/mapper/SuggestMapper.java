@@ -1,6 +1,7 @@
 package com.zzlbe.dao.mapper;
 
 import com.zzlbe.dao.entity.SuggestEntity;
+import com.zzlbe.dao.search.SuggestQuerySearch;
 import com.zzlbe.dao.search.SuggestSearch;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +23,10 @@ public interface SuggestMapper {
 
     SuggestEntity selectById(Long id);
 
+
     List<SuggestEntity> selectByPage(SuggestSearch suggestSearch);
+
+    List<SuggestQuerySearch> select2ByPage(SuggestSearch suggestSearch);//日期Date->String查询
 
     Integer selectByPageTotal(SuggestSearch suggestSearch);
 

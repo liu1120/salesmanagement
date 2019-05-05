@@ -11,6 +11,14 @@
         <result column="create_time" property="createTime"/>
     </resultMap>
 
+    <resultMap id="SuggestTopicQuerySearch" type="com.zzlbe.dao.search.SuggestTopicQuerySearch">
+        <result column="id" property="id"/>
+        <result column="suggest_id" property="suggestId"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="content" property="content"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
     <sql id="tableName">tb_suggest_topic</sql>
 
     <sql id="columns">
@@ -51,6 +59,15 @@
     </select>
 
     <select id="selectByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
+    <select id="select2ByPage" resultMap="SuggestTopicQuerySearch">
         SELECT
         <include refid="columns"/>
         FROM
