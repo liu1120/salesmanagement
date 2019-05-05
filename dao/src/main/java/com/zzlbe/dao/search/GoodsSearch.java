@@ -3,6 +3,7 @@ package com.zzlbe.dao.search;
 import com.zzlbe.dao.page.BasePageRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -11,6 +12,7 @@ import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Accessors(chain = true)
 public class GoodsSearch extends BasePageRequest {
 
     /**
