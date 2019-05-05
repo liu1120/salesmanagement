@@ -7,6 +7,7 @@ import com.zzlbe.core.common.ErrorCodeEnum;
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.constant.OrderStatusEnum;
 import com.zzlbe.core.request.*;
+import com.zzlbe.core.response.CustomerVO;
 import com.zzlbe.core.response.OrderVO;
 import com.zzlbe.dao.entity.*;
 import com.zzlbe.dao.mapper.*;
@@ -392,11 +393,11 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         List<CustomerEntity> customerEntities = customerMapper.selectByPage(customerSearch);
         Integer total = customerMapper.selectByPageTotal(customerSearch);
 
-        return genericPageResponse(customerEntities, total);
+        return genericPageResponse(parseCustomerVOS(customerEntities), total);
     }
 
     /**
-     * 增加商品信息
+     * 获取订单信息
      *
      * @param orderEntities List<OrderEntity>
      * @return List<OrderVO>
@@ -410,6 +411,7 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
             orderVOS.add(orderVO);
             goodsIds.add(orderEntity.getOrGoodsId());
         });
+
         GoodsSearch goodsSearch = new GoodsSearch();
         goodsSearch.setIds(goodsIds);
         List<GoodsEntity> goodsEntities = goodsMapper.selectListByExample(goodsSearch);
@@ -423,6 +425,34 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
             orderVO.setNewImgPath(goodsEntity.getNewImgPath());
         });
         return orderVOS;
+    }
+
+    /**
+     * 获取售后信息
+     *
+     * @param customerEntities List<CustomerEntity>
+     * @return List<CustomerVO>
+     */
+    private List<CustomerVO> parseCustomerVOS(List<CustomerEntity> customerEntities) {
+        Set<Long> goodsIds = new TreeSet<>();
+        List<CustomerVO> customerVOS = new ArrayList<>();
+        customerEntities.forEach(customerEntity -> {
+            CustomerVO orderVO = new CustomerVO();
+            BeanUtils.copyProperties(customerEntity, orderVO);
+            customerVOS.add(orderVO);
+            goodsIds.add(customerEntity.getCuGoodsId());
+        });
+
+        List<GoodsEntity> goodsEntities = goodsMapper.selectListByExample(new GoodsSearch().setIds(goodsIds));
+        Map<Long, GoodsEntity> goodsEntityMap = new HashMap<>(goodsEntities.size());
+        goodsEntities.forEach(goodsEntity -> goodsEntityMap.put(goodsEntity.getId(), goodsEntity));
+
+        customerVOS.forEach(customerVO -> {
+            GoodsEntity goodsEntity = goodsEntityMap.get(customerVO.getCuGoodsId());
+            customerVO.setName(goodsEntity.getName());
+            customerVO.setNewImgPath(goodsEntity.getNewImgPath());
+        });
+        return customerVOS;
     }
 
     /**

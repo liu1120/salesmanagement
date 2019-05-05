@@ -92,6 +92,7 @@ public class GoodsController extends BaseBusinessImpl {
                 giftSendVO.setGiftName(giftEntity.getName());
                 giftSendVO.setGiftImage(giftEntity.getImgpath());
             }
+            giftSendVOS.add(giftSendVO);
         });
 
         return genericPageResponse(giftSendVOS, total);
