@@ -45,9 +45,9 @@ public class SaleEntity {
      */
     private String areaIds;
     /**
-     * 1 默认同意，0 不同意
+     * 0默认待审核，1同意，2不同意
      */
-    private Boolean status;
+    private Integer status;
 
     /**
      * 创建时间

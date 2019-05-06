@@ -26,7 +26,12 @@ public class ActivityController {
     @Resource
     private ActivityBusiness activityBusiness;
 
-    // TODO Controller 层尽量不写业务代码，目的是保持 Controller 层清晰，便于维护，阅后即删
+    /**
+     * 1、创建活动（管理员创建start=0/销售员创建start=1）
+     * 2、审核活动（活动状态status=0的才需要审核，1为通过，2为拒绝）
+     * 3、传入销售员ID，获取其辖区内所有可参加的活动
+     * TODO 刘帅沟通，区域是根据什么来，乡镇还是市、县
+     */
 
     /**
      * 促销活动

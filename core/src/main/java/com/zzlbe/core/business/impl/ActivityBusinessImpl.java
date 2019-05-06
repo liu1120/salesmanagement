@@ -4,13 +4,16 @@ import com.zzlbe.core.business.ActivityBusiness;
 import com.zzlbe.core.common.ErrorCodeEnum;
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.request.SaleForm;
+import com.zzlbe.dao.entity.AreaEntity;
 import com.zzlbe.dao.entity.SaleEntity;
+import com.zzlbe.dao.mapper.AreaMapper;
 import com.zzlbe.dao.mapper.SaleMapper;
 import com.zzlbe.dao.search.SaleSearch;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +29,8 @@ public class ActivityBusinessImpl extends BaseBusinessImpl implements ActivityBu
 
     @Resource
     private SaleMapper saleMapper;
+    @Resource
+    private AreaMapper areaMapper;
 
 
     @Override
@@ -60,8 +65,10 @@ public class ActivityBusinessImpl extends BaseBusinessImpl implements ActivityBu
 
         SaleEntity saleEntity = new SaleEntity();
         BeanUtils.copyProperties(saleForm, saleEntity);
+        // 默认全局有效
         saleEntity.setStart(saleEntity.getStart() == null ? 0 : saleEntity.getStart());
-        saleEntity.setStatus(true);
+        // 管理员创建不用审核
+        saleEntity.setStatus(saleEntity.getStart() == 0 ? 1 : 0);
         saleEntity.setCreateTime(new Date());
 
         saleMapper.insert(saleEntity);
@@ -71,6 +78,24 @@ public class ActivityBusinessImpl extends BaseBusinessImpl implements ActivityBu
 
     @Override
     public GenericResponse findAllByPage(SaleSearch saleSearch) {
+        // 销售员编号
+        Long sellerId = saleSearch.getSellerId();
+        // 活动类型：公司活动/区域活动
+        Integer start = saleSearch.getStart();
+
+        List<Long> areaId = new ArrayList<>();
+        if (sellerId != null && start != null) {
+            List<AreaEntity> areaEntities = areaMapper.selectBySpid(sellerId);
+            areaEntities.forEach(areaEntity -> areaId.add(areaEntity.getTowncode()));
+            if (areaId.size() > 0) {
+                // TODO 未完待续......
+                if (start == 0) {
+
+                } else if (start == 1) {
+
+                }
+            }
+        }
 
         List<SaleEntity> orderEntities = saleMapper.selectByPage(saleSearch);
         Integer total = saleMapper.selectByPageTotal(saleSearch);

@@ -50,8 +50,12 @@ public class SaleSearch extends BasePageRequest {
      */
     private String areaId;
     /**
-     * 0默认同意，1不同意
+     * 0默认待审核，1同意，2不同意
      */
-    private Boolean status;
+    private Integer status;
+    /**
+     * 销售员ID
+     */
+    private Long sellerId;
 
 }
