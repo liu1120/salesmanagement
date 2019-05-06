@@ -135,7 +135,7 @@
         FROM
         <include refid="tableName"/>
         WHERE go_name
-        LIKE '%' || #{goodsname} || '%'
+        like "%"#{goodsname}"%"
     </select>
 
     <select id="getGoodsBySort" resultMap="BaseMap">

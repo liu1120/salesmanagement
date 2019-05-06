@@ -3,7 +3,6 @@ package com.zzlbe.core.request;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -44,7 +43,7 @@ public class OrderForm {
      */
     private String orSay;
     /**
-     * 销售员编号
+     * 销售员编号getOrderList
      */
     private Long orSellerId;
     /**

@@ -227,14 +227,6 @@ public class AdminController {
         return  mv;
     }
 
-    @GetMapping("suggest")//后台查看-投诉与建议
-    public ModelAndView suggest() {
-        ModelAndView mv=new ModelAndView();
-
-        mv.setViewName("admin/z_suggest.html");
-        return  mv;
-    }
-
 
     @GetMapping("question")//产看技术咨询列表
     public ModelAndView question(Integer pageNo,Integer status) {
@@ -267,7 +259,7 @@ public class AdminController {
         return mv;
     }
 
-    @PostMapping("sendSuggestInfo")//建议消息，发送
+    @PostMapping("sendSuggestInfo")//咨询消息，发送
     public ModelAndView sendSuggestInfo(Integer result,String sellerId,String info,long id) {
         SellerEntity sellerEntity=sellerMapper.selectSeller(sellerId);
         SuggestTopicEntity suggestTopicEntity=new SuggestTopicEntity();
@@ -313,6 +305,44 @@ public class AdminController {
         mv.addObject("suggestTopicEntities",SuggestTopicQuerySearches);//子问题
         mv.setViewName("admin/z_consultDetail.html");
         return  mv;
+    }
+
+    @GetMapping("suggest")//产看技术咨询列表
+    public ModelAndView suggest(Integer pageNo,Integer status) {
+        ModelAndView mv = new ModelAndView();
+        SuggestSearch suggestSearch=new SuggestSearch();
+
+        if(status!=null){
+            mv.addObject("status", status);
+            if (status!=8){
+                suggestSearch.setStatus(status);
+            }
+        }else {
+            status=new Integer(8);
+            mv.addObject("status", status);
+        }
+
+        if (pageNo != null)suggestSearch.setPage(pageNo);
+
+//        suggestSearch.setType(2);
+        List<SuggestQuerySearch> suggestQuerySearches=suggestMapper.select2ByPage(suggestSearch);
+        Integer total = suggestMapper.selectByPageTotal(suggestSearch);
+        int page = suggestSearch.getPage(); //当前页
+        int size = suggestSearch.getSize(); //页码大小
+        int totalPage = total / size + 1;
+        int[] arr = new int[totalPage];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = i + 1;
+        }
+        mv.addObject("arr", arr);
+        mv.addObject("totalPage", totalPage);
+        mv.addObject("total", total);
+        mv.addObject("size", size);
+        mv.addObject("page", page);
+        mv.addObject("suggestQuerySearches",suggestQuerySearches);
+        System.out.println("suggestQuerySearches:"+suggestQuerySearches);
+        mv.setViewName("admin/z_suggest.html");
+        return mv;
     }
 
 

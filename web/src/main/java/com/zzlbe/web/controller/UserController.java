@@ -12,6 +12,8 @@ import com.zzlbe.core.response.AreaVO;
 import com.zzlbe.core.util.DateUtil;
 import com.zzlbe.dao.entity.*;
 import com.zzlbe.dao.mapper.*;
+import com.zzlbe.dao.search.GoodsSearch;
+import com.zzlbe.dao.search.OrderSearch;
 import com.zzlbe.dao.search.UserSearch;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -70,7 +72,13 @@ public class UserController {
 
     @GetMapping(value = "selectGoodsByName")//通过商品名模糊查找
     public List<GoodsEntity> selectGoodsByName(@RequestParam("goodsname") String goodsname) {
+//        GoodsSearch goodsSearch=new GoodsSearch();
         List<GoodsEntity> list = goodsMapper.selectGoodsByName(goodsname);
+        System.out.println("goodsname:"+goodsname);
+        for(int i=0;i<list.size();i++){
+
+            System.out.println("list:"+list.get(i).toString());
+        }
         return list;
     }
 
@@ -80,6 +88,20 @@ public class UserController {
         return list;
     }
 
+    @GetMapping(value = "selectGoodsBySort")//查找全部商品根据分类
+    public List<GoodsEntity> selectGoodsBySort(String sortid) {
+        GoodsSearch goodsSearch=new GoodsSearch();
+        goodsSearch.setSort(sortid);
+        List<GoodsEntity> list = goodsMapper.selectByPage(goodsSearch);
+        return list;
+    }
+    @GetMapping(value = "selectGoodsByGname")//查找全部商品根据商品名
+    public List<GoodsEntity> selectGoodsByGname(String gname) {
+        GoodsSearch goodsSearch=new GoodsSearch();
+        goodsSearch.setName(gname);
+        List<GoodsEntity> list = goodsMapper.selectByPage(goodsSearch);
+        return list;
+    }
 
     @GetMapping(value = "getCommentsByGoodsid")//查找全部商品评论
     public List<GoodstopicEntity> getCommentsByGoodsid(@RequestParam("goodsid") long goodsid) {
@@ -96,6 +118,11 @@ public class UserController {
     @GetMapping(value = "getGiftCreditById")//根据礼品id返回所需积分
     public long getGiftCreditById(@RequestParam("id") long id) {
         return giftMapper.selectById(id).getCredit();
+    }
+
+    @GetMapping(value = "getGiftById")//根据礼品id返回礼品详情
+    public GiftEntity getGiftById(@RequestParam("id") long id) {
+        return giftMapper.selectById(id);
     }
 
     @GetMapping(value = "getGoodsSort")//查找全部商品分类
@@ -200,9 +227,12 @@ public class UserController {
         return orderEntity;
     }
 
-    @GetMapping(value = "getOrderStatus")//查看订单的状态
-    public long getOrderStatus(@RequestParam("id") long id) {
-        return orderMapper.selectById(id).getOrStatus();
+    @GetMapping(value = "getOrderStatus")//查看订单状态查看订单
+    public List<OrderEntity> getOrderStatus(@RequestParam("uid") long uid,@RequestParam("status") Integer status) {
+        OrderSearch orderSearch=new OrderSearch();
+        orderSearch.setOrUserId(uid);
+        orderSearch.setOrStatus(status);
+        return orderMapper.selectByPage(orderSearch);
     }
 
     @GetMapping(value = "addComments")//为已完成的订单添加评论。1成功，0失败.同时修改订单表状态，为已评价

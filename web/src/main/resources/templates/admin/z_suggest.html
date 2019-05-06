@@ -37,12 +37,12 @@
                 <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">
                     <img src="/static/imgs/avatar-1.png" class="avatar avatar-sm" alt="logo">
-                    <span class="small ml-1 d-md-down-none" id="loginname"   th:text="${login_username}"></span>
+                    <span class="small ml-1 d-md-down-none" id="loginname" th:text="${login_username}"></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">
 
-                    <a href="/admin/selfinfo" id="selfinfo"  class="dropdown-item">
+                    <a href="/admin/selfinfo" id="selfinfo" class="dropdown-item">
                         <i class="fa fa-user"></i> 个人信息
                     </a>
 
@@ -61,7 +61,7 @@
                     <li class="nav-title">导航</li>
 
                     <li class="nav-item">
-                        <a href="/admin/index" class="nav-link active">
+                        <a href="/admin/index" class="nav-link">
                             <i class="icon icon-speedometer"></i> 仪表盘
                         </a>
                     </li>
@@ -170,7 +170,7 @@
                     </li>
                     <li class="nav-title">More</li>
                     <li class="nav-item">
-                        <a href="/admin/suggest" class="nav-link active">
+                        <a href="/admin/suggest" class="nav-link  active">
                             <i class="icon icon-grid"></i>投诉与建议
                         </a>
                     </li>
@@ -187,74 +187,73 @@
                 <div class="row">
                     <div class="col-md-12">
                         <!--模板结束11111-->
-
                         <div class="container-fluid">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="card">
                                         <div class="card-header bg-light">
-                                            建议：
+                                            投诉与建议：
                                         </div>
                                         <div class="card-body">
                                             <div class="form-group">
-                                                <select id="single-select" class="form-control">
-                                                    <option>全部</option>
-                                                    <option>待处理</option>
-                                                    <option>协商中</option>
-                                                    <option>已处理</option>
+                                                <select id="suggest-select" class="form-control">
+                                                    <option value="8">全部</option>
+                                                    <option value="0">待处理</option>
+                                                    <option value="1">处理中</option>
+                                                    <option value="2">已处理</option>
                                                 </select>
                                             </div>
+                                            <table class="table table-striped table-bordered table-hover dataTables-example">
+                                                <div id="suggestid">
+                                                    <tr th:each="suggest:${suggestQuerySearches}">
+                                                        <td width="40%">
+                                                            <a th:href="@{questionInfo(id=${suggest.id},status=${status})}"
+                                                               th:text="${suggest.title}">
+                                                            </a>
+                                                        </td>
+                                                        <td width="30%">
+                                                            <label th:text="${suggest.createTime}"></label>
+                                                        </td>
+                                                        <td width="20%" th:if="${suggest.status==0}">
+                                                            <a style="color:red">待处理</a>
+                                                        </td>
+
+                                                        <td width="20%" th:if="${suggest.status==1}">
+                                                            <a style="color:goldenrod">未处理</a>
+                                                        </td>
+                                                        <td th:if="${suggest.status==2}">
+                                                            <a style="color:chartreuse">已处理</a>
+                                                        </td>
+                                                        <td width="20%">
+                                                            <a th:href="@{questionInfo(id=${suggest.id})}">
+                                                                查看</a>
+                                                        </td>
+                                                    </tr>
+                                                </div>
+                                            </table>
+
                                             <div>
-                                                <label>2019-02-19 12:32:32</label>
-
-                                                <div class="alert alert-success"><a href="#">这是建议1，协商中</a></div>
-                                                <br>
+							                    <span style="float: left; padding: 5px">
+                                                    总共&nbsp;<b th:text="${total}"></b>&nbsp;条
+                                                </span>
+                                                <span style="float: left; padding: 5px">
+								当前&nbsp;<span style="color: red;" th:text="${page}">1</span>
+                                &nbsp;/&nbsp; <b th:text="${totalPage}">1</b>&nbsp;页&nbsp;&nbsp;
+                            </span>
+                                                <nav aria-label="Page navigation" style="margin: 0 auto; width: 240px">
+                                                    <ul class="pagination" style="margin: 0;">
+                                                        <li th:each="array:${arr}">
+                                                            <a th:href="@{suggest(pageNo=${array},status=${status})}"
+                                                               th:text="${array}">view</a>
+                                                        </li>
+                                                    </ul>
+                                                </nav>
                                             </div>
-
-                                            <div>
-                                                <label>2019-02-19 12:36:32</label>
-
-                                                <div class="alert alert-secondary"><a href="#">这是建议2，已完成</a></div>
-                                                <br>
-                                            </div>
-                                            <div>
-                                                <label>2019-02-19 12:52:32</label>
-
-                                                <div class="alert alert-warning"><a href="#">这是建议4，待处理</a></div>
-                                                <br>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-header bg-light">
-                                            投诉：
-                                        </div>
-
-                                        <div class="card-body">
-                                            <div class="form-group">
-                                                <select id="single-select2" class="form-control">
-                                                    <option>全部</option>
-                                                    <option>待处理</option>
-                                                    <option>协商中</option>
-                                                    <option>已处理</option>
-                                                </select>
-                                            </div>
-                                            <div class="alert alert-success"><a href="#">这是投诉1，协商中</a></div>
-                                            <div class="alert alert-secondary"><a href="#">这是投诉2已完成</a></div>
-                                            <div class="alert alert-success"><a href="#">这是投诉3</a></div>
-                                            <div class="alert alert-warning"><a href="#">这是投诉4，待处理</a></div>
-                                            <div class="alert alert-success"><a href="#">这是投诉5</a></div>
-                                            <div class="alert alert-success"><a href="#">这是投诉6</a></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
                         <!--模板开始222222-->
                     </div>
                 </div>
@@ -264,28 +263,35 @@
     <script src="/static/vendor/jquery/jquery.min.js"></script>
     <script src="/static/vendor/popper.js/popper.min.js"></script>
     <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/vendor/Chart.js/chart.min.js"></script>
     <script src="/static/js/carbon.js"></script>
 </div>
 </body>
-<script type="text/javascript" src="/static/js/adminjq.js"></script>
+<!--<script type="text/javascript" src="/static/js/adminjq.js"></script>-->
 <script type="text/javascript" src="/static/js/admin.js"></script>
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
-        var local_username=localStorage.getItem("login_username");
-        var e=document.getElementById("loginname");
-        console.log("local_username:"+local_username);
-        e.innerText=local_username;
+        var local_username = localStorage.getItem("login_username");
+        var e = document.getElementById("loginname");
+        console.log("local_username:" + local_username);
+        e.innerText = local_username;
 
         var login_username = [[${login_username}]];
-        console.log("login_username:"+login_username);
-        if(login_username!=undefined){
-            localStorage.setItem("login_username",login_username);
-            e.innerText=login_username;
+        console.log("login_username:" + login_username);
+        if (login_username != undefined) {
+            localStorage.setItem("login_username", login_username);
+            e.innerText = login_username;
         }
-        var selfinfo=document.getElementById("selfinfo");
-        selfinfo.href="/admin/selfinfo?str="+e.innerText;
-        console.log("selfinfo.href"+selfinfo.href)
+        var selfinfo = document.getElementById("selfinfo");
+        selfinfo.href = "/admin/selfinfo?str=" + e.innerText;
+        console.log("selfinfo.href" + selfinfo.href)
     }
-
+</script>
+<script type="text/javascript" >
+    $("#suggest-select").change(function () {
+        var option = $("#suggest-select").val()
+        console.log("option:" + option)
+        self.location.href="/admin/suggest?status="+option;
+    });
 </script>
 </html>
