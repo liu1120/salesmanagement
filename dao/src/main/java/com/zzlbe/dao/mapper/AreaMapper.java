@@ -31,6 +31,8 @@ public interface AreaMapper {
 
     AreaEntity selectOne(Long towncode);
 
+    AreaEntity select2One(Long countycode);//根据countycode选出对应的countyname 返回1条数据
+
     /**
      * 更新数据管理员信息
      *

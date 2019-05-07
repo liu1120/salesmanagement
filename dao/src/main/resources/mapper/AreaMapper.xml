@@ -92,7 +92,14 @@
         <include refid="tableName"/>
         WHERE ar_towncode=#{towncode}
     </select>
-
+    <select id="select2One" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE ar_countycode=#{countycode}
+        Group by ar_countycode
+    </select>
     <update id="update">
         UPDATE
         <include refid="tableName"/>

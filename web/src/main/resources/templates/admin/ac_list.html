@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/stylesOA.css">
 </head>
-<body class="sidebar-fixed header-fixed" onload="writeLoginInfo()">
+<body class="sidebar-fixed header-fixed" onload="writeLoginInfo();ischeck()">
 <div class="page-wrapper">
     <nav class="navbar page-header" style="padding-top: 0px">
         <a href="" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
@@ -197,8 +197,8 @@
 
                                         <div class="ibox-content">
                                             <div class="form-group">
-                                                <select id="single-select" class="form-control">
-                                                    <option value="0">全部</option>
+                                                <select id="select-activity" class="form-control">
+                                                    <option value="8">全部</option>
                                                     <option value="1">无活动</option>
                                                     <option value="2">打折</option>
                                                     <option value="3">满减</option>
@@ -208,10 +208,10 @@
                                             <table class="table table-striped table-bordered table-hover dataTables-example">
                                                 <thead>
                                                 <tr>
-                                                    <th>序号</th>
                                                     <th>名称</th>
                                                     <th>图片</th>
                                                     <th>点击量</th>
+                                                    <th>底价</th>
                                                     <th>价格</th>
                                                     <th>库存</th>
                                                     <th>促销类型</th>
@@ -221,91 +221,53 @@
                                                 </thead>
                                                 <tbody>
 
-                                                <tr class="gradeA">
-                                                    <td>1</td>
-                                                    <td>40%氧乐果乳油</td>
-                                                    <td><img src="/static/imgs/12345.jpg" style="width: 35px;height: 45px"></td>
-                                                    <td>123</td>
-                                                    <td>74.91</td>
-                                                    <td>999</td>
-                                                    <td>打折</td>
-
-                                                    <td>2017-07-05</td>
+                                                <tr class="gradeA" th:each="sale : ${goodsSale}" style="min-width:986">
+                                                    <td th:text="${sale.name}"></td>
                                                     <td>
-                                                        <a href="/hr/employee/7/toUpdate.do"
-                                                           class="btn btn-primary">促销类型</a>&nbsp;&nbsp;
+                                                        <img th:src="@{${sale.newImgPath}}"
+                                                             style="width: 35px;height: 45px"/>
+                                                    </td>
+                                                    <td th:text="${sale.point}"></td>
+                                                    <td th:text="${sale.minPrice}"></td>
+                                                    <td th:text="${sale.price}"></td>
+                                                    <td th:text="${sale.num}"></td>
+
+                                                    <td th:if="${sale.type} eq 1"> 无</td>
+                                                    <td th:if="${sale.type} eq 2"> 打折</td>
+                                                    <td th:if="${sale.type} eq 3"> 满减</td>
+                                                    <td th:if="${sale.type} eq 4"> 满送</td>
+                                                    <td th:if="${sale.type} eq null">无</td>
+                                                    <td th:text="${sale.time}"></td>
+                                                    <td>
+                                                        <!--<a th:href="@{activityInfo(id=${sale.said})}"-->
+                                                           <!--class="btn btn-success">修改</a>&nbsp;&nbsp;-->
+
+                                                        <a th:href="@{activityInfo(said=${sale.id})}" th:if="${sale.start} eq 1"
+                                                           class="btn btn-warning">查看申请</a>
+                                                        <a th:href="@{activityInfo(said=${sale.id})}" th:if="${sale.start} eq null"
+                                                           class="btn btn-success">添&nbsp;&nbsp;加</a>
+                                                        <a th:href="@{activityInfo(said=${sale.id})}" th:if="${sale.start} eq 0"
+                                                           class="btn btn-primary">修&nbsp;&nbsp;改</a>
+                                                        &nbsp;&nbsp;
                                                     </td>
                                                 </tr>
-
-                                                <tr class="gradeA">
-                                                    <td>2</td>
-                                                    <td>1011</td>
-                                                    <td><img src="/static/imgs/12345.jpg" style="width: 35px;height: 45px"></td>
-                                                    <td>456</td>
-                                                    <td>123.34</td>
-                                                    <td>123452</td>
-                                                    <td>正常</td>
-
-                                                    <td>2017-07-05</td>
-                                                    <td>
-                                                        <a href=""
-                                                           class="btn btn-primary">促销类型</a>&nbsp;&nbsp;
-                                                    </td>
-                                                </tr>
-
-                                                <tr class="gradeA">
-                                                    <td>3</td>
-                                                    <td>50%氧乐果乳油</td>
-                                                    <td><img src="imgs/12345.jpg" style="width: 35px;height: 45px"></td>
-                                                    <td>567</td>
-                                                    <td>39.90</td>
-                                                    <td>999</td>
-                                                    <td>满减</td>
-
-                                                    <td>2017-05-12</td>
-                                                    <td>
-                                                        <a href="/hr/employee/5/toUpdate.do"
-                                                           class="btn btn-primary">促销类型</a>&nbsp;&nbsp;
-                                                    </td>
-                                                </tr>
-
-                                                <tr class="gradeA">
-                                                    <td>4</td>
-                                                    <td>60%氧乐果乳油</td>
-                                                    <td><img src="imgs/12345.jpg" style="width: 35px;height: 45px"></td>
-                                                    <td>459</td>
-                                                    <td>49.90</td>
-                                                    <td>999</td>
-                                                    <td>满送</td>
-
-                                                    <td>2017-02-06</td>
-                                                    <td>
-                                                        <a href="/hr/employee/4/toUpdate.do"
-                                                           class="btn btn-primary">促销类型</a>&nbsp;&nbsp;</td>
-                                                </tr>
-
                                                 </tbody>
                                             </table>
                                             <div>
+
 							<span style="float: left; padding: 5px">
-								当前&nbsp;<span style="color: red;">1</span>&nbsp;/&nbsp;<b>2</b>&nbsp;页&nbsp;&nbsp;
-								总共&nbsp;<b>7</b>&nbsp;条</span>
+                                                    总共&nbsp;<b th:text="${total}"></b>&nbsp;条
+                                                </span>
+                                                <span style="float: left; padding: 5px">
+								当前&nbsp;<span style="color: red;" th:text="${page}">1</span>
+                                &nbsp;/&nbsp; <b th:text="${totalPage}">1</b>&nbsp;页&nbsp;&nbsp;
+                            </span>
                                                 <nav aria-label="Page navigation" style="margin: 0 auto; width: 240px">
                                                     <ul class="pagination" style="margin: 0;">
-                                                        <li>
-                                                            <a href="/hr/employee/listPage.do?pageNo=1"
-                                                               aria-label="Previous"> <span
-                                                                    aria-hidden="true">前一页</span>
-                                                            </a>
+                                                        <li th:each="array:${arr}">
+                                                            <a th:href="@{activity(pageNo=${array})}"
+                                                               th:text="${array}">view</a>
                                                         </li>
-
-                                                        <li><a href="/hr/employee/listPage.do?pageNo=1">1</a></li>
-
-                                                        <li><a href="/hr/employee/listPage.do?pageNo=2">2</a></li>
-
-                                                        <li><a href="/hr/employee/listPage.do?pageNo=2"
-                                                               aria-label="Next"> <span aria-hidden="true">后一页</span>
-                                                        </a></li>
                                                     </ul>
                                                 </nav>
                                             </div>
@@ -324,7 +286,6 @@
     <script src="/static/vendor/jquery/jquery.min.js"></script>
     <script src="/static/vendor/popper.js/popper.min.js"></script>
     <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/static/vendor/Chart.js/chart.min.js"></script>
     <script src="/static/js/carbon.js"></script>
 </div>
 </body>
@@ -347,62 +308,27 @@
         selfinfo.href="/admin/selfinfo?str="+e.innerText;
         console.log("selfinfo.href"+selfinfo.href)
     }
-
-</script>
-<script type="text/javascript" >
-    /**
-     * Bar Chart
-     * 初始加载页面时调用，获取销售员 销售量较高的图谱
-     */
-    $.ajax({
-        url: 'getSellerSell',
-        type: "get",
-        data:{sellerid:0},
-        dataType: 'json',
-    }).done(function (results) {
-        // 将获取到的json数据分别存放到两个数组中
-        var labels = [], data=[];
-        for(var i=0;i<results.length;i++){ //第一层循环取到各个list
-            labels.push(results[i].month);
-            data.push(results[i].count);
-            console.log("results[i].month"+results[i].month)
-        }
-        // 设置图表的数据
-        var tempData = {
-            labels : labels,
-            datasets: [{
-                label: '销售量',
-                labels: ["Red", "Blue", "Cyan", "Green", "Purple", "Orange"],
-                data: data,
-                backgroundColor: [
-                    'rgba(244, 88, 70, 0.5)',
-                    'rgba(33, 150, 243, 0.5)',
-                    'rgba(0, 188, 212, 0.5)',
-                    'rgba(42, 185, 127, 0.5)',
-                    'rgba(156, 39, 176, 0.5)',
-                    'rgba(253, 178, 68, 0.5)'
-                ],
-                borderColor: [
-                    '#F45846',
-                    '#2196F3',
-                    '#00BCD4',
-                    '#2ab97f',
-                    '#9C27B0',
-                    '#fdb244'
-                ],
-                borderWidth: 1
-            }]
-        };
-        // 获取所选canvas元素的内容
-        var ctx = document.getElementById("bar-chart");
-        //设置图表高度
-        var myLineChart = new Chart(ctx, {
-            type: 'bar',
-            data: tempData,
-            options: {
-                maintainAspectRatio: true,
+    function ischeck() {
+        var id = [[${type}]];
+        var s1 = document.getElementById("select-activity");
+        console.log("s1.options[i].value:"+id)
+        for (i = 0; i <= s1.options.length; i++) {
+            console.log("s1.options[i].value:"+s1.options[i].value)
+            if (s1.options[i].value == id) {
+                s1.options[i].selected = true;
             }
-        });
+        }
+    }
+</script>
+<script type="text/javascript" th:inline="javascript">
+    $("#select-activity").change(function(){
+        var type=$("#select-activity").val();
+        var pageNo=[[${pageNo}]];
+        if(pageNo!=null){
+            window.location.href="activity?type="+type+"&pageNo="+[[${pageNo}]];
+        }
+        window.location.href="activity?type="+type;
+
     });
 </script>
 </html>

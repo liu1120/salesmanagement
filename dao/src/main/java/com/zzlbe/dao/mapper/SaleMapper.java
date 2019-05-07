@@ -16,6 +16,8 @@ public interface SaleMapper {
 
     SaleEntity selectById(long id);
 
+    GoodsSaleSearch select2ById(long id);
+
 
     /**
      * 分页相关
@@ -24,7 +26,8 @@ public interface SaleMapper {
 
     Integer selectByPageTotal(SaleSearch saleSearch);
 
-    List<GoodsSaleSearch> select2ByPage(SaleSearch saleSearch);//tb_goods表 tb_sale表关联查询
+    Integer select2ByPageTotal(SaleSearch saleSearch);//查询，根据id
 
+    List<GoodsSaleSearch> select2ByPage(SaleSearch saleSearch);//tb_goods表 tb_sale表关联查询
 
 }

@@ -29,8 +29,9 @@
         <result column="go_isshow" property="isShow"/>
         <result column="go_num" property="num"/>
         <result column="go_credit" property="credit"/>
+        <result column="go_updatetime" property="time"/>
 
-        <result column="sa_id" property="id"/>
+        <result column="sa_id" property="said"/>
         <result column="sa_type" property="type"/>
         <result column="sa_discount" property="discount"/>
         <result column="sa_start" property="start"/>
@@ -119,14 +120,29 @@
         <include refid="tableName"/>
         <include refid="condition"/>
     </select>
-
-    <select id="select2ByPage"  resultMap="BaseMap">
+    <select id="select2ByPageTotal" resultType="java.lang.Integer">
+        SELECT count(1) from
+        (select * from tb_goods t1
+        left join tb_sale t2
+        on t1.go_id = t2.sa_id
+        <include refid="condition"/>
+        GROUP BY t1.go_id) tb
+    </select>
+    <select id="select2ByPage"  resultMap="GoodsSaleMap">
         select * from tb_goods t1
         left join tb_sale t2
         on t1.go_id = t2.sa_id
+        <include refid="condition"/>
+        GROUP BY t1.go_id
+        LIMIT #{firstIndex}, #{size}
+    </select>
+    <select id="select2ById"  resultMap="GoodsSaleMap">
+        select * from tb_goods t1
+        left join tb_sale t2
+        on t1.go_id = t2.sa_id
+        WHERE sa_id = #{id}
         GROUP BY t1.go_id
     </select>
-
 
     <update id="update">
         UPDATE
