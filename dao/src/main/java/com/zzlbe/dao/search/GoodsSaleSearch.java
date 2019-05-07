@@ -6,7 +6,6 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -61,10 +60,11 @@ public class GoodsSaleSearch extends BasePageRequest {//用于goods、sale两表
      * 农化产品积分
      */
     private Integer credit;
+    private String time;
 
 
 
-
+    private Integer said;
     /**
      * 销售类型：1正常（默认），2打折，3满减，4满送
      */
@@ -88,11 +88,11 @@ public class GoodsSaleSearch extends BasePageRequest {//用于goods、sale两表
     /**
      * 开始时间
      */
-    private Date startTime;
+    private String startTime;
     /**
      * 结束时间
      */
-    private Date overTime;
+    private String overTime;
     /**
      * 开启活动区域（多个，中间用英文分号[`;`]隔开）
      */
