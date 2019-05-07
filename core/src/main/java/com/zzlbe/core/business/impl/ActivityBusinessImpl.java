@@ -13,9 +13,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * PROJECT: Sales
@@ -83,16 +84,20 @@ public class ActivityBusinessImpl extends BaseBusinessImpl implements ActivityBu
         // 活动类型：公司活动/区域活动
         Integer start = saleSearch.getStart();
 
-        List<Long> areaId = new ArrayList<>();
+        Set<Long> areaId = new TreeSet<>();
         if (sellerId != null && start != null) {
             List<AreaEntity> areaEntities = areaMapper.selectBySpid(sellerId);
-            areaEntities.forEach(areaEntity -> areaId.add(areaEntity.getTowncode()));
+            areaEntities.forEach(areaEntity -> areaId.add(areaEntity.getCountycode()));
             if (areaId.size() > 0) {
-                // TODO 未完待续......
+                // 0默认全局sa_area_id不开放；1销售员申请，sa_area_id启用
+                StringBuilder sb = new StringBuilder();
+                areaId.forEach(aLong -> sb.append(aLong).append("|"));
+                String ids = sb.toString();
+                ids = ids.substring(0, ids.length() - 1);
                 if (start == 0) {
-
+                    saleSearch.setUnAreaId(ids);
                 } else if (start == 1) {
-
+                    saleSearch.setAreaId(ids);
                 }
             }
         }

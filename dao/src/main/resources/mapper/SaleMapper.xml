@@ -89,6 +89,9 @@
             <if test="areaId != null">
                 AND sa_area_ids REGEXP #{areaId}
             </if>
+            <if test="unAreaId != null">
+                AND sa_area_ids NOT REGEXP #{unAreaId}
+            </if>
             <if test="status != null">
                 AND sa_status = #{status}
             </if>
