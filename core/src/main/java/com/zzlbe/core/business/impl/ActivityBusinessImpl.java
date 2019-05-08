@@ -3,6 +3,7 @@ package com.zzlbe.core.business.impl;
 import com.zzlbe.core.business.ActivityBusiness;
 import com.zzlbe.core.common.ErrorCodeEnum;
 import com.zzlbe.core.common.GenericResponse;
+import com.zzlbe.core.request.SaleCheckForm;
 import com.zzlbe.core.request.SaleForm;
 import com.zzlbe.dao.entity.AreaEntity;
 import com.zzlbe.dao.entity.SaleEntity;
@@ -73,6 +74,22 @@ public class ActivityBusinessImpl extends BaseBusinessImpl implements ActivityBu
         saleEntity.setCreateTime(new Date());
 
         saleMapper.insert(saleEntity);
+
+        return GenericResponse.SUCCESS;
+    }
+
+    @Override
+    public GenericResponse check(SaleCheckForm saleCheckForm) {
+        SaleEntity saleEntity = saleMapper.selectById(saleCheckForm.getSaleId());
+        if (saleEntity == null) {
+            return new GenericResponse(ErrorCodeEnum.ACTIVITY_NOT_EXIST);
+        }
+        if (saleEntity.getStatus() != 0) {
+            return new GenericResponse(ErrorCodeEnum.ACTIVITY_CHECKED);
+        }
+        saleEntity.setStatus(saleCheckForm.getStatus());
+
+        saleMapper.update(saleEntity);
 
         return GenericResponse.SUCCESS;
     }

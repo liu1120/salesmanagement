@@ -2,6 +2,7 @@ package com.zzlbe.web.controller;
 
 import com.zzlbe.core.business.ActivityBusiness;
 import com.zzlbe.core.common.GenericResponse;
+import com.zzlbe.core.request.SaleCheckForm;
 import com.zzlbe.core.request.SaleForm;
 import com.zzlbe.core.util.DateUtil;
 import com.zzlbe.dao.search.SaleSearch;
@@ -55,6 +56,17 @@ public class ActivityController {
         saleForm.setOverTime(DateUtil.getDateByStr(saleForm.getOverTimeStr()));
 
         return activityBusiness.create(saleForm);
+    }
+
+    @ResponseBody
+    @RequestMapping("check")
+    public GenericResponse check(@RequestBody @Valid SaleCheckForm saleCheckForm, BindingResult bindingResult) {
+        // 参数校验
+        if (bindingResult.hasErrors()) {
+            return GenericResponse.ERROR.setMessage(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
+
+        return activityBusiness.check(saleCheckForm);
     }
 
     @ResponseBody

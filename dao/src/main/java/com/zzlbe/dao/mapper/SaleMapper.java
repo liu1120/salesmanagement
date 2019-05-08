@@ -14,9 +14,9 @@ public interface SaleMapper {
 
     void update(SaleEntity saleEntity);
 
-    SaleEntity selectById(long id);
+    SaleEntity selectById(Long id);
 
-    GoodsSaleSearch select2ById(long id);
+    GoodsSaleSearch select2ById(Long id);
 
 
     /**

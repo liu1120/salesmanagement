@@ -1,6 +1,7 @@
 package com.zzlbe.core.business;
 
 import com.zzlbe.core.common.GenericResponse;
+import com.zzlbe.core.request.SaleCheckForm;
 import com.zzlbe.core.request.SaleForm;
 import com.zzlbe.dao.search.SaleSearch;
 
@@ -20,6 +21,14 @@ public interface ActivityBusiness {
      * @return GenericResponse
      */
     GenericResponse create(SaleForm saleForm);
+
+    /**
+     * 审核活动
+     *
+     * @param saleCheckForm 审核活动相关表单
+     * @return GenericResponse
+     */
+    GenericResponse check(SaleCheckForm saleCheckForm);
 
     /**
      * 分页查询所有活动
