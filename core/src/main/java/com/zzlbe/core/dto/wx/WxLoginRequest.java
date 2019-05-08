@@ -11,6 +11,7 @@ import lombok.Data;
  */
 @Data
 public class WxLoginRequest {
+    private Long userId;
     private String code;
     private String phoneNo;
     private String password;
