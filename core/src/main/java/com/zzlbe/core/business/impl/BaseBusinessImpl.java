@@ -1,7 +1,11 @@
 package com.zzlbe.core.business.impl;
 
 import com.zzlbe.core.common.GenericResponse;
+import com.zzlbe.core.response.UserInfoVO;
+import com.zzlbe.core.util.UserUtils;
+import com.zzlbe.dao.entity.UserEntity;
 import com.zzlbe.dao.page.PageResponse;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
@@ -34,6 +38,26 @@ public abstract class BaseBusinessImpl {
      */
     protected static <T> GenericResponse<PageResponse> genericPageResponse(List<T> entities, Integer total) {
         return new GenericResponse<>(pageResponse(entities, total));
+    }
+
+    /**
+     * 构造用户信息
+     *
+     * @param userEntity UserEntity
+     * @return UserInfoVO
+     */
+    UserInfoVO generateUserInfo(UserEntity userEntity) {
+        String token = UserUtils.getUserToken(userEntity.getId());
+
+        UserInfoVO userInfoVO = new UserInfoVO();
+        userInfoVO.setToken(token);
+        BeanUtils.copyProperties(userEntity, userInfoVO);
+
+        return userInfoVO;
+    }
+
+    GenericResponse<UserInfoVO> userInfoResponse(UserEntity userEntity) {
+        return new GenericResponse<>(generateUserInfo(userEntity));
     }
 
 }

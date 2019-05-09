@@ -2,7 +2,6 @@ package com.zzlbe.core.business;
 
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.dto.UserInfoDTO;
-import com.zzlbe.core.dto.wx.WxLoginRequest;
 import com.zzlbe.core.request.LoginForm;
 import com.zzlbe.core.request.RegisterForm;
 import com.zzlbe.core.request.UserInfoModifyForm;
@@ -10,14 +9,6 @@ import com.zzlbe.core.request.UserPasswordModifyForm;
 import com.zzlbe.dao.search.UserSearch;
 
 public interface UserBusiness {
-
-    /**
-     * 微信登录
-     *
-     * @param wxLoginRequest 微信登录信息
-     * @return GenericResponse
-     */
-    GenericResponse weChatLogin(WxLoginRequest wxLoginRequest);
 
     /**
      * 用户登录

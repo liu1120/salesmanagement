@@ -83,6 +83,8 @@ public enum ErrorCodeEnum {
     ACTIVITY_DISCOUNT_NOT_NULL("8001", "打折活动，折扣不能为空"),
     ACTIVITY_MINUS_NOT_NULL("8002", "满减活动，起价和满减金额皆不能为空"),
     ACTIVITY_EXIST("8003", "相同活动已存在"),
+    ACTIVITY_NOT_EXIST("8004", "活动不存在"),
+    ACTIVITY_CHECKED("8005", "活动已审核完成"),
 
     ;
 
