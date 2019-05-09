@@ -32,6 +32,8 @@ public interface OrderMapper {
 
     List<OrderEntity> selectByPage(OrderSearch orderSearch);
 
+    List<Order2Search> select2ByPage(OrderSearch orderSearch);
+
     Integer selectByPageTotal(OrderSearch orderSearch);
 
     List<Goodsselltop10Search> getGoodSellTop10();

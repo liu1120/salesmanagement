@@ -19,7 +19,25 @@
         <result column="or_words" property="orWords"/>
         <result column="or_refuse" property="orRefuse"/>
     </resultMap>
-
+    <resultMap id="Order2Search" type="com.zzlbe.dao.search.Order2Search">
+        <result column="or_id" property="orId"/>
+        <result column="or_goods_id" property="orGoodsId"/>
+        <result column="go_name" property="gname"/>
+        <result column="go_newimgpath" property="gimg"/>
+        <result column="or_count" property="orCount"/>
+        <result column="or_price" property="orPrice"/>
+        <result column="or_say" property="orSay"/>
+        <result column="or_total_amount" property="orTotalAmount"/>
+        <result column="or_datetime" property="orDatetimeStr"/>
+        <result column="or_seller_id" property="orSellerId"/>
+        <result column="or_user_id" property="orUserId"/>
+        <result column="or_type" property="orType"/>
+        <result column="or_logistics" property="orLogistics"/>
+        <result column="or_address" property="orAddress"/>
+        <result column="or_status" property="orStatus"/>
+        <result column="or_words" property="orWords"/>
+        <result column="or_refuse" property="orRefuse"/>
+    </resultMap>
     <resultMap id="AmountSearch" type="com.zzlbe.dao.search.AmountSearch">
         <result column="month" property="month"/>
         <result column="totalmoney" property="amt"/>
@@ -134,6 +152,15 @@
         <include refid="condition"/>
         LIMIT #{firstIndex}, #{size}
     </select>
+
+    <select id="select2ByPage" resultMap="Order2Search">
+        select * from tb_order t1
+        left join tb_goods t2
+        on t1.or_goods_id = t2.go_id
+        <include refid="condition"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
 
     <select id="selectByPageTotal" resultType="java.lang.Integer">
         SELECT

@@ -338,9 +338,6 @@ public class AdminController {
         if (pageNo != null) suggestSearch.setPage(pageNo);
         suggestSearch.setType(0);
         List<SuggestQuerySearch> suggestQuerySearches = suggestMapper.select2ByPage(suggestSearch);
-//        Integer total1 = suggestMapper.selectByPageTotal(suggestSearch);
-//        suggestSearch.setType(1);
-//        suggestQuerySearches.addAll(suggestMapper.select2ByPage(suggestSearch));
         Integer total = suggestMapper.selectByPageTotal(suggestSearch);//两种类型的条数相加
         int page = suggestSearch.getPage(); //当前页
         int size = suggestSearch.getSize(); //页码大小

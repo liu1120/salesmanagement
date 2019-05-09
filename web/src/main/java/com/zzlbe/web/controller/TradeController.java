@@ -4,7 +4,10 @@ import com.zzlbe.core.util.DateUtil;
 import com.zzlbe.dao.entity.GoodsEntity;
 import com.zzlbe.dao.mapper.GoodsMapper;
 import com.zzlbe.dao.mapper.GoodssortMapper;
+import com.zzlbe.dao.mapper.OrderMapper;
 import com.zzlbe.dao.search.GoodsSearch;
+import com.zzlbe.dao.search.Order2Search;
+import com.zzlbe.dao.search.OrderSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +25,9 @@ public class TradeController {
 
     @Autowired
     GoodsMapper goodsMapper;
+    @Autowired
+    OrderMapper orderMapper;
+    @Autowired
     GoodssortMapper goodssortMapper;
 
     @GetMapping("getAllgoods")//后台查看-商品列表
@@ -143,14 +149,40 @@ public class TradeController {
         System.out.println("goodsEntity-=-=-=-=-="+goodsEntity.toString());
         mv.addObject("message","商品"+goodsEntity.getName()+"修改成功");
         mv.addObject("id",goodsEntity.getId());
-//        mv.setViewName("admin/g_infoLook.html");
         mv.setViewName("redirect:/admin/selectGoodsById");
         return  mv;
     }
 
     @RequestMapping("order")//后台-订单列表
-    public ModelAndView order() {
+    public ModelAndView order(Integer pageNo, Integer type) {
         ModelAndView mv=new ModelAndView();
+        OrderSearch orderSearch=new OrderSearch();
+        if (pageNo!=null){
+            orderSearch.setPage(pageNo);
+        }
+        if (type != null) {
+            if (type != 8)
+                orderSearch.setOrType(type);
+        } else {
+            type = new Integer(8);
+        }
+        mv.addObject("status", type);
+        List<Order2Search> order2=orderMapper.select2ByPage(orderSearch);
+
+        Integer total=orderMapper.selectByPageTotal(orderSearch);
+        int size=orderSearch.getSize();//页码大小
+        int page=orderSearch.getPage();//当前页
+        int totalPage=total/size+1;
+        int[] arr=new int[totalPage];
+        for(int i=0;i<arr.length;i++){
+            arr[i]=i+1;
+        }
+        mv.addObject("totalPage",totalPage);
+        mv.addObject("arr",arr);
+        mv.addObject("total",total);
+        mv.addObject("page",page);
+        mv.addObject("size",size);
+        mv.addObject("order",order2);
         mv.setViewName("admin/or_list.html");
         return  mv;
     }

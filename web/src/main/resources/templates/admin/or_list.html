@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/stylesOA.css">
 </head>
-<body class="sidebar-fixed header-fixed" onload="writeLoginInfo()">
+<body class="sidebar-fixed header-fixed" onload="writeLoginInfo();ischeck()">
 <div class="page-wrapper">
     <nav class="navbar page-header" style="padding-top: 0px">
         <a href="" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
@@ -37,12 +37,12 @@
                 <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">
                     <img src="/static/imgs/avatar-1.png" class="avatar avatar-sm" alt="logo">
-                    <span class="small ml-1 d-md-down-none" id="loginname"   th:text="${login_username}"></span>
+                    <span class="small ml-1 d-md-down-none" id="loginname" th:text="${login_username}"></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">
 
-                    <a href="/admin/selfinfo" id="selfinfo"  class="dropdown-item">
+                    <a href="/admin/selfinfo" id="selfinfo" class="dropdown-item">
                         <i class="fa fa-user"></i> 个人信息
                     </a>
 
@@ -198,20 +198,22 @@
                                         <div class="ibox-content">
                                             <div class="form-group">
                                                 <div class="row">
+                                                    <!--<div class="col-md-4">-->
+                                                    <!--<select id="single-select" class="form-control">-->
+                                                    <!--<option>全部订单</option>-->
+                                                    <!--<option>今日订单</option>-->
+                                                    <!--<option>本周订单</option>-->
+                                                    <!--<option>本月订单</option>-->
+                                                    <!--</select>-->
+                                                    <!--</div>-->
+
                                                     <div class="col-md-4">
-                                                        <select id="single-select" class="form-control">
-                                                            <option>全部订单</option>
-                                                            <option>今日订单</option>
-                                                            <option>本周订单</option>
-                                                            <option>本月订单</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <select id="single" class="form-control">
-                                                            <option>状态</option>
-                                                            <option>派送中</option>
-                                                            <option>已签收</option>
-                                                            <option>代发货</option>
+                                                        <!--下单审核状态：0待审核，1审核通过，2审核拒绝-->
+                                                        <select id="single-type" name="type" class="form-control">
+                                                            <option value="8">订单状态</option>
+                                                            <option value="0">待审核</option>
+                                                            <option value="1">通过</option>
+                                                            <option value="2">拒绝</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -223,144 +225,135 @@
                                                         <th>图片</th>
                                                         <th>农产品</th>
                                                         <th>数量</th>
-                                                        <th>下单时间</th>
-                                                        <th>货物状态</th>
-                                                        <th>折扣</th>
+                                                        <th>单价</th>
                                                         <th>实付</th>
+                                                        <th>下单时间</th>
+                                                        <th>订单状态</th>
+                                                        <th>货物状态</th>
+                                                        <!--<th>折扣</th>-->
                                                         <th>留言</th>
                                                         <th>操作</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
+                                                    <!--style="min-width:986"-->
+                                                    <tr class="gradeA" th:each="ord : ${order}">
+                                                        <td th:text="${ord.orId}"></td>
+                                                        <td>
+                                                            <img th:src="@{${ord.gimg}}"
+                                                                 style="width: 35px;height: 45px"/>
+                                                        </td>
+                                                        <td th:text="${ord.gname}"></td>
+                                                        <td th:text="${ord.orCount}"></td>
+                                                        <td th:text="${ord.orPrice}"></td>
+                                                        <td th:text="${ord.orTotalAmount}"></td>
 
-                                                    <tr class="gradeA">
-                                                        <td>123456786543</td>
-                                                        <td><img src="/static/imgs/12345.jpg" style="width: 35px;height: 45px"></td>
-                                                        <td>40%氧乐果乳油</td>
-                                                        <td>15</td>
-                                                        <td>2017-07-05</td>
-                                                        <td>派送中</td>
-                                                        <td>无折扣</td>
-                                                        <td>860￥</td>
-                                                        <td><marqune>记得放糖</marqune></td>
-                                                        <td><a href="" class="btn btn-info">查看</a>&nbsp;&nbsp;<a href="" class="btn btn-primary">发货</a>
+                                                        <td th:text="${ord.orDatetimeStr}">7</td>
+                                                        <!--下单审核状态：0待审核，1审核通过，2审核拒绝-->
+                                                        <td th:if="${ord.orType} eq 0">待审核</td>
+                                                        <td th:if="${ord.orType} eq 1">审核通过</td>
+                                                        <td th:if="${ord.orType} eq 2">审核拒绝</td>
+                                                        <!--0未付款,1已付款，2待发货,3已发货,4已签收,5退货中,6已退货，7完成交易。8已完成评价-->
+                                                        <td th:if="${ord.orStatus} eq 0">未付款</td>
+                                                        <td th:if="${ord.orStatus} eq 1">已付款</td>
+                                                        <td th:if="${ord.orStatus} eq 2">待发货</td>
+                                                        <td th:if="${ord.orStatus} eq 3">已发货</td>
+                                                        <td th:if="${ord.orStatus} eq 4">已签收</td>
+                                                        <td th:if="${ord.orStatus} eq 5">退货中</td>
+                                                        <td th:if="${ord.orStatus} eq 6">已退货</td>
+                                                        <td th:if="${ord.orStatus} eq 7">完成交易</td>
+                                                        <td th:if="${ord.orStatus} eq 8">已完成评价</td>
+                                                        <td th:if="${ord.orStatus} eq null"></td>
+
+                                                        <td th:text="${ord.orWords}"></td>
+                                                        <td>
+                                                            <a th:href="@{selectGoodsById(id=${ord.orId})}" class="btn btn-info">查看</a>&nbsp;&nbsp;
+                                                            <a th:href="@{updateGoods(id=${ord.orId})}" th:if="${ord.orType} eq 1" class="btn btn-primary">发货</a>&nbsp;&nbsp;
                                                         </td>
                                                     </tr>
-
-                                                    <tr class="gradeA">
-                                                        <td>123456786543</td>
-                                                        <td><img src="/static/imgs/12345.jpg" style="width: 35px;height: 45px"></td>
-                                                        <td>40%氧乐果乳油</td>
-                                                        <td>15</td>
-                                                        <td>2017-07-05</td>
-                                                        <td>派送中</td>
-                                                        <td>无折扣</td>
-                                                        <td>860￥</td>
-                                                        <td></td>
-                                                        <td><a href="" class="btn btn-info">查看</a>&nbsp;&nbsp;<a href="" class="btn btn-primary">发货</a>
-                                                        </td>
-                                                    </tr>                                            <tr class="gradeA">
-                                                        <td>123456786543</td>
-                                                        <td><img src="/static/imgs/12345.jpg" style="width: 35px;height: 45px"></td>
-                                                        <td>40%氧乐果乳油</td>
-                                                        <td>15</td>
-                                                        <td>2017-07-05</td>
-                                                        <td>派送中</td>
-                                                        <td>无折扣</td>
-                                                        <td>860￥</td>
-                                                        <td></td>
-                                                        <td><a href="" class="btn btn-info">查看</a>&nbsp;&nbsp;<a href="" class="btn btn-primary">发货</a>
-                                                        </td>
-                                                    </tr>                                            <tr class="gradeA">
-                                                        <td>123456786543</td>
-                                                        <td><img src="/static/imgs/12345.jpg" style="width: 35px;height: 45px"></td>
-                                                        <td>40%氧乐果乳油</td>
-                                                        <td>15</td>
-                                                        <td>2017-07-05</td>
-                                                        <td>派送中</td>
-                                                        <td>无折扣</td>
-                                                        <td>860￥</td>
-                                                        <td></td>
-                                                        <td><a href="" class="btn btn-info">查看</a>&nbsp;&nbsp;<a href="" class="btn btn-primary">发货</a>
-                                                        </td>
-                                                    </tr>                                            <tr class="gradeA">
-                                                        <td>123456786543</td>
-                                                        <td><img src="/static/imgs/12345.jpg" style="width: 35px;height: 45px"></td>
-                                                        <td>40%氧乐果乳油</td>
-                                                        <td>15</td>
-                                                        <td>2017-07-05</td>
-                                                        <td>派送中</td>
-                                                        <td>无折扣</td>
-                                                        <td>860￥</td>
-                                                        <td></td>
-                                                        <td><a href="" class="btn btn-info">查看</a>&nbsp;&nbsp;<a href="" class="btn btn-primary">发货</a>
-                                                        </td>
-                                                    </tr>
-
                                                     </tbody>
                                                 </table>
                                                 <div>
-							<span style="float: left; padding: 5px">
-								当前&nbsp;<span style="color: red;">1</span>&nbsp;/&nbsp;<b>2</b>&nbsp;页&nbsp;&nbsp;
-								总共&nbsp;<b>7</b>&nbsp;条</span>
-                                                    <nav aria-label="Page navigation" style="margin: 0 auto; width: 240px">
-                                                        <ul class="pagination" style="margin: 0;">
-                                                            <li>
-                                                                <a href="/hr/employee/listPage.do?pageNo=1" aria-label="Previous"> <span aria-hidden="true">前一页</span>
-                                                                </a>
-                                                            </li>
-
-                                                            <li><a href="/hr/employee/listPage.do?pageNo=1">1</a></li>
-
-                                                            <li><a href="">2</a></li>
-
-                                                            <li><a href="" aria-label="Next"> <span aria-hidden="true">后一页</span>
-                                                            </a></li>
-                                                        </ul>
-                                                    </nav>
+                                                    <div>
+							                    <span style="float: left; padding: 5px">
+                                                    总共&nbsp;<b th:text="${total}"></b>&nbsp;条
+                                                </span>
+                                                        <span style="float: left; padding: 5px">
+								当前&nbsp;<span style="color: red;" th:text="${page}">1</span>
+                                &nbsp;/&nbsp; <b th:text="${totalPage}">1</b>&nbsp;页&nbsp;&nbsp;
+                            </span>
+                                                        <nav aria-label="Page navigation"
+                                                             style="margin: 0 auto; width: 240px">
+                                                            <ul class="pagination" style="margin: 0;">
+                                                                <li th:each="array:${arr}">
+                                                                    <a th:href="@{order(pageNo=${array},type=${status})}"
+                                                                       th:text="${array}">view</a>
+                                                                </li>
+                                                            </ul>
+                                                        </nav>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
+
+                                <!--模板开始22222-->
                             </div>
 
-
-                            <!--模板开始22222-->
                         </div>
-
-
-                        <!--模板开始222222-->
                     </div>
                 </div>
             </div>
         </div>
+        <script src="/static/vendor/jquery/jquery.min.js"></script>
+        <script src="/static/vendor/popper.js/popper.min.js"></script>
+        <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/static/js/carbon.js"></script>
     </div>
-    <script src="/static/vendor/jquery/jquery.min.js"></script>
-    <script src="/static/vendor/popper.js/popper.min.js"></script>
-    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/static/js/carbon.js"></script>
-</div>
 </body>
 <script type="text/javascript" src="/static/js/adminjq.js"></script>
 <script type="text/javascript" src="/static/js/admin.js"></script>
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
-        var local_username=localStorage.getItem("login_username");
-        var e=document.getElementById("loginname");
-        console.log("local_username:"+local_username);
-        e.innerText=local_username;
+        var local_username = localStorage.getItem("login_username");
+        var e = document.getElementById("loginname");
+        console.log("local_username:" + local_username);
+        e.innerText = local_username;
 
         var login_username = [[${login_username}]];
-        console.log("login_username:"+login_username);
-        if(login_username!=undefined){
-            localStorage.setItem("login_username",login_username);
-            e.innerText=login_username;
+        console.log("login_username:" + login_username);
+        if (login_username != undefined) {
+            localStorage.setItem("login_username", login_username);
+            e.innerText = login_username;
         }
-        var selfinfo=document.getElementById("selfinfo");
-        selfinfo.href="/admin/selfinfo?str="+e.innerText;
-        console.log("selfinfo.href"+selfinfo.href)
+        var selfinfo = document.getElementById("selfinfo");
+        selfinfo.href = "/admin/selfinfo?str=" + e.innerText;
+        console.log("selfinfo.href" + selfinfo.href)
     }
-
+    function ischeck() {
+        var id = [[${status}]];
+        var s1 = document.getElementById("single-type");
+        console.log("s1.options[i].value:"+id)
+        for (i = 0; i <= s1.options.length; i++) {
+            console.log("s1.options[i].value:"+s1.options[i].value)
+            if (s1.options[i].value == id) {
+                s1.options[i].selected = true;
+            }
+        }
+    }
+</script>
+<script type="text/javascript" th:inline="javascript">
+    $("#single-type").change(function(){
+        var type=$("#single-type").val();
+        var pageNo=[[${pageNo}]];
+        console.log("type:"+type);
+        if(pageNo!=null){
+            window.location.href="order?type="+type+"&pageNo="+[[${pageNo}]];
+        }else{
+            window.location.href="order?type="+type;
+        }
+    });
 </script>
 </html>

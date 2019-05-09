@@ -61,6 +61,7 @@ public class UserController {
     public UserEntity login(@RequestParam("username") String username, @RequestParam("password") String password) {
         //调用dao层
         UserEntity userEntity = userMapper.userLogin(username, password);
+
         return userEntity;
     }
 

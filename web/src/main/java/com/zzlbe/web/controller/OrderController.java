@@ -119,7 +119,6 @@ public class OrderController {
      */
     @RequestMapping("afterSalePage")
     public GenericResponse afterSalePage(@RequestBody CustomerSearch customerSearch) {
-
         return orderBusiness.afterSalePage(customerSearch);
     }
 
@@ -148,5 +147,6 @@ public class OrderController {
     public GenericResponse getTotalAmount() {
         return orderBusiness.getTotalAmount();
     }
+
 
 }
