@@ -1,6 +1,7 @@
 package com.zzlbe.web.advice;
 
 import com.zzlbe.core.common.GenericResponse;
+import org.mybatis.spring.MyBatisSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -25,6 +26,14 @@ public class ExceptionAdvice {
         LOGGER.error("{} >>> 报错位置: {}", e.toString(), e.getStackTrace()[0]);
         e.printStackTrace();
         return GenericResponse.FAIL;
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = MyBatisSystemException.class)
+    public GenericResponse handlePersistenceException(MyBatisSystemException e) {
+        LOGGER.error("{} >>> 报错位置: {}", e.toString(), e.getStackTrace()[0]);
+        e.printStackTrace();
+        return GenericResponse.FAIL.setMessage("数据库异常!");
     }
 
 }
