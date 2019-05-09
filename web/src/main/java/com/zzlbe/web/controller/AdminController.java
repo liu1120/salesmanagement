@@ -46,6 +46,8 @@ public class AdminController {
 
     @Autowired
     AttendanceMapper attendanceMapper;
+    @Autowired
+    SentgiftMapper sentgiftMapper;
 
     //展示登录界面
     @RequestMapping("/login")
@@ -262,7 +264,6 @@ public class AdminController {
         mv.addObject("size", size);
         mv.addObject("page", page);
         mv.addObject("suggestQuerySearches", suggestQuerySearches);
-        System.out.println("suggestQuerySearches:" + suggestQuerySearches);
         mv.setViewName("admin/z_consult.html");
         return mv;
     }
@@ -279,14 +280,11 @@ public class AdminController {
             suggestTopicEntity.setContent(info);
         }
         suggestTopicEntity.setCreateTime(new Date());
-
         suggestTopicMapper.insert(suggestTopicEntity);
-
         SuggestEntity suggestEntity = suggestMapper.selectById(id);
         if (suggestEntity.getStatus() != 2) {//状态不为好  就更新  咨询主题
             suggestEntity.setStatus(result);
         }
-
         ModelAndView mv = new ModelAndView();
         mv.addObject("id", id);//主问题
         mv.setViewName("redirect:/admin/questionInfo");
@@ -305,36 +303,45 @@ public class AdminController {
         List<SuggestTopicQuerySearch> SuggestTopicQuerySearches = suggestTopicMapper.select2ByPage(suggestTopicSearch);
 
         ModelAndView mv = new ModelAndView();
-        DateUtil du = new DateUtil();
-        String date = du.getDateTime(suggestEntity.getUpdateTime());
+        if(suggestEntity.getUpdateTime()!=null){
+            DateUtil du = new DateUtil();
+            String date = du.getDateTime(suggestEntity.getUpdateTime());
+            mv.addObject("date", date);
+        }else{
+            suggestEntity.setUpdateTime(new Date());
+            suggestMapper.update(suggestEntity);
+            mv.addObject("date", suggestEntity.getUpdateTime());
+        }
+        if(suggestEntity.getStatus()==0){
+            suggestEntity.setStatus(1);
+            suggestMapper.update(suggestEntity);
+        }
         mv.addObject("suggestEntity", suggestEntity);//主问题
-        mv.addObject("date", date);
 
         mv.addObject("suggestTopicEntities", SuggestTopicQuerySearches);//子问题
         mv.setViewName("admin/z_consultDetail.html");
         return mv;
     }
 
-    @GetMapping("suggest")//产看技术咨询列表
+    @GetMapping("suggest")//产看投诉或者建议
     public ModelAndView suggest(Integer pageNo, Integer status) {
         ModelAndView mv = new ModelAndView();
         SuggestSearch suggestSearch = new SuggestSearch();
 
         if (status != null) {
-            mv.addObject("status", status);
-            if (status != 8) {
+            if (status != 8)
                 suggestSearch.setStatus(status);
-            }
         } else {
             status = new Integer(8);
-            mv.addObject("status", status);
         }
-
+        mv.addObject("status", status);
         if (pageNo != null) suggestSearch.setPage(pageNo);
-
-//        suggestSearch.setType(2);
+        suggestSearch.setType(0);
         List<SuggestQuerySearch> suggestQuerySearches = suggestMapper.select2ByPage(suggestSearch);
-        Integer total = suggestMapper.selectByPageTotal(suggestSearch);
+//        Integer total1 = suggestMapper.selectByPageTotal(suggestSearch);
+//        suggestSearch.setType(1);
+//        suggestQuerySearches.addAll(suggestMapper.select2ByPage(suggestSearch));
+        Integer total = suggestMapper.selectByPageTotal(suggestSearch);//两种类型的条数相加
         int page = suggestSearch.getPage(); //当前页
         int size = suggestSearch.getSize(); //页码大小
         int totalPage = total / size + 1;
@@ -348,8 +355,35 @@ public class AdminController {
         mv.addObject("size", size);
         mv.addObject("page", page);
         mv.addObject("suggestQuerySearches", suggestQuerySearches);
-        System.out.println("suggestQuerySearches:" + suggestQuerySearches);
         mv.setViewName("admin/z_suggest.html");
+        return mv;
+    }
+
+
+    @GetMapping("suggestInfo")//后台查看-查看具体某一问题投诉或者建议  类型2 3 技术咨询
+    public ModelAndView suggestInfo(@RequestParam("id") Long id) {
+        SuggestEntity suggestEntity = suggestMapper.selectById(id);//获得此问题具体信息
+        SuggestTopicSearch suggestTopicSearch = new SuggestTopicSearch();//获取此咨询问题的所有咨询
+        suggestTopicSearch.setSuggestId(suggestEntity.getId());
+        suggestTopicSearch.setSize(100);
+        List<SuggestTopicQuerySearch> SuggestTopicQuerySearches = suggestTopicMapper.select2ByPage(suggestTopicSearch);
+        ModelAndView mv = new ModelAndView();
+        if(suggestEntity.getUpdateTime()!=null){
+            DateUtil du = new DateUtil();
+            String date = du.getDateTime(suggestEntity.getUpdateTime());
+            mv.addObject("date", date);
+        }else{
+            suggestEntity.setUpdateTime(new Date());
+            suggestMapper.update(suggestEntity);
+            mv.addObject("date", suggestEntity.getUpdateTime());
+        }
+        if(suggestEntity.getStatus()==0){
+            suggestEntity.setStatus(1);
+            suggestMapper.update(suggestEntity);
+        }
+        mv.addObject("suggestTopicEntities", SuggestTopicQuerySearches);//子问题
+        mv.addObject("suggestEntity", suggestEntity);//主问题
+        mv.setViewName("admin/z_suggestDetail.html");
         return mv;
     }
 
@@ -374,9 +408,26 @@ public class AdminController {
     }
 
     @GetMapping("gift")//后台查看-礼品领取记录
-    public ModelAndView gift() {
+    public ModelAndView gift(Integer pageNo, Integer status) {
         ModelAndView mv = new ModelAndView();
+        GiftSearch giftSearch=new GiftSearch();
+        List<SentgiftSearch> sentgiftEntities=sentgiftMapper.select2ByPage(giftSearch);
+        mv.addObject("sentgift", sentgiftEntities);
+        System.out.println("sentgiftEntities:"+sentgiftEntities);
+        Integer total = sentgiftMapper.selectByPageTotal(giftSearch);//两种类型的条数相加
+        int page = giftSearch.getPage(); //当前页
+        int size = giftSearch.getSize(); //页码大小
+        int totalPage = total / size + 1;
+        int[] arr = new int[totalPage];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = i + 1;
+        }
 
+        mv.addObject("total", total);
+        mv.addObject("arr", arr);
+        mv.addObject("totalPage", totalPage);
+        mv.addObject("page", page);
+        mv.addObject("size", size);
         mv.setViewName("admin/gi_list.html");
         return mv;
     }
@@ -469,8 +520,6 @@ public class AdminController {
         if (startTime!=null&&!startTime.equals("")&&overTime!=null&&!overTime.equals("")){
             saleEntity.setStartTime(getDateByStr(startTime));
             saleEntity.setOverTime(getDateByStr(overTime));
-            System.out.println("time1"+saleEntity.getStartTime());
-            System.out.println("time2"+saleEntity.getOverTime());
         }
         saleEntity.setUpdateTime(new Date());
         saleMapper.update(saleEntity);

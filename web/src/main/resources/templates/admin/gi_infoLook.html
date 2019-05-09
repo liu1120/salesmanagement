@@ -10,11 +10,8 @@
     <link rel="stylesheet" href="/static/vendor/font-awesome/css/fontawesome-all.min.css">
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/stylesOA.css">
-    <link type="text/css" rel="stylesheet" href="/static/date/jeDate-test.css">
-    <link type="text/css" rel="stylesheet" href="/static/date/jedate.css">
-    <script type="text/javascript" src="/static/date/jedate.js"></script>
 </head>
-<body class="sidebar-fixed header-fixed" onload="writeLoginInfo();ischeck()">
+<body class="sidebar-fixed header-fixed" onload="writeLoginInfo()">
 <div class="page-wrapper">
     <nav class="navbar page-header" style="padding-top: 0px">
         <a href="" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
@@ -40,12 +37,12 @@
                 <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">
                     <img src="/static/imgs/avatar-1.png" class="avatar avatar-sm" alt="logo">
-                    <span class="small ml-1 d-md-down-none" id="loginname" th:text="${login_username}"></span>
+                    <span class="small ml-1 d-md-down-none" id="loginname"   th:text="${login_username}"></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">
 
-                    <a href="/admin/selfinfo" id="selfinfo" class="dropdown-item">
+                    <a href="/admin/selfinfo" id="selfinfo"  class="dropdown-item">
                         <i class="fa fa-user"></i> 个人信息
                     </a>
 
@@ -86,6 +83,11 @@
                                     <i class="icon icon-graph"></i>&nbsp;&nbsp;销售员业绩
                                 </a>
                             </li>
+                            <!--<li class="nav-item">-->
+                            <!--<a href="/admin/areavolume" class="nav-link">-->
+                            <!--<i class="icon icon-graph"></i>&nbsp;&nbsp;地区销量-->
+                            <!--</a>-->
+                            <!--</li>-->
                         </ul>
                     </li>
                     <!--活动管理模块-->
@@ -190,204 +192,130 @@
                                 <div class="col-sm-12">
                                     <div class="ibox float-e-margins">
                                         <div class="ibox-title">
-                                            <h5>农产品活动信息</h5>
+                                            <h5>查看发货详情</h5>
                                         </div>
                                         <div class="ibox-content">
 
-                                            <form method="post" id="formInfo" class="form-horizontal" action="saveActivityInfo">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <img th:src="@{${goodsSale.newImgPath}}"
-                                                                 style="height: 100px;width: 100px"/>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <form method="post" class="form-horizontal" action="">
 
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label
-                                                                    class="form-control-label">商品名</label>
+                                                                    class="form-control-label">礼品名称</label>
                                                             <input id="go_name" class="form-control"
-                                                                   value="" th:field="*{goodsSale.name}" readonly>
-                                                            <input type="hidden" class="form-control" name="said"
-                                                                   value="" th:field="*{goodsSale.id}">
+                                                                   value="毛巾" readonly>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label class="form-control-label">品牌</label>
+                                                            <label
+                                                                    class="form-control-label">接收人</label>
                                                             <input id="go_brand" class="form-control"
-                                                                   value="" th:field="*{goodsSale.version}" readonly>
+                                                                   value="张三" readonly>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label
-                                                                    class="form-control-label">型号</label>
-                                                            <input id="go_isshow" class="form-control"
-                                                                   th:if="${goodsSale.isShow} eq 1" value="展示" readonly>
-                                                            <input id="go_isshow" class="form-control"
-                                                                   th:if="${goodsSale.isShow} eq 0" value="不展示"
-                                                                   readonly>
+                                                                    class="form-control-label">代发人</label>
+                                                            <input id="go_version" class="form-control"
+                                                                   value="李四" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label
+                                                                    class="form-control-label">物流单号</label>
+                                                            <input id="sg_logistics" class="form-control"
+                                                                   value="456534577568687" readonly>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label
+                                                                    class="form-control-label">接收人地址</label>
+                                                            <input id="sg_address" class="form-control"
+                                                                   value="河南省郑州市金水区经五路5号" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label
+                                                                    class="form-control-label">接收人电话</label>
+                                                            <input id="sg_tophone" class="form-control"
+                                                                   value="13603456789" readonly>
                                                         </div>
                                                     </div>
                                                 </div>
 
+
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label class="form-control-label">销售底价</label>
-                                                            <input id="go_minprice" class="form-control"
-                                                                   value="" th:field="*{goodsSale.minPrice}" readonly>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="form-control-label">销售价格</label>
+                                                            <label
+                                                                    class="form-control-label">状态</label>
                                                             <input id="go_price" class="form-control"
-                                                                   value="" th:field="*{goodsSale.price}" readonly>
+                                                                   value="已发货" readonly>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label
+                                                                    class="form-control-label">派送类型</label>
+                                                            <input id="sg_type" class="form-control"
+                                                                   value="销售员派送" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">最后更新时间</label>
+                                                            <input id="go_minprice" class="form-control"
+                                                                   value="2019-02-18 12:09:12" readonly>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label
+                                                                    class="form-control-label">个数</label>
+                                                            <input id="go_point" class="form-control"
+                                                                   value="9" readonly>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label
-                                                                    class="form-control-label">库存</label>
+                                                                    class="form-control-label">单个积分</label>
                                                             <input id="go_num" class="form-control"
-                                                                   value="" th:field="*{goodsSale.num}" readonly>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="form-control-label">促销类型</label>
-                                                            <select id="go_type" name="type" class="form-control">
-                                                                <option grade="1" value="1">正常</option>
-                                                                <option grade="1" value="2">打折</option>
-                                                                <option grade="1" value="3">满减</option>
-                                                                <option grade="1" value="4">满送</option>
-                                                            </select>
+                                                                   value="999" readonly>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <div class="form-group" id="discount">
-                                                            <label class="form-control-label">打折</label>
-                                                            <input id="go_discount" name="discount" class="form-control"
-                                                                   value="" th:field="${goodsSale.discount}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group" id="">
-                                                            <label class="form-control-label">区域</label>
-                                                            <select id="start" name="start" class="form-control">
-                                                                <option grade="1" value="0"
-                                                                        th:if="${goodsSale.start}==null" check="true">全局
-                                                                </option>
-                                                                <option grade="1" value="0"
-                                                                        th:if="${goodsSale.start}==0" check="true">全局
-                                                                </option>
-                                                                <option grade="1" value="0"
-                                                                        th:if="${goodsSale.start}==1" check="false">局域
-                                                                </option>
-                                                                <option grade="1" value="1"
-                                                                        th:if="${goodsSale.start}==0" check="false">局域
-                                                                </option>
-                                                                <option grade="1" value="1"
-                                                                        th:if="${goodsSale.start}==1" check="true">全局
-                                                                </option>
-                                                            </select>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-4" id="reach1">
                                                         <div class="form-group">
                                                             <label
-                                                                    class="form-control-label">满</label>
-                                                            <input id="go_reach" name="reach" class="form-control"
-                                                                   value="" th:field="${goodsSale.reach}">
+                                                                    class="form-control-label">总积分</label>
+                                                            <input id="go_updatetime" class="form-control"
+                                                                   value="9999" readonly>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4" id="reach2">
-                                                        <div class="form-group">
-                                                            <label class="form-control-label">减</label>
-                                                            <input id="go_minus" name="minus" class="form-control"
-                                                                   value="" th:field="${goodsSale.minus}">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="form-control-label">开始时间</label>
-                                                            <div class="datecontent">
-                                                                <div class="jeinpbox">
-                                                                    <input type="text" class="jeinput"
-                                                                           id="start04"
-                                                                           name="startTime"
-                                                                           th:if="${goodsSale.startTime} ne null"
-                                                                           value=""
-                                                                           th:field="*{goodsSale.startTime}"
-                                                                           placeholder="YYYY-MM-DD hh:mm:ss">
-                                                                    <input type="text" class="jeinput"
-                                                                           id="start04"
-                                                                           name="startTime"
-                                                                           th:if="${goodsSale.startTime} eq null"
-                                                                           placeholder="YYYY-MM-DD hh:mm:ss">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="form-control-label">结束时间</label>
-                                                            <div class="datecontent">
-                                                                <div class="jeinpbox">
-                                                                    <input type="text" class="jeinput"
-                                                                           id="over04"
-                                                                           name="overTime"
-                                                                           th:if="${goodsSale.overTime} ne null"
-                                                                           value=""
-                                                                           th:field="*{goodsSale.overTime}"
-                                                                           placeholder="YYYY-MM-DD hh:mm:ss">
-                                                                    <input type="text" class="jeinput"
-                                                                           id="over04"
-                                                                           name="overTime"
-                                                                           th:if="${goodsSale.overTime} eq null"
-                                                                           placeholder="YYYY-MM-DD hh:mm:ss">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div><br><br>
-                                                <div class="card" th:if="${provincename} ne null">
-                                                    <div class="card-header"
-                                                         th:text="|促销活动申请区域:${provincename}-${cityname}|">
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <table class="table table-striped table-bordered table-hover dataTables-example dataTable no-footer"
-                                                               aria-describedby="DataTables_Table_0_info">
-                                                            <tbody>
-                                                            <tr class="gradeA odd" th:each="m : ${map}">
-                                                                <!--<td th:each="entry : ${m}" th:text="${entry.key}">-->
-                                                                <td th:each="entry : ${m}" th:text="${entry.value}">
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
+
                                                 </div>
 
                                                 <div class="hr-line-dashed"></div>
                                                 <div class="form-group">
                                                     <div class="col-sm-4 col-sm-offset-8">
-                                                        <a onclick="document:formInfo.submit()" class="btn btn-primary">保&nbsp;&nbsp;存</a>&nbsp;&nbsp;
-                                                        <a href="activity" class="btn btn-info">返&nbsp;&nbsp;回</a>
+                                                        <a href="" class="btn btn-primary">修&nbsp;&nbsp;改</a>&nbsp;&nbsp;
+                                                        <a href="/listPage.do?pageNo=1"
+                                                           class="btn btn-info">返&nbsp;&nbsp;回</a>
                                                     </div>
                                                 </div>
                                             </form>
@@ -396,6 +324,8 @@
                                 </div>
                             </div>
                         </div>
+
+
                         <!--模板开始222222-->
                     </div>
                 </div>
@@ -408,36 +338,25 @@
     <script src="/static/js/carbon.js"></script>
 </div>
 </body>
-<script type="text/javascript" src="/static/date/demo.js"></script>
 <script type="text/javascript" src="/static/js/adminjq.js"></script>
 <script type="text/javascript" src="/static/js/admin.js"></script>
-
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
-        var local_username = localStorage.getItem("login_username");
-        var e = document.getElementById("loginname");
-        console.log("local_username:" + local_username);
-        e.innerText = local_username;
+        var local_username=localStorage.getItem("login_username");
+        var e=document.getElementById("loginname");
+        console.log("local_username:"+local_username);
+        e.innerText=local_username;
 
         var login_username = [[${login_username}]];
-        console.log("login_username:" + login_username);
-        if (login_username != undefined) {
-            localStorage.setItem("login_username", login_username);
-            e.innerText = login_username;
+        console.log("login_username:"+login_username);
+        if(login_username!=undefined){
+            localStorage.setItem("login_username",login_username);
+            e.innerText=login_username;
         }
-        var selfinfo = document.getElementById("selfinfo");
-        selfinfo.href = "/admin/selfinfo?str=" + e.innerText;
-        console.log("selfinfo.href" + selfinfo.href)
+        var selfinfo=document.getElementById("selfinfo");
+        selfinfo.href="/admin/selfinfo?str="+e.innerText;
+        console.log("selfinfo.href"+selfinfo.href)
     }
 
-    function ischeck() {
-        var id = [[${goodsSale.type}]];
-        var s1 = document.getElementById("go_type");
-        for (i = 0; i <= s1.options.length; i++) {
-            if (s1.options[i].value == id) {
-                s1.options[i].selected = true;
-            }
-        }
-    }
 </script>
 </html>

@@ -15,7 +15,22 @@
         <result column="sg_status" property="status"/>
         <result column="sg_date" property="date"/>
     </resultMap>
+    <resultMap id="SentgiftSearch" type="com.zzlbe.dao.search.SentgiftSearch">
 
+        <result column="sg_id" property="id"/>
+        <result column="sg_gift_id" property="giftId"/>
+        <result column="gi_name" property="gname"/>
+        <result column="sg_fromid" property="fromid"/>
+        <result column="sg_toid" property="toid"/>
+        <result column="u_name" property="uname"/>
+        <result column="sg_tophone" property="tophone"/>
+        <result column="sg_type" property="type"/>
+        <result column="sg_logistics" property="logistics"/>
+        <result column="sg_num" property="num"/>
+        <result column="sg_credit" property="credit"/>
+        <result column="sg_status" property="status"/>
+        <result column="sg_date" property="date"/>
+    </resultMap>
     <sql id="tableName">tb_sendgift</sql>
 
     <sql id="columns">
@@ -81,6 +96,14 @@
         FROM
         <include refid="tableName"/>
         <include refid="condition"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+
+    <select id="select2ByPage" resultMap="SentgiftSearch">
+        select * from (tb_sendgift t1
+        left join tb_gift t2 on t1.sg_gift_id = t2.gi_id)
+        left join tb_user t3 on t1.sg_toid=t3.u_id
+        GROUP BY sg_id
         LIMIT #{firstIndex}, #{size}
     </select>
 

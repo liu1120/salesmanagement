@@ -83,7 +83,11 @@
                                     <i class="icon icon-graph"></i>&nbsp;&nbsp;销售员业绩
                                 </a>
                             </li>
-
+                            <!--<li class="nav-item">-->
+                            <!--<a href="/admin/areavolume" class="nav-link">-->
+                            <!--<i class="icon icon-graph"></i>&nbsp;&nbsp;地区销量-->
+                            <!--</a>-->
+                            <!--</li>-->
                         </ul>
                     </li>
                     <!--活动管理模块-->
@@ -101,7 +105,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="/admin/gift" class="nav-link active">
+                                    <a href="/admin/gift" class="nav-link">
                                         <i class="icon icon-target"></i>&nbsp;&nbsp;礼品领取记录
                                     </a>
                                 </li>
@@ -183,122 +187,148 @@
                 <div class="row">
                     <div class="col-md-12">
                         <!--模板结束11111-->
-
                         <div class="wrapper wrapper-content animated fadeInRight">
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="ibox float-e-margins">
                                         <div class="ibox-title">
-                                            <h5>礼品领取记录</h5>
+                                            <h5>发货</h5>
                                         </div>
                                         <div class="ibox-content">
-                                            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline"
-                                                 role="grid">
+
+                                            <form method="post" class="form-horizontal" action="">
+
                                                 <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div>&nbsp;&nbsp;姓名&nbsp;&nbsp;</div>
-                                                        <select id="single-gift" class="form-control" style="width:150px">
-                                                            <option value="8">全部</option>
-                                                            <option value="0">已发货</option>
-                                                            <option value="1">待签收</option>
-                                                            <option value="2">待发货</option>
-                                                        </select>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label
+                                                                    class="form-control-label">礼品名称</label>
+                                                            <input id="go_name" class="form-control"
+                                                                   value="毛巾" readonly>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label
+                                                                    class="form-control-label">接收人</label>
+                                                            <input id="go_brand" class="form-control"
+                                                                   value="张三" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label
+                                                                    class="form-control-label">代发人</label>
+                                                            <input id="go_version" class="form-control"
+                                                                   value="李四" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label
+                                                                    class="form-control-label">接收人地址</label>
+                                                            <input id="sg_address" class="form-control"
+                                                                   value="河南省郑州市金水区经五路5号" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label
+                                                                    class="form-control-label">接收人电话</label>
+                                                            <input id="sg_tophone" class="form-control"
+                                                                   value="13603456789" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label
+                                                                    class="form-control-label">数量</label>
+                                                            <input id="go_point" class="form-control"
+                                                                   value="9" readonly>
+                                                        </div>
                                                     </div>
                                                 </div>
 
-                                                <table class="table table-striped table-bordered table-hover dataTables-example dataTable no-footer"
-                                                       id="DataTables_Table_0"
-                                                       aria-describedby="DataTables_Table_0_info">
-                                                    <thead>
-                                                    <tr role="row">
-                                                        <th class="sorting" tabindex="0"
-                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                                            aria-label="">礼品名称
-                                                        </th>
-                                                        <th class="sorting" tabindex="0"
-                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                                            aria-label="">接收人
-                                                        </th>
-                                                        <th class="sorting" tabindex="0"
-                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                                            aria-label="">个数
-                                                        </th>
-                                                        <th class="sorting" tabindex="0"
-                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                                            aria-label="">单个积分
-                                                        </th>
-                                                        <th class="sorting" tabindex="0"
-                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                                            aria-label="">总积分
-                                                        </th>
-                                                        <th class="sorting" tabindex="0"
-                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                                            aria-label="">方式
-                                                        </th>
-                                                        <th class="sorting" tabindex="0"
-                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                                            aria-label="">状态
-                                                        </th>
-                                                        <th class="sorting" tabindex="0"
-                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                                            aria-label="">最后更新时间
-                                                        </th>
-                                                        <th class="sorting" tabindex="0"
-                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                                            aria-label="">操作
-                                                        </th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <li >
-                                                    <tr class="gradeA odd" th:each="arr:${sentgift}">
-                                                        <td  th:text="${arr.gname}"></td>
-                                                        <td  th:text="${arr.uname}"></td>
-                                                        <td  th:text="${arr.num}"></td>
-                                                        <td  th:text="${arr.credit}"></td>
-                                                        <td  th:text="${arr.credit*arr.num}"></td>
-                                                        <td  th:if="${arr.type} eq 0">销售员发货</td>
-                                                        <td  th:if="${arr.type} eq 1">快递</td>
+                                                <div class="row">
 
-                                                        <td  th:if="${arr.type} eq 0">待发货</td>
-                                                        <td  th:if="${arr.type} eq 1">待收货</td>
-                                                        <td  th:if="${arr.type} eq 2">已签收</td>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label
+                                                                    class="form-control-label">单个积分</label>
+                                                            <input id="go_num" class="form-control"
+                                                                   value="999" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label
+                                                                    class="form-control-label">消耗总积分</label>
+                                                            <input id="go_updatetime" class="form-control"
+                                                                   value="9999" readonly>
+                                                        </div>
+                                                    </div>
 
-                                                        <td  th:text="${arr.date}"></td>
-
-                                                        <td>
-                                                            <a href="" class="btn btn-primary" th:if="${arr.type} eq 0">发&nbsp;货</a>
-                                                            <a href="activityInfo?said=201028" class="btn btn-success">查&nbsp;看</a>
-                                                        </td>
-
-                                                    </tr>
-
-                                                    </tbody>
-                                                </table>
-                                                <div>
-
-							<span style="float: left; padding: 5px">
-                                                    总共&nbsp;<b th:text="${total}"></b>&nbsp;条
-                                                </span>
-                                                    <span style="float: left; padding: 5px">
-								当前&nbsp;<span style="color: red;" th:text="${page}">1</span>
-                                &nbsp;/&nbsp; <b th:text="${totalPage}">1</b>&nbsp;页&nbsp;&nbsp;
-                            </span>
-                                                    <nav aria-label="Page navigation" style="margin: 0 auto; width: 240px">
-                                                        <ul class="pagination" style="margin: 0;">
-                                                            <li th:each="array:${arr}">
-                                                                <a th:href="@{activity(pageNo=${array})}"
-                                                                   th:text="${array}">view</a>
-                                                            </li>
-                                                        </ul>
-                                                    </nav>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label
+                                                                    class="form-control-label">派送类型</label>
+                                                            <select id="single-select2" class="form-control" onchange="selectChange()">
+                                                                <option grade="1" value="1">销售员派送</option>
+                                                                <option grade="2" value="2">物流</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group" id="sp_id_op">
+                                                            <label
+                                                                    class="form-control-label">派送人</label>
+                                                            <input id="sp_id" class="form-control"
+                                                                   value="李四">
+                                                        </div>
+                                                        <div class="form-group" id="or_logistic_op" style="display:none">
+                                                            <label
+                                                                    class="form-control-label">物流单号</label>
+                                                            <input id="sg_logistics" class="form-control"
+                                                                   value="">
+                                                        </div>
+                                                    </div>
                                                 </div>
 
-                                            </div>
+
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group">
+                                                    <div class="col-sm-4 col-sm-offset-8">
+                                                        <a href="" class="btn btn-primary">发&nbsp;&nbsp;货</a>&nbsp;&nbsp;
+                                                        <a href="/listPage.do?pageNo=1"
+                                                           class="btn btn-info">返&nbsp;&nbsp;回</a>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <script type="text/JavaScript">
+                                function selectChange() {
+                                    var objS = document.getElementById("single-select2");
+                                    var grade = objS.options[objS.selectedIndex].value;
+                                    var e1 = document.getElementById("sp_id_op");
+                                    var e2 = document.getElementById("or_logistic_op");
+                                    console.log(e1)
+                                    if (grade == 1) {
+                                        e1.style.display = 'block';
+                                        e2.style.display = 'none';
+                                    } else if (grade == 2) {
+                                        e1.style.display = 'none';
+                                        e2.style.display = 'block';
+                                    }
+                                }
+                            </script>
                         </div>
 
 
