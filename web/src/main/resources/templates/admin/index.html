@@ -37,7 +37,7 @@
                 <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">
                     <img src="/static/imgs/avatar-1.png" class="avatar avatar-sm" alt="logo">
-                    <span class="small ml-1 d-md-down-none" id="loginname"   th:text="${login_username}"></span>
+                    <span class="small ml-1 d-md-down-none" id="loginname" th:text="${login_username}"></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">
@@ -61,7 +61,7 @@
                     <li class="nav-title">导航</li>
 
                     <li class="nav-item">
-                        <a href="/admin/index" class="nav-link  tive">
+                        <a href="/admin/index" class="nav-link  active">
                             <i class="icon icon-speedometer"></i> 仪表盘
                         </a>
                     </li>
@@ -84,9 +84,9 @@
                                 </a>
                             </li>
                             <!--<li class="nav-item">-->
-                                <!--<a href="/admin/areavolume" class="nav-link">-->
-                                    <!--<i class="icon icon-graph"></i>&nbsp;&nbsp;地区销量-->
-                                <!--</a>-->
+                            <!--<a href="/admin/areavolume" class="nav-link">-->
+                            <!--<i class="icon icon-graph"></i>&nbsp;&nbsp;地区销量-->
+                            <!--</a>-->
                             <!--</li>-->
                         </ul>
                     </li>
@@ -179,6 +179,11 @@
                             <i class="icon icon-grid"></i> 技术咨询
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="/admin/notice" class="nav-link">
+                            <i class="icon icon-grid"></i> 公告
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -204,7 +209,7 @@
                         <div class="card p-4">
                             <div class="card-body d-flex justify-content-between align-items-center">
                                 <div>
-                                    <span class="h4 d-block font-weight-normal mb-2"  th:text="${adminernum}">0</span>
+                                    <span class="h4 d-block font-weight-normal mb-2" th:text="${adminernum}">0</span>
                                     <span class="font-weight-light">销售员</span>
                                 </div>
 
@@ -218,7 +223,8 @@
                         <div class="card p-4">
                             <div class="card-body d-flex justify-content-between align-items-center">
                                 <div>
-                                    <span class="h4 d-block font-weight-normal mb-2" th:text="${amountSearch.amt}"></span>
+                                    <span class="h4 d-block font-weight-normal mb-2"
+                                          th:text="${amountSearch.amt}"></span>
                                     <span class="font-weight-light">本月销售总额</span>
 
                                 </div>
@@ -277,20 +283,20 @@
 <script type="text/javascript" src="/static/js/chartdemo.js" th:inline="javascript"></script>
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
-        var local_username=localStorage.getItem("login_username");
-        var e=document.getElementById("loginname");
-        console.log("local_username:"+local_username);
-        e.innerText=local_username;
+        var local_username = localStorage.getItem("login_username");
+        var e = document.getElementById("loginname");
+        console.log("local_username:" + local_username);
+        e.innerText = local_username;
 
         var login_username = [[${login_username}]];
-        console.log("login_username:"+login_username);
-        if(login_username!=undefined){
-            localStorage.setItem("login_username",login_username);
-            e.innerText=login_username;
+        console.log("login_username:" + login_username);
+        if (login_username != undefined) {
+            localStorage.setItem("login_username", login_username);
+            e.innerText = login_username;
         }
-        var selfinfo=document.getElementById("selfinfo");
-        selfinfo.href="/admin/selfinfo?str="+e.innerText;
-        console.log("selfinfo.href"+selfinfo.href)
+        var selfinfo = document.getElementById("selfinfo");
+        selfinfo.href = "/admin/selfinfo?str=" + e.innerText;
+        console.log("selfinfo.href" + selfinfo.href)
     }
 
 </script>

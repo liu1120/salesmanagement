@@ -174,6 +174,11 @@
                             <i class="icon icon-grid"></i> 技术咨询
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="/admin/notice" class="nav-link" active>
+                            <i class="icon icon-grid"></i> 公告
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -250,15 +255,18 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <form action="sendSuggestInfo" name="suggestInfo" id="suggestInfo" method="post">
+                                        <form action="sendSuggestInfo" name="suggestInfo" id="suggestInfo"
+                                              method="post">
                                             <div class="row mt-10">
                                                 <div class="col-md-10">
                                                     <div class="form-group">
                                                         <label for="textarea">填写回复消息：</label>
                                                         <textarea id="textarea" name="info" class="form-control"
                                                                   rows=" 6" onblur="refresh()"></textarea>
-                                                        <input name="name" type="hidden"  id="sellerId"      value="" th:field="*{suggestEntity.sellerId}" >
-                                                        <input name="id" type="hidden" value="" th:field="*{suggestEntity.id}" >
+                                                        <input name="name" type="hidden" id="sellerId" value=""
+                                                               th:field="*{suggestEntity.sellerId}">
+                                                        <input name="id" type="hidden" value=""
+                                                               th:field="*{suggestEntity.id}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -275,7 +283,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-info" th:href="@{suggest}" >返回</a>
+                        <a class="btn btn-info" th:href="@{suggest}">返回</a>
                         <button class="btn btn-success" onclick="document:suggestInfo.submit()">发送</button>
                         <!--模板开始222222-->
                     </div>
@@ -307,13 +315,15 @@
         var selfinfo = document.getElementById("selfinfo");
         selfinfo.href = "/admin/selfinfo?str=" + e.innerText;
         console.log("selfinfo.href" + selfinfo.href);
-        var se=document.getElementById("sellerId");
-        se.value=e.innerText;
+        var se = document.getElementById("sellerId");
+        se.value = e.innerText;
     }
+
     function refresh() {
-        function test(){
+        function test() {
             document:suggestInfo.submit()
         }
+
         setInterval(test, 5000);
     }
 

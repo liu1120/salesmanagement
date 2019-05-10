@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzlbe.dao.mapper.NoticeMapper">
+
+    <resultMap id="BaseMap" type="com.zzlbe.dao.entity.NoticeEntity">
+        <result column="no_id" property="id"/>
+        <result column="no_title" property="title"/>
+        <result column="no_type" property="type"/>
+        <result column="no_content" property="content"/>
+        <result column="no_sp_name" property="sp_name"/>
+        <result column="no_time" property="time"/>
+        <result column="no_num" property="num"/>
+    </resultMap>
+    <resultMap id="NoticeSearch" type="com.zzlbe.dao.search.NoticeSearch">
+        <result column="no_id" property="id"/>
+        <result column="no_title" property="title"/>
+        <result column="no_type" property="type"/>
+        <result column="no_content" property="content"/>
+        <result column="no_sp_name" property="sp_name"/>
+        <result column="no_time" property="time"/>
+        <result column="no_num" property="num"/>
+    </resultMap>
+    <sql id="tableName">tb_notice</sql>
+
+    <sql id="columns">
+        no_id,
+        no_title,
+        no_type,
+        no_content,
+        no_sp_name,
+        no_time,
+        no_num
+    </sql>
+
+    <select id="select2ByPage" resultMap="NoticeSearch">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <!--<include refid="condition"/>-->
+        LIMIT #{firstIndex}, #{size}
+
+    </select>
+
+    <select id="selectByPage" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        LIMIT #{firstIndex}, #{size}
+
+    </select>
+    <select id="selectByPageTotal" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        <include refid="tableName"/>
+        <!--<include refid="condition"/>-->
+    </select>
+    <select id="selectById" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE
+        no_id = #{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM
+        <include refid="tableName"/>
+        where
+        no_id = #{id}
+    </delete>
+
+    <update id="update">
+        UPDATE
+        <include refid="tableName"/>
+        <set>
+            <if test="num != null">
+                no_num = #{num},
+            </if>
+        </set>
+        WHERE
+        no_id = #{id}
+    </update>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+        <include refid="tableName"/>
+        (
+        <include refid="columns"/>
+        )
+        VALUES
+        (
+        #{id},
+        #{title},
+        #{type},
+        #{content},
+        #{sp_name},
+        #{time},
+        #{num}
+        )
+    </insert>
+</mapper>

@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <!--<meta http-equiv="X-UA-Compatible" content="ie=edge">-->
-    <meta http-equiv="Content-Type" content="multipart/form-data; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>主页</title>
     <link rel="stylesheet" href="/static/vendor/simple-line-icons/css/simple-line-icons.css">
     <link rel="stylesheet" href="/static/vendor/font-awesome/css/fontawesome-all.min.css">
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/stylesOA.css">
 </head>
-<body class="sidebar-fixed header-fixed" onload="writeLoginInfo();">
+<body class="sidebar-fixed header-fixed" onload="writeLoginInfo()">
 <div class="page-wrapper">
     <nav class="navbar page-header" style="padding-top: 0px">
         <a href="" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
@@ -38,12 +37,12 @@
                 <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">
                     <img src="/static/imgs/avatar-1.png" class="avatar avatar-sm" alt="logo">
-                    <span class="small ml-1 d-md-down-none" id="loginname"   th:text="${login_username}"></span>
+                    <span class="small ml-1 d-md-down-none" id="loginname" th:text="${login_username}"></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">
 
-                    <a href="/admin/selfinfo" id="selfinfo"  class="dropdown-item">
+                    <a href="/admin/selfinfo" id="selfinfo" class="dropdown-item">
                         <i class="fa fa-user"></i> 个人信息
                     </a>
 
@@ -84,6 +83,11 @@
                                     <i class="icon icon-graph"></i>&nbsp;&nbsp;销售员业绩
                                 </a>
                             </li>
+                            <!--<li class="nav-item">-->
+                            <!--<a href="/admin/areavolume" class="nav-link">-->
+                            <!--<i class="icon icon-graph"></i>&nbsp;&nbsp;地区销量-->
+                            <!--</a>-->
+                            <!--</li>-->
                         </ul>
                     </li>
                     <!--活动管理模块-->
@@ -122,7 +126,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/admin/addGoods" class="nav-link  active">
+                                <a href="/admin/addGoods" class="nav-link">
                                     <i class="icon icon-energy"></i> &nbsp;&nbsp;增加新农产品
                                 </a>
                             </li>
@@ -166,7 +170,7 @@
                     </li>
                     <li class="nav-title">More</li>
                     <li class="nav-item">
-                        <a href="/admin/suggest" class="nav-link">
+                        <a href="/admin/suggest" class="nav-link  active">
                             <i class="icon icon-grid"></i>投诉与建议
                         </a>
                     </li>
@@ -188,174 +192,69 @@
                 <div class="row">
                     <div class="col-md-12">
                         <!--模板结束11111-->
-                        <div class="wrapper wrapper-content animated fadeInRight">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="ibox float-e-margins">
-                                        <div class="ibox-title">
-                                            <h5>添加农产品</h5>
+                        <form action="noticeSave" method="post" id="formId">
+
+                        <div class="mb-4">
+                            <div class="form-group">
+                                <label class="form-control-label">标题</label>
+                                <input name="title" class="form-control">
+                                <input id="ueInfo" name="ueInfo" class="form-control" type="hidden">
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body p-0">
+                                <!--富文本编译器位置-->
+                                <!--1111111-->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <script id="editor" type="text/plain" style="width:99.9%;min-height:560px;"></script>
                                         </div>
-                                        <div class="ibox-content">
-                                            <form action="fileUpload" id="fileUpload" name="fileUpload" method="post"
-                                                  enctype="multipart/form-data">
-                                                <p> <input type="file" name="fileName" id="fileName" /></p>
-                                                <br>
-                                                <a class="btn btn-info" id="submitButton">添加</a>
-                                            </form>
-                                            <form method="post" class="form-horizontal" id="goodsInfo" action="saveGoodsInfo">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <img id="imgs" src="" style="width: 100px;height: 100px;display: none">
-                                                            <input id="path" name="path" type="hidden" value="">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="form-control-label">商品名</label>
-                                                            <input name="name" class="form-control"
-                                                                   value="">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="form-control-label">分类</label>
-                                                            <select id="sort-select" name="sort" class="form-control">
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label
-                                                                    class="form-control-label">品牌</label>
-                                                            <input name="version" class="form-control"
-                                                                   value="">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label
-                                                                    class="form-control-label">库存</label>
-                                                            <input name="num" class="form-control"
-                                                                   value="">
-                                                            <input type="hidden" id="ueInfo" name="ueInfo" class="form-control"
-                                                                   value="">
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label
-                                                                    class="form-control-label">销售价格</label>
-                                                            <input name="price" class="form-control"
-                                                                   value="">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label
-                                                                    class="form-control-label">销售底价</label>
-                                                            <input name="minprice" class="form-control"
-                                                                   value="">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label
-                                                                    class="form-control-label">是否上架展示？</label>
-                                                            <div class="form-group">
-                                                                <select id="single-select" name="isshow" class="form-control">
-                                                                    <option value="1">展示</option>
-                                                                    <option  value="0">暂不展示</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label
-                                                                    class="form-control-label">积分</label>
-                                                            <input name="credit" class="form-control"
-                                                                   value="">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                                <form method="post" class="form-horizontal" name="upfile" enctype="multipart/form-data" action="fileUpload3">
-
-                                                <div class="row">
-                                                    <div class="col-md-10">
-                                                        <h3>添加产品介绍</h3>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                         <script id="editor" type="text/plain" style="width:99.9%;min-height:560px;"></script>
-                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                     <div class="col-sm-4 col-sm-offset-8">
-                                                           <a id="submitInfo" class="btn btn-primary">保&nbsp;&nbsp;存</a>&nbsp;&nbsp;
-                                                           <a href="" class="btn btn-info">返&nbsp;&nbsp;回</a>
-                                                      </div>
-                                                </div>
-                                            </form>
                                         </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <a class="btn btn-primary"  id="submitInfo"
+                                        style="float: right;margin-top: 20px;;margin-left: 10px">发布
+                                            </a>
+                                            <a class="btn btn-primary" href="notice" style="float: right;margin-top: 20px;margin-left: 5px">
+                                            取消
+                                            </a>
+                                            </div>
+                                            </div>
+                                            </form>
+
+                                            <!--模板开始222222-->
+                                            </div>
+                                            </div>
+                                            </div>
+                                            </div>
+                                            </div>
+                                        <script src="/static/vendor/jquery/jquery.min.js"></script>
+                                        <script src = "/static/vendor/popper.js/popper.min.js" ></script>
+                                        <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+                                        <script src="/static/vendor/Chart.js/chart.min.js"></script>
+                                        <script src="/static/js/carbon.js"></script>
                                     </div>
-                                 </div>
-                             </div>
-                        </div>
-
-                            <!--模板开始222222-->
-                        </div>
-                    </div>
-                </div>
-             </div>
-         </div>
-          <script src="/static/vendor/jquery/jquery.min.js"></script>
-          <script src="/static/vendor/popper.js/popper.min.js"></script>
-          <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
-         <script src="/static/js/carbon.js"></script>
-    </div>
 </body>
-<script type="text/javascript" src="/static/js/adminjq.js"></script>
+<!--<script type="text/javascript" src="/static/js/adminjq.js"></script>-->
 <script type="text/javascript" src="/static/js/admin.js"></script>
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
-        var local_username=localStorage.getItem("login_username");
-        var e=document.getElementById("loginname");
-        console.log("local_username:"+local_username);
-        e.innerText=local_username;
+        var local_username = localStorage.getItem("login_username");
+        var e = document.getElementById("loginname");
+        console.log("local_username:" + local_username);
+        e.innerText = local_username;
 
         var login_username = [[${login_username}]];
-        console.log("login_username:"+login_username);
-        if(login_username!=undefined){
-            localStorage.setItem("login_username",login_username);
-            e.innerText=login_username;
+        console.log("login_username:" + login_username);
+        if (login_username != undefined) {
+            localStorage.setItem("login_username", login_username);
+            e.innerText = login_username;
         }
-        var selfinfo=document.getElementById("selfinfo");
-        selfinfo.href="/admin/selfinfo?str="+e.innerText;
-        console.log("selfinfo.href"+selfinfo.href)
+        var selfinfo = document.getElementById("selfinfo");
+        selfinfo.href = "/admin/selfinfo?str=" + e.innerText;
+        console.log("selfinfo.href" + selfinfo.href)
     }
-
 </script>
 
 <script type="text/javascript" charset="utf-8" src="/static/ue/ueditor.config.js"></script>
@@ -367,9 +266,9 @@
 
 <script type="text/javascript">
     UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
-    UE.Editor.prototype.getActionUrl = function(action) {
-        console.log("action::"+action);
-        if (action == 'uploadimage' || action == 'uploadscrawl' || action == 'uploadimage'||action == 'fileUpload3') {
+    UE.Editor.prototype.getActionUrl = function (action) {
+        console.log("action::" + action);
+        if (action == 'uploadimage' || action == 'uploadscrawl' || action == 'uploadimage' || action == 'fileUpload3') {
             return 'http://localhost:8080/admin/fileUpload3';//此处写自定义的图片上传路径
         } else if (action == 'uploadvideo') {
             return 'http://a.b.com/video.php';
@@ -387,21 +286,26 @@
         alert(UE.getEditor('editor').isFocus());
         UE.dom.domUtils.preventDefault(e)
     }
+
     function setblur(e) {
         UE.getEditor('editor').blur();
         UE.dom.domUtils.preventDefault(e)
     }
+
     function insertHtml() {
         var value = prompt('插入html代码', '');
         UE.getEditor('editor').execCommand('insertHtml', value)
     }
+
     function createEditor() {
         enableBtn();
         UE.getEditor('editor');
     }
+
     function getAllHtml() {
         alert(UE.getEditor('editor').getAllHtml())
     }
+
     function getContent() {
         var arr = [];
         arr.push("使用editor.getContent()方法可以获得编辑器的内容");
@@ -409,6 +313,7 @@
         arr.push(UE.getEditor('editor').getContent());
         alert(arr.join("\n"));
     }
+
     function getPlainTxt() {
         var arr = [];
         arr.push("使用editor.getPlainTxt()方法可以获得编辑器的带格式的纯文本内容");
@@ -416,12 +321,14 @@
         arr.push(UE.getEditor('editor').getPlainTxt());
         alert(arr.join('\n'))
     }
+
     function setContent(isAppendTo) {
         var arr = [];
         arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
         UE.getEditor('editor').setContent('欢迎使用ueditor', isAppendTo);
         alert(arr.join("\n"));
     }
+
     function setDisabled() {
         UE.getEditor('editor').setDisabled('fullscreen');
         disableBtn("enable");
@@ -447,6 +354,7 @@
         arr.push(UE.getEditor('editor').getContentTxt());
         alert(arr.join("\n"));
     }
+
     function hasContent() {
         var arr = [];
         arr.push("使用editor.hasContents()方法判断编辑器里是否有内容");
@@ -454,13 +362,16 @@
         arr.push(UE.getEditor('editor').hasContents());
         alert(arr.join("\n"));
     }
+
     function setFocus() {
         UE.getEditor('editor').focus();
     }
+
     function deleteEditor() {
         disableBtn();
         UE.getEditor('editor').destroy();
     }
+
     function disableBtn(str) {
         var div = document.getElementById('btns');
         var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
@@ -472,6 +383,7 @@
             }
         }
     }
+
     function enableBtn() {
         var div = document.getElementById('btns');
         var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
@@ -499,7 +411,7 @@
             return;
         }
         var formData = new FormData(document.getElementById("fileUpload"));
-        console.log("name::"+name);
+        console.log("name::" + name);
         $.ajax({
             url: 'fileUpload',
             type: 'POST',
@@ -508,14 +420,14 @@
             dataType: 'json',
             processData: false,
             contentType: false,
-            success: function(res) { //成功
-                var e1=document.getElementById('imgs');
-                var e2=document.getElementById('path');
-                e1.style.display='block';
-                e1.src=res.filePath;
-                e2.value=res.fileName;
-                console.log("res.toString:"+res.toString());
-            },error: function(res) { //失败的话
+            success: function (res) { //成功
+                var e1 = document.getElementById('imgs');
+                var e2 = document.getElementById('path');
+                e1.style.display = 'block';
+                e1.src = res.filePath;
+                e2.value = res.fileName;
+                console.log("res.toString:" + res.toString());
+            }, error: function (res) { //失败的话
                 alert(res.msg);
             }
         })
@@ -525,7 +437,7 @@
         type: "get",
         dataType: 'json',
     }).done(function (results) {
-        console.log("results:"+results);
+        console.log("results:" + results);
 
         $('#sort-select').html('');
         var options = '';
@@ -549,7 +461,7 @@
         var e1=document.getElementById("ueInfo");
         e1.value=UE.getEditor('editor').getContent();
         console.log("e1.value:"+e1.value);
-        var form = document.getElementById('goodsInfo');
+        var form = document.getElementById('formId');
         console.log("form:"+form.toString());
         form.submit();
     });

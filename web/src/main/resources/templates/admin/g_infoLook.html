@@ -42,7 +42,7 @@
 
                 <div class="dropdown-menu dropdown-menu-right">
 
-                    <a href="/admin/selfinfo" id="selfinfo"  class="dropdown-item">
+                    <a href="/admin/selfinfo" id="selfinfo" class="dropdown-item">
                         <i class="fa fa-user"></i> 个人信息
                     </a>
 
@@ -61,7 +61,7 @@
                     <li class="nav-title">导航</li>
 
                     <li class="nav-item">
-                        <a href="/admin/index" class="nav-link active">
+                        <a href="/admin/index" class="nav-link">
                             <i class="icon icon-speedometer"></i> 仪表盘
                         </a>
                     </li>
@@ -177,6 +177,11 @@
                     <li class="nav-item">
                         <a href="/admin/question" class="nav-link">
                             <i class="icon icon-grid"></i> 技术咨询
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/notice" class="nav-link">
+                            <i class="icon icon-grid"></i> 公告
                         </a>
                     </li>
                 </ul>
@@ -344,19 +349,19 @@
             localStorage.setItem("login_username", login_username);
             e.innerText = login_username;
         }
-        var selfinfo=document.getElementById("selfinfo");
-        selfinfo.href="/admin/selfinfo?str="+e.innerText;
-        console.log("selfinfo.href"+selfinfo.href)
+        var selfinfo = document.getElementById("selfinfo");
+        selfinfo.href = "/admin/selfinfo?str=" + e.innerText;
+        console.log("selfinfo.href" + selfinfo.href)
     }
 
 </script>
-<script type="text/javascript" >
+<script type="text/javascript">
     $(document).ready(function () {
         var value = $('#goodsSort').val();
         $.ajax({//转换商品分类id->name
             url: '/user/getGoodsSortName',
             type: "get",
-            data:{id:value},
+            data: {id: value},
             dataType: 'text',
         }).done(function (results) {
             console.log("results:" + results);

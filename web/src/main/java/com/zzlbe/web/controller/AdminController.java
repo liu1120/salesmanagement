@@ -43,6 +43,8 @@ public class AdminController {
     GoodsMapper goodsMapper;
     @Autowired
     AreaMapper areaMapper;
+    @Autowired
+    NoticeMapper noticeMapper;
 
     @Autowired
     AttendanceMapper attendanceMapper;
@@ -303,16 +305,16 @@ public class AdminController {
         List<SuggestTopicQuerySearch> SuggestTopicQuerySearches = suggestTopicMapper.select2ByPage(suggestTopicSearch);
 
         ModelAndView mv = new ModelAndView();
-        if(suggestEntity.getUpdateTime()!=null){
+        if (suggestEntity.getUpdateTime() != null) {
             DateUtil du = new DateUtil();
             String date = du.getDateTime(suggestEntity.getUpdateTime());
             mv.addObject("date", date);
-        }else{
+        } else {
             suggestEntity.setUpdateTime(new Date());
             suggestMapper.update(suggestEntity);
             mv.addObject("date", suggestEntity.getUpdateTime());
         }
-        if(suggestEntity.getStatus()==0){
+        if (suggestEntity.getStatus() == 0) {
             suggestEntity.setStatus(1);
             suggestMapper.update(suggestEntity);
         }
@@ -365,16 +367,16 @@ public class AdminController {
         suggestTopicSearch.setSize(100);
         List<SuggestTopicQuerySearch> SuggestTopicQuerySearches = suggestTopicMapper.select2ByPage(suggestTopicSearch);
         ModelAndView mv = new ModelAndView();
-        if(suggestEntity.getUpdateTime()!=null){
+        if (suggestEntity.getUpdateTime() != null) {
             DateUtil du = new DateUtil();
             String date = du.getDateTime(suggestEntity.getUpdateTime());
             mv.addObject("date", date);
-        }else{
+        } else {
             suggestEntity.setUpdateTime(new Date());
             suggestMapper.update(suggestEntity);
             mv.addObject("date", suggestEntity.getUpdateTime());
         }
-        if(suggestEntity.getStatus()==0){
+        if (suggestEntity.getStatus() == 0) {
             suggestEntity.setStatus(1);
             suggestMapper.update(suggestEntity);
         }
@@ -407,10 +409,10 @@ public class AdminController {
     @GetMapping("gift")//后台查看-礼品领取记录
     public ModelAndView gift(Integer pageNo, Integer status) {
         ModelAndView mv = new ModelAndView();
-        GiftSearch giftSearch=new GiftSearch();
-        List<SentgiftSearch> sentgiftEntities=sentgiftMapper.select2ByPage(giftSearch);
+        GiftSearch giftSearch = new GiftSearch();
+        List<SentgiftSearch> sentgiftEntities = sentgiftMapper.select2ByPage(giftSearch);
         mv.addObject("sentgift", sentgiftEntities);
-        System.out.println("sentgiftEntities:"+sentgiftEntities);
+        System.out.println("sentgiftEntities:" + sentgiftEntities);
         Integer total = sentgiftMapper.selectByPageTotal(giftSearch);//两种类型的条数相加
         int page = giftSearch.getPage(); //当前页
         int size = giftSearch.getSize(); //页码大小
@@ -500,29 +502,95 @@ public class AdminController {
     }
 
     @PostMapping("/saveActivityInfo")
-    public ModelAndView saveActivityInfo(@RequestParam("id") Long id,Integer type, BigDecimal discount, Integer start,
+    public ModelAndView saveActivityInfo(@RequestParam("id") Long id, Integer type, BigDecimal discount, Integer start,
                                          BigDecimal reach, BigDecimal minus, String startTime, String overTime) {
         ModelAndView mv = new ModelAndView();
         SaleEntity saleEntity = new SaleEntity();
         saleEntity.setId(id);
         saleEntity.setType(type);
-        if(discount!=null) saleEntity.setDiscount(discount);
+        if (discount != null) saleEntity.setDiscount(discount);
         saleEntity.setStart(start);
-        if(reach!=null&&minus!=null){
+        if (reach != null && minus != null) {
             saleEntity.setReach(reach);
             saleEntity.setMinus(minus);
         }
-        System.out.println("starTime:"+startTime);
-        System.out.println("overTime:"+overTime);
-        if (startTime!=null&&!startTime.equals("")&&overTime!=null&&!overTime.equals("")){
+        System.out.println("starTime:" + startTime);
+        System.out.println("overTime:" + overTime);
+        if (startTime != null && !startTime.equals("") && overTime != null && !overTime.equals("")) {
             saleEntity.setStartTime(getDateByStr(startTime));
             saleEntity.setOverTime(getDateByStr(overTime));
         }
         saleEntity.setUpdateTime(new Date());
         saleMapper.update(saleEntity);
-        mv.addObject("said",id);
+        mv.addObject("said", id);
         mv.setViewName("redirect:/admin/activityInfo");
         System.out.println("mv" + mv);
         return mv;
     }
+
+
+    @GetMapping("notice")//后台-发布公告
+    public ModelAndView notice(Integer pageNo) {
+        ModelAndView mv = new ModelAndView();
+        NoticeSearch noticeSearch = new NoticeSearch();
+
+        if (pageNo != null) noticeSearch.setPage(pageNo);
+
+        List<NoticeSearch> noticeSearches = noticeMapper.select2ByPage(noticeSearch);
+        Integer total = noticeMapper.selectByPageTotal();//两种类型的条数相加
+        int page = noticeSearch.getPage(); //当前页
+        int size = noticeSearch.getSize(); //页码大小
+        int totalPage = total / size + 1;
+        int[] arr = new int[totalPage];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = i + 1;
+        }
+        mv.addObject("arr", arr);
+        mv.addObject("totalPage", totalPage);
+        mv.addObject("size", size);
+        mv.addObject("total", total);
+        mv.addObject("page", page);
+        mv.addObject("noticeSearches", noticeSearches);
+        mv.setViewName("admin/z_notice.html");
+        return mv;
+    }
+
+    @GetMapping("noticeDelete")//后台-公告删除
+    public ModelAndView noticeDelete(@RequestParam("id") Integer id) {
+        int result=noticeMapper.delete(id);
+        ModelAndView mv=new ModelAndView();
+        mv.setViewName("redirect:/admin/notice");
+        return mv;
+    }
+    @GetMapping("noticeInfo")//后台-公告删除
+    public ModelAndView noticeInfo(@RequestParam("id") Integer id) {
+        NoticeEntity noticeEntity=noticeMapper.selectById(id);
+
+        ModelAndView mv=new ModelAndView();
+        mv.addObject("notice", noticeEntity);
+        System.out.println("noticeEntity:"+noticeEntity);
+        mv.setViewName("admin/z_noticeInfo.html");
+        return mv;
+    }
+    @GetMapping("noticeAdd")//后台-公告添加
+    public ModelAndView noticeAdd() {
+        ModelAndView mv=new ModelAndView();
+        mv.setViewName("admin/z_noticeDetail.html");
+        return mv;
+    }
+    @PostMapping("noticeSave")//后台-公告添加
+    public ModelAndView noticeSave(String title,String ueInfo) {
+        ModelAndView mv=new ModelAndView();
+        NoticeEntity noticeEntity=new NoticeEntity();
+        noticeEntity.setContent(ueInfo);
+        noticeEntity.setTitle(title);
+        noticeEntity.setTime(new Date());
+        noticeEntity.setNum(new Long(0));
+        System.out.println("noticeEntity:"+noticeEntity);
+        noticeMapper.insert(noticeEntity);
+        mv.setViewName("redirect:/admin/notice");
+        return mv;
+    }
+
 }
+

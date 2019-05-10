@@ -37,12 +37,12 @@
                 <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">
                     <img src="/static/imgs/avatar-1.png" class="avatar avatar-sm" alt="logo">
-                    <span class="small ml-1 d-md-down-none" id="loginname"   th:text="${login_username}"></span>
+                    <span class="small ml-1 d-md-down-none" id="loginname" th:text="${login_username}"></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">
 
-                    <a href="/admin/selfinfo" id="selfinfo"  class="dropdown-item">
+                    <a href="/admin/selfinfo" id="selfinfo" class="dropdown-item">
                         <i class="fa fa-user"></i> 个人信息
                     </a>
 
@@ -61,7 +61,7 @@
                     <li class="nav-title">导航</li>
 
                     <li class="nav-item">
-                        <a href="/admin/index" class="nav-link active">
+                        <a href="/admin/index" class="nav-link">
                             <i class="icon icon-speedometer"></i> 仪表盘
                         </a>
                     </li>
@@ -179,6 +179,11 @@
                             <i class="icon icon-grid"></i> 技术咨询
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="/admin/notice" class="nav-link">
+                            <i class="icon icon-grid"></i> 公告
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -197,12 +202,13 @@
                                         </div>
                                         <div class="ibox-content">
 
-                                            <form method="post" class="form-horizontal" action="infoSave"  id="loginForm">
+                                            <form method="post" class="form-horizontal" action="infoSave"
+                                                  id="loginForm">
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label
-                                                                   class="form-control-label">用户名</label>
+                                                                    class="form-control-label">用户名</label>
                                                             <input name="name" class="form-control"
                                                                    value="" th:field="*{seller.name}">
                                                             <input name="id" hidden="" th:field="*{seller.id}">
@@ -212,7 +218,7 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label
-                                                                   class="form-control-label">真实姓名</label>
+                                                                    class="form-control-label">真实姓名</label>
                                                             <input name="realname" class="form-control"
                                                                    value="" th:field="*{seller.realname}">
                                                         </div>
@@ -220,7 +226,7 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label
-                                                                   class="form-control-label">手机号</label>
+                                                                    class="form-control-label">手机号</label>
                                                             <input name="phone" class="form-control"
                                                                    value="" th:field="*{seller.phone}">
                                                         </div>
@@ -229,37 +235,38 @@
                                                 <div class="row">
 
                                                     <form acton="infoSave" method="post">
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label
-                                                                   class="form-control-label">部门</label>
-                                                            <input name="post" class="form-control"
-                                                                   value=""  th:field="*{seller.post}">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label
+                                                                        class="form-control-label">部门</label>
+                                                                <input name="post" class="form-control"
+                                                                       value="" th:field="*{seller.post}">
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label
-                                                                   class="form-control-label">职位</label>
-                                                            <input name="position" class="form-control"
-                                                                   value="" th:field="*{seller.position}">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label
+                                                                        class="form-control-label">职位</label>
+                                                                <input name="position" class="form-control"
+                                                                       value="" th:field="*{seller.position}">
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="form-control-label">工号</label>
-                                                            <input name="sp_number" class="form-control"
-                                                                   value="" th:field="*{seller.id}">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="form-control-label">工号</label>
+                                                                <input name="sp_number" class="form-control"
+                                                                       value="" th:field="*{seller.id}">
+                                                            </div>
                                                         </div>
-                                                    </div>
                                                     </form>
                                                 </div>
 
                                                 <div class="hr-line-dashed"></div>
                                                 <div class="form-group">
                                                     <div class="col-sm-4 col-sm-offset-8">
-                                                        <a  onclick="document:loginForm.submit()" class="btn btn-primary">保&nbsp;&nbsp;存</a>&nbsp;&nbsp;
+                                                        <a onclick="document:loginForm.submit()"
+                                                           class="btn btn-primary">保&nbsp;&nbsp;存</a>&nbsp;&nbsp;
                                                         <a href="/admin/info"
                                                            class="btn btn-info">返&nbsp;&nbsp;回</a>
                                                     </div>
@@ -286,24 +293,25 @@
 <script type="text/javascript" src="/static/js/admin.js"></script>
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
-        var local_username=localStorage.getItem("login_username");
-        var e=document.getElementById("loginname");
-        console.log("local_username:"+local_username);
-        e.innerText=local_username;
+        var local_username = localStorage.getItem("login_username");
+        var e = document.getElementById("loginname");
+        console.log("local_username:" + local_username);
+        e.innerText = local_username;
         var login_username = [[${login_username}]];
-        console.log("login_username:"+login_username);
-        if(login_username!=undefined){
-            localStorage.setItem("login_username",login_username);
-            e.innerText=login_username;
+        console.log("login_username:" + login_username);
+        if (login_username != undefined) {
+            localStorage.setItem("login_username", login_username);
+            e.innerText = login_username;
         }
-        var selfinfo=document.getElementById("selfinfo");
-        selfinfo.href="/admin/selfinfo?str="+e.innerText;
-        console.log("selfinfo.href"+selfinfo.href)
+        var selfinfo = document.getElementById("selfinfo");
+        selfinfo.href = "/admin/selfinfo?str=" + e.innerText;
+        console.log("selfinfo.href" + selfinfo.href)
     }
+
     function alertMessage() {
         var message = [[${message}]];
-        if(message!=null){
-            alert("修改操作："+message);
+        if (message != null) {
+            alert("修改操作：" + message);
         }
     }
 

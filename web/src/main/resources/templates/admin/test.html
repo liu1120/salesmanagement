@@ -37,12 +37,12 @@
                 <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">
                     <img src="/static/imgs/avatar-1.png" class="avatar avatar-sm" alt="logo">
-                    <span class="small ml-1 d-md-down-none" id="loginname"   th:text="${login_username}"></span>
+                    <span class="small ml-1 d-md-down-none" id="loginname" th:text="${login_username}"></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">
 
-                    <a href="/admin/selfinfo" id="selfinfo"  class="dropdown-item">
+                    <a href="/admin/selfinfo" id="selfinfo" class="dropdown-item">
                         <i class="fa fa-user"></i> 个人信息
                     </a>
 
@@ -61,7 +61,7 @@
                     <li class="nav-title">导航</li>
 
                     <li class="nav-item">
-                        <a href="/admin/index" class="nav-link active">
+                        <a href="/admin/index" class="nav-link">
                             <i class="icon icon-speedometer"></i> 仪表盘
                         </a>
                     </li>
@@ -84,9 +84,9 @@
                                 </a>
                             </li>
                             <!--<li class="nav-item">-->
-                                <!--<a href="/admin/areavolume" class="nav-link">-->
-                                    <!--<i class="icon icon-graph"></i>&nbsp;&nbsp;地区销量-->
-                                <!--</a>-->
+                            <!--<a href="/admin/areavolume" class="nav-link">-->
+                            <!--<i class="icon icon-graph"></i>&nbsp;&nbsp;地区销量-->
+                            <!--</a>-->
                             <!--</li>-->
                         </ul>
                     </li>
@@ -170,13 +170,18 @@
                     </li>
                     <li class="nav-title">More</li>
                     <li class="nav-item">
-                        <a href="/admin/suggest" class="nav-link">
+                        <a href="/admin/suggest" class="nav-link  active">
                             <i class="icon icon-grid"></i>投诉与建议
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="/admin/question" class="nav-link">
                             <i class="icon icon-grid"></i> 技术咨询
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/notice" class="nav-link">
+                            <i class="icon icon-grid"></i> 公告
                         </a>
                     </li>
                 </ul>
@@ -187,39 +192,278 @@
                 <div class="row">
                     <div class="col-md-12">
                         <!--模板结束11111-->
+                        <div class="mb-4">
+                            <div class="form-group">
+                                <label class="form-control-label">标题</label>
+                                <input type="name" class="form-control">
+                            </div>
+                        </div>
 
-
+                        <div class="card">
+                            <div class="card-body p-0">
+                                <!--富文本编译器位置-->
+                                <!--1111111-->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <script id="editor" type="text/plain" style="width:99.9%;min-height:560px;"></script>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <button class="btn btn-primary"
+                                        style="float: right;margin-top: 20px;;margin-left: 10px">发布
+                                            </button>
+                                            <button class="btn btn-primary" style="float: right;margin-top: 20px;margin-left: 5px">
+                                            取消
+                                            </button>
+                                            </div>
+                                            </div>
                         <!--模板开始222222-->
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="/static/vendor/jquery/jquery.min.js"></script>
-    <script src="/static/vendor/popper.js/popper.min.js"></script>
+    < script
+    src = "/static/vendor/jquery/jquery.min.js" ></script>
+    <
+    script
+    src = "/static/vendor/popper.js/popper.min.js" ></script>
     <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/vendor/Chart.js/chart.min.js"></script>
     <script src="/static/js/carbon.js"></script>
 </div>
 </body>
-<script type="text/javascript" src="/static/js/adminjq.js"></script>
+<!--<script type="text/javascript" src="/static/js/adminjq.js"></script>-->
 <script type="text/javascript" src="/static/js/admin.js"></script>
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
-        var local_username=localStorage.getItem("login_username");
-        var e=document.getElementById("loginname");
-        console.log("local_username:"+local_username);
-        e.innerText=local_username;
+        var local_username = localStorage.getItem("login_username");
+        var e = document.getElementById("loginname");
+        console.log("local_username:" + local_username);
+        e.innerText = local_username;
 
         var login_username = [[${login_username}]];
-        console.log("login_username:"+login_username);
-        if(login_username!=undefined){
-            localStorage.setItem("login_username",login_username);
-            e.innerText=login_username;
+        console.log("login_username:" + login_username);
+        if (login_username != undefined) {
+            localStorage.setItem("login_username", login_username);
+            e.innerText = login_username;
         }
-        var selfinfo=document.getElementById("selfinfo");
-        selfinfo.href="/admin/selfinfo?str="+e.innerText;
-        console.log("selfinfo.href"+selfinfo.href)
+        var selfinfo = document.getElementById("selfinfo");
+        selfinfo.href = "/admin/selfinfo?str=" + e.innerText;
+        console.log("selfinfo.href" + selfinfo.href)
+    }
+</script>
+
+<script type="text/javascript" charset="utf-8" src="/static/ue/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/ue/ueditor.all.min.js"></script>
+<!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+<script type="text/javascript" charset="utf-8" src="/static/ue/lang/zh-cn/zh-cn.js"></script>
+
+
+<script type="text/javascript">
+    UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
+    UE.Editor.prototype.getActionUrl = function (action) {
+        console.log("action::" + action);
+        if (action == 'uploadimage' || action == 'uploadscrawl' || action == 'uploadimage' || action == 'fileUpload3') {
+            return 'http://localhost:8080/admin/fileUpload3';//此处写自定义的图片上传路径
+        } else if (action == 'uploadvideo') {
+            return 'http://a.b.com/video.php';
+        } else {
+            return this._bkGetActionUrl.call(this, action);
+        }
+    }
+</script>
+<script type="text/javascript">
+    //实例化编辑器
+    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+    var ue = UE.getEditor('editor');
+
+    function isFocus(e) {
+        alert(UE.getEditor('editor').isFocus());
+        UE.dom.domUtils.preventDefault(e)
+    }
+
+    function setblur(e) {
+        UE.getEditor('editor').blur();
+        UE.dom.domUtils.preventDefault(e)
+    }
+
+    function insertHtml() {
+        var value = prompt('插入html代码', '');
+        UE.getEditor('editor').execCommand('insertHtml', value)
+    }
+
+    function createEditor() {
+        enableBtn();
+        UE.getEditor('editor');
+    }
+
+    function getAllHtml() {
+        alert(UE.getEditor('editor').getAllHtml())
+    }
+
+    function getContent() {
+        var arr = [];
+        arr.push("使用editor.getContent()方法可以获得编辑器的内容");
+        arr.push("内容为：");
+        arr.push(UE.getEditor('editor').getContent());
+        alert(arr.join("\n"));
+    }
+
+    function getPlainTxt() {
+        var arr = [];
+        arr.push("使用editor.getPlainTxt()方法可以获得编辑器的带格式的纯文本内容");
+        arr.push("内容为：");
+        arr.push(UE.getEditor('editor').getPlainTxt());
+        alert(arr.join('\n'))
+    }
+
+    function setContent(isAppendTo) {
+        var arr = [];
+        arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
+        UE.getEditor('editor').setContent('欢迎使用ueditor', isAppendTo);
+        alert(arr.join("\n"));
+    }
+
+    function setDisabled() {
+        UE.getEditor('editor').setDisabled('fullscreen');
+        disableBtn("enable");
+    }
+
+    function setEnabled() {
+        UE.getEditor('editor').setEnabled();
+        enableBtn();
+    }
+
+    function getText() {
+        //当你点击按钮时编辑区域已经失去了焦点，如果直接用getText将不会得到内容，所以要在选回来，然后取得内容
+        var range = UE.getEditor('editor').selection.getRange();
+        range.select();
+        var txt = UE.getEditor('editor').selection.getText();
+        alert(txt)
+    }
+
+    function getContentTxt() {
+        var arr = [];
+        arr.push("使用editor.getContentTxt()方法可以获得编辑器的纯文本内容");
+        arr.push("编辑器的纯文本内容为：");
+        arr.push(UE.getEditor('editor').getContentTxt());
+        alert(arr.join("\n"));
+    }
+
+    function hasContent() {
+        var arr = [];
+        arr.push("使用editor.hasContents()方法判断编辑器里是否有内容");
+        arr.push("判断结果为：");
+        arr.push(UE.getEditor('editor').hasContents());
+        alert(arr.join("\n"));
+    }
+
+    function setFocus() {
+        UE.getEditor('editor').focus();
+    }
+
+    function deleteEditor() {
+        disableBtn();
+        UE.getEditor('editor').destroy();
+    }
+
+    function disableBtn(str) {
+        var div = document.getElementById('btns');
+        var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
+        for (var i = 0, btn; btn = btns[i++];) {
+            if (btn.id == str) {
+                UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
+            } else {
+                btn.setAttribute("disabled", "true");
+            }
+        }
+    }
+
+    function enableBtn() {
+        var div = document.getElementById('btns');
+        var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
+        for (var i = 0, btn; btn = btns[i++];) {
+            UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
+        }
+    }
+
+    function getLocalData() {
+        alert(UE.getEditor('editor').execCommand("getlocaldata"));
+    }
+
+    function clearLocalData() {
+        UE.getEditor('editor').execCommand("clearlocaldata");
+        alert("已清空草稿箱")
     }
 
 </script>
+
+<script type="text/javascript">
+    $("#submitButton").click(function () {
+        var filename = document.getElementById("fileName").value;
+        if ($.trim(filename) == "") {
+            alert("请选择要上传的文件");
+            return;
+        }
+        var formData = new FormData(document.getElementById("fileUpload"));
+        console.log("name::" + name);
+        $.ajax({
+            url: 'fileUpload',
+            type: 'POST',
+            cache: false,
+            data: formData,
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            success: function (res) { //成功
+                var e1 = document.getElementById('imgs');
+                var e2 = document.getElementById('path');
+                e1.style.display = 'block';
+                e1.src = res.filePath;
+                e2.value = res.fileName;
+                console.log("res.toString:" + res.toString());
+            }, error: function (res) { //失败的话
+                alert(res.msg);
+            }
+        })
+    });
+    $.ajax({//下拉选择分类
+        url: '/user/getGoodsSort',
+        type: "get",
+        dataType: 'json',
+    }).done(function (results) {
+        console.log("results:" + results);
+
+        $('#sort-select').html('');
+        var options = '';
+        options += '';
+        for (var i = 0; i < results.length; i++) {
+            options += '<option value="' + results[i].id + '">' + results[i].name + '</option>';
+        }
+        $('#sort-select').append(options);
+    }).fail(function (error) {
+        $('#sort-select').html('');
+        var options = '';
+        options += '<option value="">--请选择--</option>';
+        $('#sort-select').append(options);
+    });//下拉选择商品分类
+
+</script>
+
+<script type="text/javascript">
+    //这段要放在文本编辑器的实例化之后
+    $("#submitInfo").click(function () {
+        var e1 = document.getElementById("ueInfo");
+        e1.value = UE.getEditor('editor').getContent();
+        console.log("e1.value:" + e1.value);
+        var form = document.getElementById('goodsInfo');
+        console.log("form:" + form.toString());
+        form.submit();
+    });
+
+</script>
+
 </html>
