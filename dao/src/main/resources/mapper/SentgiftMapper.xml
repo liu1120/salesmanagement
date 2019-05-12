@@ -15,8 +15,8 @@
         <result column="sg_status" property="status"/>
         <result column="sg_date" property="date"/>
     </resultMap>
-    <resultMap id="SentgiftSearch" type="com.zzlbe.dao.search.SentgiftSearch">
 
+    <resultMap id="SentgiftSearch" type="com.zzlbe.dao.search.SentgiftSearch">
         <result column="sg_id" property="id"/>
         <result column="sg_gift_id" property="giftId"/>
         <result column="gi_name" property="gname"/>
@@ -31,6 +31,23 @@
         <result column="sg_status" property="status"/>
         <result column="sg_date" property="date"/>
     </resultMap>
+
+    <resultMap id="sendGiftByUser" type="com.zzlbe.dao.search.CreditConsumeBySendGiftVO">
+        <result column="sg_num" property="count"/>
+        <result column="sg_credit" property="credit"/>
+        <result column="sg_credit_total" property="totalCredit"/>
+        <result column="sg_status" property="status"/>
+        <result column="sg_date" property="date"/>
+        <result column="gi_name" property="giftName"/>
+        <result column="gi_describe" property="giftDescribe"/>
+        <result column="gi_credit" property="giftUnitCredit"/>
+        <result column="gi_imgpath" property="giftImgPath"/>
+        <result column="ad_address" property="address"/>
+        <result column="ad_info" property="addressInfo"/>
+        <result column="ad_u_name" property="userName"/>
+        <result column="ad_phone" property="userPhone"/>
+    </resultMap>
+
     <sql id="tableName">tb_sendgift</sql>
 
     <sql id="columns">
@@ -113,6 +130,38 @@
         FROM
         <include refid="tableName"/>
         <include refid="condition"/>
+    </select>
+
+    <select id="sendGiftByUser" resultMap="sendGiftByUser">
+        SELECT
+        sg_num,
+        sg_credit,
+        (sg_credit * sg_num) AS sg_credit_total,
+        sg_status,
+        sg_date,
+        gi_name,
+        gi_describe,
+        gi_credit,
+        gi_imgpath,
+        ad_address,
+        ad_info,
+        ad_u_name,
+        ad_phone
+        FROM
+        <include refid="tableName"/>
+        LEFT JOIN tb_gift ON sg_gift_id = gi_id
+        LEFT JOIN tb_addresses ON sg_address = ad_id
+        WHERE sg_toid = #{userId};
+    </select>
+
+    <select id="sendGiftByUserTotal" resultType="long">
+        SELECT
+        SUM(sg_credit * sg_num)
+        FROM
+        <include refid="tableName"/>
+        LEFT JOIN tb_gift ON sg_gift_id = gi_id
+        LEFT JOIN tb_addresses ON sg_address = ad_id
+        WHERE sg_toid = #{userId};
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">

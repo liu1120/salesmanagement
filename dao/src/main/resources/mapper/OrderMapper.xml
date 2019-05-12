@@ -59,6 +59,16 @@
         <result column="count" property="count"/>
     </resultMap>
 
+    <resultMap id="creditGetByOrder" type="com.zzlbe.dao.search.CreditGetByOrderVO">
+        <result column="or_count" property="count"/>
+        <result column="go_credit" property="credit"/>
+        <result column="total_credit" property="totalCredit"/>
+        <result column="go_name" property="goodsName"/>
+        <result column="go_version" property="goodsVersion"/>
+        <result column="go_introduce" property="goodsIntroduce"/>
+        <result column="go_newimgpath" property="goodsImagePath"/>
+    </resultMap>
+
     <sql id="tableName">tb_order</sql>
 
     <sql id="columns">
@@ -227,6 +237,44 @@
         FROM
         <include refid="tableName"/>
         <include refid="condition"/>
+    </select>
+
+    <select id="selectCreditByUser" resultMap="creditGetByOrder">
+        SELECT
+        or_count,
+        go_credit,
+        (or_count * go_credit) AS total_credit,
+        go_name,
+        go_version,
+        go_introduce,
+        go_newimgpath
+        FROM
+        <include refid="tableName"/>
+        LEFT JOIN tb_goods ON or_goods_id = go_id
+        WHERE
+        or_user_id = #{userId}
+        <if test="orderStatusList != null">
+            AND or_status IN
+            <foreach collection="orderStatusList" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="selectCreditByUserTotal" resultType="long">
+        SELECT
+        SUM(or_count * go_credit)
+        FROM
+        <include refid="tableName"/>
+        LEFT JOIN tb_goods ON or_goods_id = go_id
+        WHERE
+        or_user_id = #{userId}
+        <if test="orderStatusList != null">
+            AND or_status IN
+            <foreach collection="orderStatusList" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
     </select>
 
     <update id="update">

@@ -406,5 +406,37 @@ public class UserController {
         return userBusiness.userInfo(userInfoDTO);
     }
 
+    /**
+     * 获取积分记录（暂仅支持查询订单中获取的积分，积分业务复杂的话，需增加积分变动记录表）
+     *
+     * @param userId 用户编号
+     * @return GenericResponse
+     */
+    @GetMapping("creditGet")
+    public GenericResponse creditGet(@RequestParam("userId") Long userId) {
+
+        return userBusiness.creditGet(userId);
+    }
+
+    /**
+     * 积分消费记录（暂仅支持查询礼品中消费的积分，积分业务复杂的话，需增加积分变动记录表）
+     *
+     * @param userId 用户编号
+     * @return GenericResponse
+     */
+    @GetMapping("creditConsume")
+    public GenericResponse creditConsume(@RequestParam("userId") Long userId) {
+
+        return userBusiness.creditConsume(userId);
+    }
+
+    /**
+     * 修复用户积分
+     */
+    @GetMapping("fixCredit")
+    public GenericResponse fixCredit(@RequestParam("userId") Long userId) {
+
+        return userBusiness.fixCredit(userId);
+    }
 
 }
