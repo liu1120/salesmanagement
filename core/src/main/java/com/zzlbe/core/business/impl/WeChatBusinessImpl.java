@@ -7,6 +7,7 @@ import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.dto.wx.Code2SessionResponse;
 import com.zzlbe.core.dto.wx.WxErrorCodeEnum;
 import com.zzlbe.core.dto.wx.WxLoginRequest;
+import com.zzlbe.core.util.CheckUtil;
 import com.zzlbe.dao.entity.UserEntity;
 import com.zzlbe.dao.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -103,9 +104,18 @@ public class WeChatBusinessImpl extends BaseBusinessImpl implements WeChatBusine
             return new GenericResponse(ErrorCodeEnum.USER_NOT_FOUND);
         }
 
-        userEntity.setName(StringUtils.isBlank(wxLoginRequest.getUsername()) ? null : wxLoginRequest.getUsername());
-        userEntity.setPhone(StringUtils.isBlank(wxLoginRequest.getPhoneNo()) ? null : wxLoginRequest.getPhoneNo());
-        userEntity.setPassword(StringUtils.isBlank(wxLoginRequest.getPassword()) ? null : wxLoginRequest.getPassword());
+        userEntity.setName(StringUtils.isBlank(wxLoginRequest.getUsername()) ? null : wxLoginRequest.getUsername().trim());
+
+        // 校验手机号
+        String phoneNo = wxLoginRequest.getPhoneNo();
+        if (StringUtils.isNotBlank(phoneNo)) {
+            if (!CheckUtil.isPhoneNo(phoneNo)) {
+                return new GenericResponse(ErrorCodeEnum.USER_PHONE_FORMAT_ERROR);
+            }
+            userEntity.setPhone(phoneNo);
+        }
+
+        userEntity.setPassword(StringUtils.isBlank(wxLoginRequest.getPassword()) ? null : wxLoginRequest.getPassword().trim());
 
         userMapper.update(userEntity);
 
