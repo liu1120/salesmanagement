@@ -7,6 +7,7 @@ import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.dto.wx.Code2SessionResponse;
 import com.zzlbe.core.dto.wx.WxErrorCodeEnum;
 import com.zzlbe.core.dto.wx.WxLoginRequest;
+import com.zzlbe.core.util.CheckUtil;
 import com.zzlbe.dao.entity.UserEntity;
 import com.zzlbe.dao.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +21,7 @@ import javax.annotation.Resource;
 
 /**
  * PROJECT: Sales
- * DESCRIPTION: TODO
+ * DESCRIPTION: 微信相关业务层
  *
  * @author amos
  * @date 2019/5/8
@@ -35,8 +36,8 @@ public class WeChatBusinessImpl extends BaseBusinessImpl implements WeChatBusine
     @Resource
     private RestTemplate restTemplate;
 
-    private static final String APP_KEY = "wxc60802b4db0c011d";
-    private static final String SECRET = "c57a91fd6287fca522b754009b633785";
+    private static final String APP_KEY = "wxfc2aef83592cf825";
+    private static final String SECRET = "e09e23a9aac761596756e5644dec882d";
 
     @Override
     public GenericResponse weChatLogin(WxLoginRequest wxLoginRequest) {
@@ -103,9 +104,18 @@ public class WeChatBusinessImpl extends BaseBusinessImpl implements WeChatBusine
             return new GenericResponse(ErrorCodeEnum.USER_NOT_FOUND);
         }
 
-        userEntity.setName(StringUtils.isBlank(wxLoginRequest.getUsername()) ? null : wxLoginRequest.getUsername());
-        userEntity.setPhone(StringUtils.isBlank(wxLoginRequest.getPhoneNo()) ? null : wxLoginRequest.getPhoneNo());
-        userEntity.setPassword(StringUtils.isBlank(wxLoginRequest.getPassword()) ? null : wxLoginRequest.getPassword());
+        userEntity.setName(StringUtils.isBlank(wxLoginRequest.getUsername()) ? null : wxLoginRequest.getUsername().trim());
+
+        // 校验手机号
+        String phoneNo = wxLoginRequest.getPhoneNo();
+        if (StringUtils.isNotBlank(phoneNo)) {
+            if (!CheckUtil.isPhoneNo(phoneNo)) {
+                return new GenericResponse(ErrorCodeEnum.USER_PHONE_FORMAT_ERROR);
+            }
+            userEntity.setPhone(phoneNo);
+        }
+
+        userEntity.setPassword(StringUtils.isBlank(wxLoginRequest.getPassword()) ? null : wxLoginRequest.getPassword().trim());
 
         userMapper.update(userEntity);
 

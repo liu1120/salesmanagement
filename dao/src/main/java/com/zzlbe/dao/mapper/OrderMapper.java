@@ -2,6 +2,8 @@ package com.zzlbe.dao.mapper;
 
 import com.zzlbe.dao.entity.OrderEntity;
 import com.zzlbe.dao.search.*;
+import com.zzlbe.dao.vo.OrderGoodsVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,6 +28,8 @@ public interface OrderMapper {
 
     List<OrderEntity> selectByUid(Long id);
 
+    List<OrderGoodsVO> selectByUid2(Long id);
+
     OrderEntity selectByExample(OrderSearch orderSearch);
 
     List<OrderEntity> selectListByExample(OrderSearch orderSearch);
@@ -44,5 +48,10 @@ public interface OrderMapper {
 
     List<GoodssellSearch> getSellerSell(long id);
 
+    List<CreditGetByOrderVO> selectCreditByUser(@Param("userId") Long userId,
+                                                @Param("orderStatusList") List<Integer> orderStatusList);
+
+    Long selectCreditByUserTotal(@Param("userId") Long userId,
+                                 @Param("orderStatusList") List<Integer> orderStatusList);
 
 }

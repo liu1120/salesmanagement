@@ -6,10 +6,7 @@ import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.dto.wx.WxLoginRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -37,7 +34,7 @@ public class WeChatController {
     }
 
     @PostMapping("modifyUserInfo")
-    public GenericResponse modifyUserInfo(WxLoginRequest wxLoginRequest) {
+    public GenericResponse modifyUserInfo(@RequestBody WxLoginRequest wxLoginRequest) {
 
         return weChatBusiness.modifyUserInfo(wxLoginRequest);
     }

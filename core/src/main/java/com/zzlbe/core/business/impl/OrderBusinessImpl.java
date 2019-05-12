@@ -268,6 +268,11 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
                 break;
             case FINISH:
                 if (OrderStatusEnum.SIGNING.getCode().equals(orderEntity.getOrStatus())) {
+                    // 给用户添加积分
+                    GenericResponse addCreditScore = addCreditScore(orderEntity.getOrUserId(), orderEntity.getOrGoodsId(), orderEntity.getOrCount());
+                    if (!addCreditScore.successful()) {
+                        return addCreditScore;
+                    }
                     orderEntity.setOrStatus(orderStatusEnum.getCode());
                 } else {
                     return new GenericResponse(ErrorCodeEnum.ORDER_STATUS_ERROR);
@@ -453,6 +458,37 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
             customerVO.setNewImgPath(goodsEntity.getNewImgPath());
         });
         return customerVOS;
+    }
+
+    /**
+     * 添加用户积分
+     *
+     * @param userId  用户编号
+     * @param goodsId 购买的商品编号
+     * @param count   购买的商品数量
+     * @return GenericResponse
+     */
+    private GenericResponse addCreditScore(Long userId, Long goodsId, Integer count) {
+        UserEntity userEntity = userMapper.selectById(userId);
+        if (userEntity == null) {
+            return new GenericResponse(ErrorCodeEnum.USER_NOT_FOUND);
+        }
+        GoodsEntity goodsEntity = goodsMapper.selectById(goodsId);
+        if (goodsEntity == null) {
+            return new GenericResponse(ErrorCodeEnum.GOODS_NOT_FOUND);
+        }
+        Integer goodsCredit = goodsEntity.getCredit();
+
+        Integer creditScore = goodsCredit * count;
+
+        // 用户原有积分
+        Long credit = userEntity.getCredit();
+        credit += creditScore;
+        userEntity.setCredit(credit);
+
+        userMapper.update(userEntity);
+
+        return GenericResponse.SUCCESS;
     }
 
     /**

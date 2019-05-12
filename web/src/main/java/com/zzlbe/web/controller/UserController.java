@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.zzlbe.core.business.UserBusiness;
 import com.zzlbe.core.common.GenericResponse;
 import com.zzlbe.core.dto.UserInfoDTO;
-import com.zzlbe.core.request.LoginForm;
-import com.zzlbe.core.request.RegisterForm;
-import com.zzlbe.core.request.UserInfoModifyForm;
-import com.zzlbe.core.request.UserPasswordModifyForm;
+import com.zzlbe.core.request.*;
 import com.zzlbe.core.response.AreaVO;
 import com.zzlbe.core.util.DateUtil;
 import com.zzlbe.dao.entity.*;
@@ -75,10 +72,10 @@ public class UserController {
     public List<GoodsEntity> selectGoodsByName(@RequestParam("goodsname") String goodsname) {
 //        GoodsSearch goodsSearch=new GoodsSearch();
         List<GoodsEntity> list = goodsMapper.selectGoodsByName(goodsname);
-        System.out.println("goodsname:"+goodsname);
-        for(int i=0;i<list.size();i++){
+        System.out.println("goodsname:" + goodsname);
+        for (int i = 0; i < list.size(); i++) {
 
-            System.out.println("list:"+list.get(i).toString());
+            System.out.println("list:" + list.get(i).toString());
         }
         return list;
     }
@@ -91,14 +88,15 @@ public class UserController {
 
     @GetMapping(value = "selectGoodsBySort")//查找全部商品根据分类
     public List<GoodsEntity> selectGoodsBySort(String sortid) {
-        GoodsSearch goodsSearch=new GoodsSearch();
+        GoodsSearch goodsSearch = new GoodsSearch();
         goodsSearch.setSort(sortid);
         List<GoodsEntity> list = goodsMapper.selectByPage(goodsSearch);
         return list;
     }
+
     @GetMapping(value = "selectGoodsByGname")//查找全部商品根据商品名
     public List<GoodsEntity> selectGoodsByGname(String gname) {
-        GoodsSearch goodsSearch=new GoodsSearch();
+        GoodsSearch goodsSearch = new GoodsSearch();
         goodsSearch.setName(gname);
         List<GoodsEntity> list = goodsMapper.selectByPage(goodsSearch);
         return list;
@@ -135,7 +133,7 @@ public class UserController {
     @GetMapping(value = "getGoodsSortName")//查找商品分类对应的name ==admin位置报错  adminadminadmin
     public String getGoodsSortName(Long id) {
         GoodssortEntity goodssortEntity = goodssortMapper.selectById(id);
-        System.out.println("goodssortEntity.getName():"+goodssortEntity.getName());
+        System.out.println("goodssortEntity.getName():" + goodssortEntity.getName());
         return goodssortEntity.getName();
     }
 
@@ -185,20 +183,83 @@ public class UserController {
         return list;
     }
 
-    @GetMapping(value = "addAddress")//添加地址
-    public Long addAddress(@RequestParam("provincecode") long provincecode, @RequestParam("countycode") long countycode, @RequestParam("towncode") long towncode, @RequestParam("citycode") long citycode, @RequestParam("info") String info, @RequestParam("uid") long uid, @RequestParam("name") String name, @RequestParam("phone") long phone) {
+    /**
+     * 添加收货地址
+     *
+     * @return 收货地址id
+     */
+    @GetMapping(value = "addAddress2")
+    public Long addAddress(@RequestParam("provincecode") Long provincecode, @RequestParam("countycode") Long countycode,
+                           @RequestParam("towncode") Long towncode, @RequestParam("citycode") Long citycode,
+                           @RequestParam("info") String info, @RequestParam("uid") Long uid,
+                           @RequestParam("name") String name, @RequestParam("phone") Long phone) {
         AreaVO areaVO = new AreaVO();
         areaVO.setProvincecode(provincecode);
         areaVO.setCitycode(citycode);
         areaVO.setCountycode(countycode);
         areaVO.setTowncode(towncode);
         String areaStr = JSON.toJSONString(areaVO);
-        long id = 0;
-        AddressEntity addressEntity = new AddressEntity(id, areaStr, info, uid, name, phone, 0);
+        AddressEntity addressEntity = new AddressEntity(null, areaStr, info, uid, name, phone, 0);
         addressMapper.insert(addressEntity);
         return addressEntity.getId();
     }
 
+    /**
+     * 添加收货地址
+     *
+     * @return 收货地址id
+     */
+    @PostMapping(value = "addAddress")
+    public GenericResponse addAddress(@RequestBody @Valid UserAddressForm userAddressForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> list = bindingResult.getAllErrors();
+            return GenericResponse.ERROR.setMessage(list.get(0).getDefaultMessage());
+        }
+        if (userAddressForm.getUid() == null) {
+            return GenericResponse.ERROR;
+        }
+        AreaVO areaVO = new AreaVO();
+        areaVO.setProvincecode(userAddressForm.getProvincecode());
+        areaVO.setCitycode(userAddressForm.getCitycode());
+        areaVO.setCountycode(userAddressForm.getCountycode());
+        areaVO.setTowncode(userAddressForm.getTowncode());
+        String areaStr = JSON.toJSONString(areaVO);
+
+        AddressEntity addressEntity = new AddressEntity(null, areaStr,
+                userAddressForm.getInfo(), userAddressForm.getUid(),
+                userAddressForm.getName(), userAddressForm.getPhone(), 0);
+        addressMapper.insert(addressEntity);
+        return new GenericResponse<>(addressEntity.getId());
+    }
+
+    /**
+     * 添加收货地址
+     *
+     * @return 收货地址id
+     */
+    @PostMapping(value = "modifyAddress")
+    public GenericResponse modifyAddress(@RequestBody @Valid UserAddressForm userAddressForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> list = bindingResult.getAllErrors();
+            return GenericResponse.ERROR.setMessage(list.get(0).getDefaultMessage());
+        }
+        if (userAddressForm.getId() == null) {
+            return GenericResponse.ERROR;
+        }
+        AreaVO areaVO = new AreaVO();
+        areaVO.setProvincecode(userAddressForm.getProvincecode());
+        areaVO.setCitycode(userAddressForm.getCitycode());
+        areaVO.setCountycode(userAddressForm.getCountycode());
+        areaVO.setTowncode(userAddressForm.getTowncode());
+        String areaStr = JSON.toJSONString(areaVO);
+
+        AddressEntity addressEntity = new AddressEntity(userAddressForm.getId(), areaStr,
+                userAddressForm.getInfo(), null,
+                userAddressForm.getName(), userAddressForm.getPhone(), userAddressForm.getStatus());
+        addressMapper.update(addressEntity);
+
+        return new GenericResponse<>(addressEntity.getId());
+    }
 
     @GetMapping(value = "getSaleGoods")//查找所有促销商品
     public List<GoodsEntity> getSaleGoods(@RequestParam("sortid") long sortid) {
@@ -218,9 +279,9 @@ public class UserController {
     }
 
     @GetMapping(value = "getOrderList")//查找用户下的订单
-    public List<OrderEntity> getOrderList(@RequestParam("uid") long uid) {
-        List<OrderEntity> list = orderMapper.selectByUid(uid);
-        return list;
+    public List getOrderList(@RequestParam("uid") long uid) {
+        /*return orderMapper.selectByUid(uid);*/
+        return orderMapper.selectByUid2(uid);
     }
 
     @GetMapping(value = "getOrder")//查找用户下的订单
@@ -230,8 +291,8 @@ public class UserController {
     }
 
     @GetMapping(value = "getOrderStatus")//查看订单状态查看订单
-    public List<OrderEntity> getOrderStatus(@RequestParam("uid") long uid,@RequestParam("status") Integer status) {
-        OrderSearch orderSearch=new OrderSearch();
+    public List<OrderEntity> getOrderStatus(@RequestParam("uid") long uid, @RequestParam("status") Integer status) {
+        OrderSearch orderSearch = new OrderSearch();
         orderSearch.setOrUserId(uid);
         orderSearch.setOrStatus(status);
         return orderMapper.selectByPage(orderSearch);
@@ -346,5 +407,37 @@ public class UserController {
         return userBusiness.userInfo(userInfoDTO);
     }
 
+    /**
+     * 获取积分记录（暂仅支持查询订单中获取的积分，积分业务复杂的话，需增加积分变动记录表）
+     *
+     * @param userId 用户编号
+     * @return GenericResponse
+     */
+    @GetMapping("creditGet")
+    public GenericResponse creditGet(@RequestParam("userId") Long userId) {
+
+        return userBusiness.creditGet(userId);
+    }
+
+    /**
+     * 积分消费记录（暂仅支持查询礼品中消费的积分，积分业务复杂的话，需增加积分变动记录表）
+     *
+     * @param userId 用户编号
+     * @return GenericResponse
+     */
+    @GetMapping("creditConsume")
+    public GenericResponse creditConsume(@RequestParam("userId") Long userId) {
+
+        return userBusiness.creditConsume(userId);
+    }
+
+    /**
+     * 修复用户积分
+     */
+    @GetMapping("fixCredit")
+    public GenericResponse fixCredit(@RequestParam("userId") Long userId) {
+
+        return userBusiness.fixCredit(userId);
+    }
 
 }
