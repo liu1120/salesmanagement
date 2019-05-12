@@ -160,7 +160,8 @@ public class UserController {
 
         AreaVO areavo = JSON.parseObject(addressEntity.getAddress(), AreaVO.class);
 
-        long formid = areaMapper.selectOne(areavo.getTowncode()).getSpid();
+
+        Long formid = areaMapper.selectOne(areavo.getTowncode()).getSpid();
 
         SentgiftEntity sentgiftEntity = new SentgiftEntity();
         sentgiftEntity.setGiftId(id);
