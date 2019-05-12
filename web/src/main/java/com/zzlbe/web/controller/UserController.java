@@ -274,8 +274,10 @@ public class UserController {
     }
 
     @GetMapping(value = "selectCreditById")//通过用户id查找积分
-    public long selectCreditById(@RequestParam("uid") long uid) {
-        return userMapper.selectById(uid).getCredit();
+    public String selectCreditById(@RequestParam("uid") long uid) {
+        long credit=userMapper.selectById(uid).getCredit();
+        String str="{score:"+credit+"}";
+        return str;
     }
 
     @GetMapping(value = "getOrderList")//查找用户下的订单
