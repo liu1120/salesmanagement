@@ -278,9 +278,9 @@ public class UserController {
     }
 
     @GetMapping(value = "getOrderList")//查找用户下的订单
-    public List<OrderEntity> getOrderList(@RequestParam("uid") long uid) {
-        List<OrderEntity> list = orderMapper.selectByUid(uid);
-        return list;
+    public List getOrderList(@RequestParam("uid") long uid) {
+        /*return orderMapper.selectByUid(uid);*/
+        return orderMapper.selectByUid2(uid);
     }
 
     @GetMapping(value = "getOrder")//查找用户下的订单

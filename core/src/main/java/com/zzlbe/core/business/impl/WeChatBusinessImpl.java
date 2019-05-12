@@ -21,7 +21,7 @@ import javax.annotation.Resource;
 
 /**
  * PROJECT: Sales
- * DESCRIPTION: TODO
+ * DESCRIPTION: 微信相关业务层
  *
  * @author amos
  * @date 2019/5/8
@@ -36,8 +36,8 @@ public class WeChatBusinessImpl extends BaseBusinessImpl implements WeChatBusine
     @Resource
     private RestTemplate restTemplate;
 
-    private static final String APP_KEY = "wxc60802b4db0c011d";
-    private static final String SECRET = "c57a91fd6287fca522b754009b633785";
+    private static final String APP_KEY = "wxfc2aef83592cf825";
+    private static final String SECRET = "e09e23a9aac761596756e5644dec882d";
 
     @Override
     public GenericResponse weChatLogin(WxLoginRequest wxLoginRequest) {

@@ -5,7 +5,7 @@ import com.zzlbe.core.dto.wx.WxLoginRequest;
 
 /**
  * PROJECT: Sales
- * DESCRIPTION: TODO
+ * DESCRIPTION: 微信相关业务层
  *
  * @author amos
  * @date 2019/5/8

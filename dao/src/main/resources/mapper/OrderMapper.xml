@@ -69,6 +69,31 @@
         <result column="go_newimgpath" property="goodsImagePath"/>
     </resultMap>
 
+    <resultMap id="orderGoods" type="com.zzlbe.dao.vo.OrderGoodsVO">
+        <result column="or_id" property="orId"/>
+        <result column="or_goods_id" property="orGoodsId"/>
+        <result column="or_count" property="orCount"/>
+        <result column="or_price" property="orPrice"/>
+        <result column="or_say" property="orSay"/>
+        <result column="or_total_amount" property="orTotalAmount"/>
+        <result column="or_datetime" property="orDatetime"/>
+        <result column="or_seller_id" property="orSellerId"/>
+        <result column="or_user_id" property="orUserId"/>
+        <result column="or_type" property="orType"/>
+        <result column="or_logistics" property="orLogistics"/>
+        <result column="or_address" property="orAddress"/>
+        <result column="or_status" property="orStatus"/>
+        <result column="or_words" property="orWords"/>
+        <result column="or_refuse" property="orRefuse"/>
+
+        <result column="go_name" property="name"/>
+        <result column="go_version" property="version"/>
+        <result column="go_price" property="price"/>
+        <result column="go_introduce" property="introduce"/>
+        <result column="go_newimgpath" property="newImgPath"/>
+        <result column="go_credit" property="credit"/>
+    </resultMap>
+
     <sql id="tableName">tb_order</sql>
 
     <sql id="columns">
@@ -154,6 +179,13 @@
         <include refid="tableName"/>
         WHERE or_user_id = #{uid}
     </select>
+
+    <select id="selectByUid2" resultMap="orderGoods">
+        SELECT * FROM tb_order
+        LEFT JOIN tb_goods ON or_goods_id = go_id
+        WHERE or_user_id = #{uid}
+    </select>
+
     <select id="selectByPage" resultMap="BaseMap">
         SELECT
         <include refid="columns"/>
