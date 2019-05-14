@@ -36,8 +36,8 @@ public class WeChatBusinessImpl extends BaseBusinessImpl implements WeChatBusine
     @Resource
     private RestTemplate restTemplate;
 
-    private static final String APP_KEY = "wxc60802b4db0c011d";
-    private static final String SECRET = "edfb625c09cd293fb5dc395b086830ff";
+    private static final String APP_KEY = "wxfc2aef83592cf825";
+    private static final String SECRET = "01c6475dc7e4156157b7734e0ef277f9";
 
     @Override
     public GenericResponse weChatLogin(WxLoginRequest wxLoginRequest) {
