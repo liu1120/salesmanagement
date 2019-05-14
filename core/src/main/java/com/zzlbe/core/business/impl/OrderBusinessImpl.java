@@ -124,9 +124,10 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
             return previewResponse;
         }
 
-        orderMapper.insert((OrderEntity) previewResponse.getBody());
+        OrderEntity orderEntity = (OrderEntity) previewResponse.getBody();
+        orderMapper.insert(orderEntity);
 
-        return GenericResponse.SUCCESS;
+        return new GenericResponse<>(orderEntity.getOrId());
     }
 
     @Override
