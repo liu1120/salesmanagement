@@ -9,6 +9,7 @@ import com.zzlbe.core.response.AreaVO;
 import com.zzlbe.core.util.DateUtil;
 import com.zzlbe.dao.entity.*;
 import com.zzlbe.dao.mapper.*;
+import com.zzlbe.dao.search.CreditConsumeBySendGiftVO;
 import com.zzlbe.dao.search.GoodsSearch;
 import com.zzlbe.dao.search.OrderSearch;
 import com.zzlbe.dao.search.UserSearch;
@@ -130,6 +131,25 @@ public class UserController {
         return list;
     }
 
+    @GetMapping(value = "getUsedCredit")//积分使用记录
+    public List<CreditConsumeBySendGiftVO> getUsedCredit(@RequestParam("uid") long uid) {
+        List<CreditConsumeBySendGiftVO> list = sentgiftMapper.sendGiftByUser(uid);
+        return list;
+    }
+
+    @GetMapping(value = "getCreditDetail")//积分兑换详情
+    public SentgiftEntity getCreditDetail(@RequestParam("sid") long sid) {
+        SentgiftEntity sentgiftEntity=sentgiftMapper.selectById(sid);
+        return sentgiftEntity;
+    }
+    @GetMapping(value = "getCreditAdd")//积分添加记录
+    public List<OrderEntity> getCreditAdd(@RequestParam("uid") long uid) {
+        OrderSearch orderSearch=new OrderSearch();
+        orderSearch.setOrUserId(uid);//评价有积分。
+        orderSearch.setOrStatus(8);
+        List<OrderEntity> orderEntity=orderMapper.selectByPage(orderSearch);
+        return orderEntity;
+    }
     @GetMapping(value = "getGoodsSortName")//查找商品分类对应的name ==admin位置报错  adminadminadmin
     public String getGoodsSortName(Long id) {
         GoodssortEntity goodssortEntity = goodssortMapper.selectById(id);
@@ -292,12 +312,19 @@ public class UserController {
         return orderEntity;
     }
 
-    @GetMapping(value = "getOrderStatus")//查看订单状态查看订单
-    public List<OrderEntity> getOrderStatus(@RequestParam("uid") long uid, @RequestParam("status") Integer status) {
+    @GetMapping(value = "getOrderByStatus")//查看不同状态下订单
+    public List<OrderEntity> getOrderByStatus(@RequestParam("uid") long uid,Integer status) {
         OrderSearch orderSearch = new OrderSearch();
         orderSearch.setOrUserId(uid);
-        orderSearch.setOrStatus(status);
+        if(status!=null){
+            orderSearch.setOrStatus(status);
+        }
         return orderMapper.selectByPage(orderSearch);
+    }
+
+    @GetMapping(value = "getOrderStatus")//查看订单状态
+    public Integer getOrderStatus(@RequestParam("orid") long orid) {
+        return orderMapper.selectById(orid).getOrStatus();
     }
 
     @GetMapping(value = "addComments")//为已完成的订单添加评论。1成功，0失败.同时修改订单表状态，为已评价
@@ -321,12 +348,11 @@ public class UserController {
         return 1;
     }
 
-    @GetMapping(value = "getAddressByUid")//查看订单的状态
+    @GetMapping(value = "getAddressByUid")
     public List<AddressEntity> getAddressByUid(@RequestParam("uid") long uid) {
         List<AddressEntity> list = addressMapper.selectByUid(uid);
         return list;
     }
-
 
     @GetMapping(value = "delectAddresByid")//删除地址。（隐藏地址）
     public int delectAddresByid(@RequestParam("id") long id) {
@@ -336,6 +362,7 @@ public class UserController {
         return 0;
     }
 
+
     @PostMapping(value = "getAddresName")//将对应的json地址id转化为json中文地址
     public AreaEntity getAddresName(@RequestParam("addressids") String addressids) {
 //        String addressids="{ \"province_code\":\"410000000000\" , \"city_code\":\"410100000000\"  , \"county_code\":\"410102000000\"  , \"town_code\":\"410102005000\"}";
@@ -343,6 +370,7 @@ public class UserController {
         AreaEntity areaEntity = areaMapper.selectOne(areavo.getTowncode());
         return areaEntity;
     }
+
 
     @GetMapping(value = "getDateBystr")//日期转换成标准格式
     public String getDateBystr(@RequestParam("date") String date) {
