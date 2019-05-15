@@ -38,5 +38,12 @@ public interface ActivityBusiness {
      */
     GenericResponse findAllByPage(SaleSearch saleSearch);
 
+    /**
+     * 根据 县区ID 查询所有可参加的所有活动
+     *
+     * @param countyCode 县区ID
+     * @return GenericResponse
+     */
+    GenericResponse findAllByCounty(Long countyCode);
 
 }

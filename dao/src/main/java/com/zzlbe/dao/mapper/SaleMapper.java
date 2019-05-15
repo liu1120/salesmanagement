@@ -18,6 +18,10 @@ public interface SaleMapper {
 
     GoodsSaleSearch select2ById(Long id);
 
+    /**
+     * 根据 县区ID 查询所有可参与的活动
+     */
+    List<SaleEntity> selectByCounty(Long countyCode);
 
     /**
      * 分页相关
