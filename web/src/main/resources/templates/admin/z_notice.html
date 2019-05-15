@@ -206,7 +206,7 @@
                                                 <thead>
                                                 <tr>
                                                     <th>标题</th>
-                                                    <th>内容</th>
+                                                    <!--<th>内容</th>-->
                                                     <th>发布时间</th>
                                                     <th>操作</th>
                                                 </tr>
@@ -214,14 +214,14 @@
 
                                                 <div id="suggestid">
                                                     <tr th:each="notice:${noticeSearches}">
-                                                        <td width="20%">
+                                                        <td width="30%">
                                                             <a th:href="@{noticeInfo(id=${notice.id})}"
                                                                th:text="${notice.title}">
                                                             </a>
                                                         </td>
-                                                        <td width="40%">
-                                                            <label th:utext="${notice.content}"></label>
-                                                        </td>
+                                                        <!--<td width="40%">-->
+                                                            <!--<label th:utext="${notice.content}"></label>-->
+                                                        <!--</td>-->
                                                         <td width="20%">
                                                             <label th:text="${notice.time}"></label>
                                                         </td>

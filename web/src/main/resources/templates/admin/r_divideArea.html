@@ -242,7 +242,9 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="card">
-                                                            <div class="card-header"  th:text="|已分配区域:${provincename}-${cityname}|">
+                                                            <div class="card-header" th:if="${provincename} eq null">未分配区域
+                                                            </div>
+                                                            <div class="card-header" th:if="${provincename} ne null" th:text="|已分配区域:${provincename}-${cityname}|">
                                                             </div>
                                                             <div class="card-body">
                                                                 <table class="table table-striped table-bordered table-hover dataTables-example dataTable no-footer"
