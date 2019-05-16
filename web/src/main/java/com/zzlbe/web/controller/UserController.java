@@ -345,6 +345,14 @@ public class UserController {
         goodstopicMapper.insert(goodstopicEntity);//对商品进行评价
         orderEntity.setOrStatus(8);//修改状态为8 已评价
         orderMapper.update(orderEntity);
+
+        GoodsEntity goodsEntity=goodsMapper.selectById(orderEntity.getOrGoodsId());//获取商品的积分
+        long credit=goodsEntity.getCredit();
+        long count=orderEntity.getOrCount();
+        long personCredit=userEntity.getCredit();
+
+        userEntity.setCredit(personCredit+credit*count);//增加用户积分
+        userMapper.update(userEntity);
         return 1;
     }
 
