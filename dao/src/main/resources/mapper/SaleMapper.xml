@@ -88,10 +88,8 @@
                 AND sa_area_ids = #{areaIds}
             </if>
             <if test="areaId != null">
-                AND sa_area_ids REGEXP #{areaId}
-            </if>
-            <if test="unAreaId != null">
-                AND sa_area_ids NOT REGEXP #{unAreaId}
+                AND
+                (sa_start = 0 AND sa_area_ids NOT REGEXP #{areaId}) OR (sa_start = 1 AND sa_area_ids REGEXP #{areaId})
             </if>
             <if test="status != null">
                 AND sa_status = #{status}
@@ -131,7 +129,7 @@
         <include refid="condition"/>
         GROUP BY t1.go_id) tb
     </select>
-    <select id="select2ByPage"  resultMap="GoodsSaleMap">
+    <select id="select2ByPage" resultMap="GoodsSaleMap">
         select * from tb_goods t1
         left join tb_sale t2
         on t1.go_id = t2.sa_id
@@ -139,12 +137,23 @@
         GROUP BY t1.go_id
         LIMIT #{firstIndex}, #{size}
     </select>
-    <select id="select2ById"  resultMap="GoodsSaleMap">
+    <select id="select2ById" resultMap="GoodsSaleMap">
         select * from tb_goods t1
         left join tb_sale t2
         on t1.go_id = t2.sa_id
         WHERE sa_id = #{id}
         GROUP BY t1.go_id
+    </select>
+
+    <select id="selectByCounty" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE
+        sa_status = 1
+        AND (sa_start = 0 AND sa_area_ids NOT REGEXP #{countyCode})
+        OR (sa_start = 1 AND sa_area_ids REGEXP #{countyCode})
     </select>
 
     <update id="update">

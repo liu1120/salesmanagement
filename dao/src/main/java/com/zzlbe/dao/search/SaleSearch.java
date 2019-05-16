@@ -50,10 +50,6 @@ public class SaleSearch extends BasePageRequest {
      */
     private String areaId;
     /**
-     * 排除指定活动区域(单个或表达式)
-     */
-    private String unAreaId;
-    /**
      * 0默认待审核，1同意，2不同意
      */
     private Integer status;

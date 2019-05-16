@@ -98,24 +98,17 @@ public class ActivityBusinessImpl extends BaseBusinessImpl implements ActivityBu
     public GenericResponse findAllByPage(SaleSearch saleSearch) {
         // 销售员编号
         Long sellerId = saleSearch.getSellerId();
-        // 活动类型：公司活动/区域活动
-        Integer start = saleSearch.getStart();
-
-        Set<Long> areaId = new TreeSet<>();
-        if (sellerId != null && start != null) {
+        if (sellerId != null) {
+            Set<Long> areaIds = new TreeSet<>();
             List<AreaEntity> areaEntities = areaMapper.selectBySpid(sellerId);
-            areaEntities.forEach(areaEntity -> areaId.add(areaEntity.getCountycode()));
-            if (areaId.size() > 0) {
+            areaEntities.forEach(areaEntity -> areaIds.add(areaEntity.getCountycode()));
+            if (areaIds.size() > 0) {
                 // 0默认全局sa_area_id不开放；1销售员申请，sa_area_id启用
                 StringBuilder sb = new StringBuilder();
-                areaId.forEach(aLong -> sb.append(aLong).append("|"));
+                areaIds.forEach(areaId -> sb.append(areaId).append("|"));
                 String ids = sb.toString();
                 ids = ids.substring(0, ids.length() - 1);
-                if (start == 0) {
-                    saleSearch.setUnAreaId(ids);
-                } else if (start == 1) {
-                    saleSearch.setAreaId(ids);
-                }
+                saleSearch.setAreaId(ids);
             }
         }
 
@@ -123,6 +116,14 @@ public class ActivityBusinessImpl extends BaseBusinessImpl implements ActivityBu
         Integer total = saleMapper.selectByPageTotal(saleSearch);
 
         return genericPageResponse(orderEntities, total);
+    }
+
+    @Override
+    public GenericResponse findAllByCounty(Long countyCode) {
+        // 只查询活动状态 status=1 && 区域活动 areaIds 包含 countyCode && 公司活动 areaIds 不包含 countyCode 的活动
+        List<SaleEntity> saleEntities = saleMapper.selectByCounty(countyCode);
+
+        return new GenericResponse<>(saleEntities);
     }
 
     private void clearSaleEntity(SaleForm saleForm) {

@@ -8,10 +8,7 @@ import com.zzlbe.core.util.DateUtil;
 import com.zzlbe.dao.search.SaleSearch;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -31,6 +28,9 @@ public class ActivityController {
      * 1、创建活动（管理员创建start=0/销售员创建start=1）
      * 2、审核活动（活动状态status=0的才需要审核，1为通过，2为拒绝）
      * 3、传入销售员ID，获取其辖区内所有可参加的活动
+     *
+     * 传入活动编号，传入总消费金额，计算活动最终金额，以及满送
+     * 查询用户能参加的活动
      */
 
     /**
@@ -74,6 +74,16 @@ public class ActivityController {
     public GenericResponse findAllByPage(@RequestBody SaleSearch saleSearch) {
 
         return activityBusiness.findAllByPage(saleSearch);
+    }
+
+    @ResponseBody
+    @RequestMapping("findAllByCounty/{countyCode}")
+    public GenericResponse findAllByCounty(@PathVariable("countyCode") Long countyCode) {
+        if (countyCode == null) {
+            return GenericResponse.ERROR;
+        }
+
+        return activityBusiness.findAllByCounty(countyCode);
     }
 
 }
