@@ -1,10 +1,10 @@
 package com.zzlbe.web.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.zzlbe.core.response.AreaVO;
 import com.zzlbe.core.util.DateUtil;
-import com.zzlbe.dao.entity.GoodsEntity;
-import com.zzlbe.dao.mapper.GoodsMapper;
-import com.zzlbe.dao.mapper.GoodssortMapper;
-import com.zzlbe.dao.mapper.OrderMapper;
+import com.zzlbe.dao.entity.*;
+import com.zzlbe.dao.mapper.*;
 import com.zzlbe.dao.search.GoodsSearch;
 import com.zzlbe.dao.search.Order2Search;
 import com.zzlbe.dao.search.OrderSearch;
@@ -28,7 +28,15 @@ public class TradeController {
     @Autowired
     OrderMapper orderMapper;
     @Autowired
+    AddressMapper addressMapper;
+    @Autowired
     GoodssortMapper goodssortMapper;
+    @Autowired
+    AreaMapper areaMapper;
+    @Autowired
+    SellerMapper sellerMapper;
+    @Autowired
+    UserMapper userMapper;
 
     @GetMapping("getAllgoods")//后台查看-商品列表
     public ModelAndView getAllgoods(Integer pageNo) {
@@ -122,8 +130,6 @@ public class TradeController {
     public ModelAndView updateGoods(@RequestParam("id") long id) {
         ModelAndView mv=new ModelAndView();
         GoodsEntity goodsEntity=goodsMapper.selectById(id);
-//        List<GoodssortEntity> GoodssortEntities = goodssortMapper.selectAll();
-//        mv.addObject("GoodssortEntities",GoodssortEntities);
         mv.addObject("goods",goodsEntity);
         mv.setViewName("admin/g_infoUpdate.html");//跳到查询单个页面
         return  mv;
@@ -146,7 +152,6 @@ public class TradeController {
         goodsEntity.setCredit(credit);
         goodsMapper.update(goodsEntity);
 
-        System.out.println("goodsEntity-=-=-=-=-="+goodsEntity.toString());
         mv.addObject("message","商品"+goodsEntity.getName()+"修改成功");
         mv.addObject("id",goodsEntity.getId());
         mv.setViewName("redirect:/admin/selectGoodsById");
@@ -190,8 +195,36 @@ public class TradeController {
     @GetMapping("orderservice")//后台查看-订单售后
     public ModelAndView orderservice() {
         ModelAndView mv=new ModelAndView();
+
+
+
         mv.setViewName("admin/se_list.html");
         return  mv;
     }
+    @GetMapping("orderInfo")//后台查看-订单查看
+    public ModelAndView orderInfo(@RequestParam("id") long orid) {
+        ModelAndView mv=new ModelAndView();
+        Order2Search order2Search=orderMapper.select2ById(orid);
 
+        mv.addObject("order",order2Search);
+        AddressEntity addressEntity=addressMapper.selectById(order2Search.getOrAddress());
+
+        String address=addressEntity.getAddress();
+        AreaVO areavo = JSON.parseObject(address, AreaVO.class);
+        AreaEntity areaEntity = areaMapper.select2One(areavo.getCountycode());
+        String str=areaEntity.getProvincename()+"-"+areaEntity.getCityname()+"-"+areaEntity.getCountyname()+" "+addressEntity.getUname()+":"+addressEntity.getPhone();
+        addressEntity.setAddress(str);
+
+        UserEntity userEntity=userMapper.selectById(order2Search.getOrUserId());
+        SellerEntity sellerEntity=sellerMapper.selectById(order2Search.getOrSellerId());
+        GoodsEntity goodsEntity=goodsMapper.selectById(order2Search.getOrGoodsId());
+
+        String userInfo=userEntity.getRealname();
+        String sellerInfo=sellerEntity.getRealname()+" "+sellerEntity.getPhone();
+        mv.addObject("userInfo",userInfo);
+        mv.addObject("sellerInfo",sellerInfo);
+        mv.addObject("address",addressEntity);
+        mv.setViewName("admin/or_send.html");
+        return  mv;
+    }
 }

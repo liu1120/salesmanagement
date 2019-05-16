@@ -314,7 +314,6 @@ public class BusinessController {
         tripEntity.setTrId(id);//获得那条假条
         tripEntity.setTrState(3);//有状态，则传入状态
         tripEntity.setTrReason(textarea);
-        System.out.println("tripEntity:"+tripEntity);
         tripMapper.update(tripEntity);
         mv.setViewName("redirect:/admin/left");
         return  mv;

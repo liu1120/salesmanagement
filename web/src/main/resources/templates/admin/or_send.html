@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/stylesOA.css">
 </head>
-<body class="sidebar-fixed header-fixed" onload="writeLoginInfo();ischeck()">
+<body class="sidebar-fixed header-fixed" onload="writeLoginInfo()">
 <div class="page-wrapper">
     <nav class="navbar page-header" style="padding-top: 0px">
         <a href="" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
@@ -42,7 +42,7 @@
 
                 <div class="dropdown-menu dropdown-menu-right">
 
-                    <a href="/admin/selfinfo" id="selfinfo"  class="dropdown-item">
+                    <a href="/admin/selfinfo" id="selfinfo" class="dropdown-item">
                         <i class="fa fa-user"></i> 个人信息
                     </a>
 
@@ -156,7 +156,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="/admin/attendce" class="nav-link active">
+                                <a href="/admin/attendce" class="nav-link">
                                     <i class="icon icon-puzzle"></i> &nbsp;&nbsp;考勤记录
                                 </a>
                             </li>
@@ -170,7 +170,7 @@
                     </li>
                     <li class="nav-title">More</li>
                     <li class="nav-item">
-                        <a href="/admin/suggest" class="nav-link">
+                        <a href="/admin/suggest" class="nav-link  active">
                             <i class="icon icon-grid"></i>意见反馈
                         </a>
                     </li>
@@ -192,110 +192,138 @@
                 <div class="row">
                     <div class="col-md-12">
                         <!--模板结束11111-->
-
-                        <!--上班打卡-->
-                        <div class="col-sm-12">
-                            <div class="ibox float-e-margins">
-                                <div class="ibox-title">
-                                    <h5>员工考勤列表</h5>
-                                </div>
-                                <div class="ibox-content">
-                                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline"
-                                         role="grid">
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div>&nbsp;&nbsp;姓名&nbsp;&nbsp;</div>
-                                                <select id="single-seller" class="form-control" style="width:150px">
-                                                    <option>--请选择--</option>
-                                                </select>
-                                            </div>
+                        <div class="wrapper wrapper-content animated fadeInRight">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="ibox float-e-margins">
+                                        <div class="ibox-title">
+                                            <h5>货物状态:待发货</h5>
                                         </div>
-                                        <table class="table table-striped table-bordered table-hover dataTables-example dataTable no-footer"
-                                               id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
-                                            <thead>
-                                            <tr role="row">
-                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="工号："
-                                                    style="width: 64px;">工号
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="姓名："
-                                                    style="width: 72px;">姓名
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="日期："
-                                                    style="width: 118px;">日期
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="时间："
-                                                    style="width: 64px;">时间
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="上班签到时间："
-                                                    style="width: 147px;">上班签到时间
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="签到类别："
-                                                    style="width: 106px;">签到类别
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="下班签到时间："
-                                                    style="width: 148px;">下班签到时间
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                                    rowspan="1" colspan="1" aria-label="签到类别："
-                                                    style="width: 107px;">签到类别
-                                                </th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
+                                        <div class="ibox-content">
+                                            <div class="form-group">
 
-                                            <tr class="gradeA odd" th:each="attend:${attendanSearches}">
-                                                <td th:text="${attend.atSellerId}"></td>
-                                                <td th:text="${attend.name}"></td>
-                                                <td th:text="${attend.atDay}"></td>
+                                                <table class="table table-striped table-bordered table-hover dataTables-example">
 
-                                                <td th:if="${attend.atType} eq 1">正常上班</td>
-                                                <td th:if="${attend.atType} eq 2">异常打卡</td>
-                                                <td th:if="${attend.atType} eq 3">加班</td>
-                                                <td th:if="${attend.atType} eq 4">请假</td>
-                                                <td th:if="${attend.atType} eq 5">出差</td>
-                                                <td th:if="${attend.atType} eq 5">出差</td>
+                                                    <tbody>
 
+                                                    <tr class="gradeA">
+                                                        <td width="20%">订单号</td>
+                                                        <td th:text="${order.orId}"></td>
+                                                    </tr>
+                                                    <tr class="gradeA">
+                                                        <td width="20%">名称</td>
+                                                        <td>
+                                                            <div>
+                                                                <img th:src="@{${order.gimg}}"
+                                                                     style="width: 35px;height: 45px">
+                                                                <div th:text="${order.gname}">
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="gradeA">
+                                                        <td width="20">下单人</td>
+                                                        <td th:text="${userInfo}">
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="gradeA">
+                                                        <td width="20">销售员</td>
+                                                        <td th:text="${sellerInfo}">
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="gradeA">
+                                                        <td width="20">数量</td>
+                                                        <td th:text="${order.orCount}">
 
-                                                <td th:text="${attend.atStart}"></td>
-                                                <td th:if="${attend.atStartType} eq 1">正常</td>
-                                                <td th:if="${attend.atStartType} eq 2">迟到</td>
-                                                <td th:if="${attend.atStartType} eq 3">未签到</td>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="gradeA">
+                                                        <td width="20">单价</td>
+                                                        <td th:text="${order.orPrice}">
+                                                        </td>
+                                                    </tr>
 
-                                                <td th:text="${attend.atEnd}"></td>
-                                                <td th:if="${attend.atEndType} eq 1">正常</td>
-                                                <td th:if="${attend.atEndType} eq 2">迟到</td>
-                                                <td th:if="${attend.atEndType} eq 3">未签到</td>                                            </tr>
-                                            </tbody>
-                                        </table>
-                                        <div class="row">
-                                                <span style="float: left; padding: 5px">
-								                    总共&nbsp;<b th:text="${total}"></b>&nbsp;条
-                                                </span>
-                                                <span style="float: left; padding: 5px">
-                                                    当前&nbsp;<span style="color: red;" th:text="${page}">1</span>
-                                                    &nbsp;/&nbsp; <b th:text="${totalPage}">1</b>&nbsp;页&nbsp;&nbsp;
-                                                </span>
-                                                <nav aria-label="Page navigation" style="margin: 0 auto; width: 240px">
-                                                    <ul class="pagination" style="margin: 0;">
-                                                        <li th:each="array:${arr}">
-                                                            <a th:href="@{attendce(pageNo=${array})}"
-                                                               th:text="${array}">view</a>
-                                                        </li>
-                                                    </ul>
-                                                </nav>
+                                                    <tr class="gradeA">
+                                                        <td width="20">优惠</td>
+                                                        <td th:if="${order.orSay} eq 0">无折扣
+                                                        </td>
+                                                        <td th:if="${order.orSay} eq 1">打折
+                                                        </td>
+                                                        <td th:if="${order.orSay} eq 2">满减
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="gradeA">
+                                                        <td width="20">实际付款</td>
+                                                        <td th:text="${order.orTotalAmount}"></td>
+                                                    </tr>
+                                                    <tr class="gradeA">
+                                                        <td width="20">下单日期</td>
+                                                        <td th:text="${order.orDatetimeStr}"></td>
+                                                    </tr>
+                                                    <tr class="gradeA">
+                                                        <td width="20">收货地址</td>
+                                                        <td th:text="|${address.address}-${address.info}|"></td>
+                                                    </tr>
+                                                    <tr class="gradeA">
+                                                        <td width="20">留言</td>
+                                                        <td th:text="${order.orWords}"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <!--<div class="form-group">-->
+                                                            <!--<label-->
+                                                                    <!--class="form-control-label">派送类型</label>-->
+                                                            <!--<select id="single-select2" class="form-control"-->
+                                                                    <!--onchange="selectChange()">-->
+                                                                <!--<option grade="1" value="1">销售员派送</option>-->
+                                                                <!--<option grade="2" value="2">物流</option>-->
+                                                            <!--</select>-->
+                                                        <!--</div>-->
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <!--<div class="form-group" id="sp_id_op">-->
+                                                            <!--<label-->
+                                                                    <!--class="form-control-label">派送人</label>-->
+                                                            <!--<input id="sp_id" class="form-control"-->
+                                                                   <!--value="李四">-->
+                                                        <!--</div>-->
+                                                        <div class="form-group" id="or_logistic_op"
+                                                             style="display:none">
+                                                            <label
+                                                                    class="form-control-label">物流单号</label>
+                                                            <input id="sg_logistics" class="form-control"
+                                                                   value="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4 col-sm-offset-8">
+                                                    <a href="order" class="btn btn-info">返&nbsp;&nbsp;回</a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <script type="text/JavaScript">
+                                function selectChange() {
+                                    var objS = document.getElementById("single-select2");
+                                    var grade = objS.options[objS.selectedIndex].value;
+                                    var e1 = document.getElementById("sp_id_op");
+                                    var e2 = document.getElementById("or_logistic_op");
+                                    console.log(e1)
+                                    if (grade == 1) {
+                                        e1.style.display = 'block';
+                                        e2.style.display = 'none';
+                                    } else if (grade == 2) {
+                                        e1.style.display = 'none';
+                                        e2.style.display = 'block';
+                                    }
+                                }
+                            </script>
                         </div>
-
                         <!--模板开始222222-->
                     </div>
                 </div>
@@ -305,10 +333,10 @@
     <script src="/static/vendor/jquery/jquery.min.js"></script>
     <script src="/static/vendor/popper.js/popper.min.js"></script>
     <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/vendor/Chart.js/chart.min.js"></script>
     <script src="/static/js/carbon.js"></script>
 </div>
 </body>
-<script type="text/javascript" src="/static/js/adminjq.js"></script>
 <script type="text/javascript" src="/static/js/admin.js"></script>
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
@@ -323,26 +351,9 @@
             localStorage.setItem("login_username", login_username);
             e.innerText = login_username;
         }
-        var selfinfo=document.getElementById("selfinfo");
-        selfinfo.href="/admin/selfinfo?str="+e.innerText;
-        console.log("selfinfo.href"+selfinfo.href)
+        var selfinfo = document.getElementById("selfinfo");
+        selfinfo.href = "/admin/selfinfo?str=" + e.innerText;
+        console.log("selfinfo.href" + selfinfo.href)
     }
-    function ischeck() {
-        var id = [[${id}]];
-        console.log("id---"+id);
-        var s1 = document.getElementById("single-seller");
-        for (i = 0; i <= s1.options.length; i++) {
-            if (s1.options[i].value == id) {
-                s1.options[i].selected = true;
-            }
-        }
-    }
-</script>
-<script>
-    $("#single-seller").change(function(){
-        var sellerid=$("#single-seller").val()
-        window.location.href="attendce?id="+sellerid;
-    });
-
 </script>
 </html>

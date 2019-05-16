@@ -172,6 +172,13 @@
         WHERE or_id = #{id}
     </select>
 
+    <select id="select2ById" resultMap="Order2Search">
+        select * from tb_order t1
+        left join tb_goods t2
+        on t1.or_goods_id = t2.go_id
+        WHERE or_id = #{id}
+    </select>
+
     <select id="selectByUid" resultMap="BaseMap">
         SELECT
         <include refid="columns"/>

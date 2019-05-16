@@ -359,6 +359,14 @@ public class UserController {
     @GetMapping(value = "getAddressByUid")
     public List<AddressEntity> getAddressByUid(@RequestParam("uid") long uid) {
         List<AddressEntity> list = addressMapper.selectByUid(uid);
+        for(int i=0;i<list.size();i++){
+            String addressids=list.get(i).getAddress();
+            AreaVO areavo = JSON.parseObject(addressids, AreaVO.class);
+            AreaEntity areaEntity = areaMapper.select2One(areavo.getCountycode());
+
+            String str=areaEntity.getProvincename()+"-"+areaEntity.getCityname()+"-"+areaEntity.getCountyname();
+            list.get(i).setAddress(str);
+        }
         return list;
     }
 
@@ -371,7 +379,7 @@ public class UserController {
     }
 
 
-    @PostMapping(value = "getAddresName")//将对应的json地址id转化为json中文地址
+    @GetMapping(value = "getAddresName")//将对应的json地址id转化为json中文地址
     public AreaEntity getAddresName(@RequestParam("addressids") String addressids) {
 //        String addressids="{ \"province_code\":\"410000000000\" , \"city_code\":\"410100000000\"  , \"county_code\":\"410102000000\"  , \"town_code\":\"410102005000\"}";
         AreaVO areavo = JSON.parseObject(addressids, AreaVO.class);

@@ -24,6 +24,8 @@ public interface OrderMapper {
 
     OrderEntity selectById(Long id);
 
+    Order2Search select2ById(Long id);
+
     List<AmountSearch> getTotalAmountByMonth();
 
     List<OrderEntity> selectByUid(Long id);
