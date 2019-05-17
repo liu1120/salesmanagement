@@ -139,17 +139,19 @@ public class UserController {
 
     @GetMapping(value = "getCreditDetail")//积分兑换详情
     public SentgiftEntity getCreditDetail(@RequestParam("sid") long sid) {
-        SentgiftEntity sentgiftEntity=sentgiftMapper.selectById(sid);
+        SentgiftEntity sentgiftEntity = sentgiftMapper.selectById(sid);
         return sentgiftEntity;
     }
+
     @GetMapping(value = "getCreditAdd")//积分添加记录
     public List<OrderEntity> getCreditAdd(@RequestParam("uid") long uid) {
-        OrderSearch orderSearch=new OrderSearch();
+        OrderSearch orderSearch = new OrderSearch();
         orderSearch.setOrUserId(uid);//评价有积分。
         orderSearch.setOrStatus(8);
-        List<OrderEntity> orderEntity=orderMapper.selectByPage(orderSearch);
+        List<OrderEntity> orderEntity = orderMapper.selectByPage(orderSearch);
         return orderEntity;
     }
+
     @GetMapping(value = "getGoodsSortName")//查找商品分类对应的name ==admin位置报错  adminadminadmin
     public String getGoodsSortName(Long id) {
         GoodssortEntity goodssortEntity = goodssortMapper.selectById(id);
@@ -295,8 +297,8 @@ public class UserController {
 
     @GetMapping(value = "selectCreditById")//通过用户id查找积分
     public String selectCreditById(@RequestParam("uid") long uid) {
-        long credit=userMapper.selectById(uid).getCredit();
-        String str="{score:"+credit+"}";
+        long credit = userMapper.selectById(uid).getCredit();
+        String str = "{score:" + credit + "}";
         return str;
     }
 
@@ -313,10 +315,10 @@ public class UserController {
     }
 
     @GetMapping(value = "getOrderByStatus")//查看不同状态下订单
-    public List<OrderEntity> getOrderByStatus(@RequestParam("uid") long uid,Integer status) {
+    public List<OrderEntity> getOrderByStatus(@RequestParam("uid") long uid, Integer status) {
         OrderSearch orderSearch = new OrderSearch();
         orderSearch.setOrUserId(uid);
-        if(status!=null){
+        if (status != null) {
             orderSearch.setOrStatus(status);
         }
         return orderMapper.selectByPage(orderSearch);
@@ -346,25 +348,27 @@ public class UserController {
         orderEntity.setOrStatus(8);//修改状态为8 已评价
         orderMapper.update(orderEntity);
 
-        GoodsEntity goodsEntity=goodsMapper.selectById(orderEntity.getOrGoodsId());//获取商品的积分
-        long credit=goodsEntity.getCredit();
-        long count=orderEntity.getOrCount();
-        long personCredit=userEntity.getCredit();
+        GoodsEntity goodsEntity = goodsMapper.selectById(orderEntity.getOrGoodsId());//获取商品的积分
+        long credit = goodsEntity.getCredit();
+        long count = orderEntity.getOrCount();
+        long personCredit = userEntity.getCredit();
 
-        userEntity.setCredit(personCredit+credit*count);//增加用户积分
+        userEntity.setCredit(personCredit + credit * count);//增加用户积分
         userMapper.update(userEntity);
         return 1;
     }
 
-    @GetMapping(value = "getAddressByUid")
+    @GetMapping(value = "getAddressByUid")//得到地址
     public List<AddressEntity> getAddressByUid(@RequestParam("uid") long uid) {
         List<AddressEntity> list = addressMapper.selectByUid(uid);
-        for(int i=0;i<list.size();i++){
-            String addressids=list.get(i).getAddress();
+        for (int i = 0; i < list.size(); i++) {
+            String addressids = list.get(i).getAddress();
             AreaVO areavo = JSON.parseObject(addressids, AreaVO.class);
             AreaEntity areaEntity = areaMapper.select2One(areavo.getCountycode());
-
-            String str=areaEntity.getProvincename()+"-"+areaEntity.getCityname()+"-"+areaEntity.getCountyname();
+            if (areaEntity == null) {
+                continue;
+            }
+            String str = areaEntity.getProvincename() + "-" + areaEntity.getCityname() + "-" + areaEntity.getCountyname();
             list.get(i).setAddress(str);
         }
         return list;
