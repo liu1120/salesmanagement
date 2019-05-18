@@ -37,12 +37,12 @@
                 <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">
                     <img src="/static/imgs/avatar-1.png" class="avatar avatar-sm" alt="logo">
-                    <span class="small ml-1 d-md-down-none" id="loginname"   th:text="${login_username}"></span>
+                    <span class="small ml-1 d-md-down-none" id="loginname" th:text="${login_username}"></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">
 
-                    <a href="/admin/selfinfo" id="selfinfo"  class="dropdown-item">
+                    <a href="/admin/selfinfo" id="selfinfo" class="dropdown-item">
                         <i class="fa fa-user"></i> 个人信息
                     </a>
 
@@ -105,11 +105,15 @@
                                 </li>
 
                                 <li class="nav-item">
+                                    <a href="/admin/getGiftList" class="nav-link">
+                                        <i class="icon icon-target"></i>&nbsp;&nbsp;礼品列表
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="/admin/gift" class="nav-link">
                                         <i class="icon icon-target"></i>&nbsp;&nbsp;礼品领取记录
                                     </a>
                                 </li>
-
                             </ul>
                         </ul>
                     </li>
@@ -206,8 +210,8 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label
-                                                               class="form-control-label">状态</label>
-                                                        <select id="go_type" class="form-control" >
+                                                                class="form-control-label">状态</label>
+                                                        <select id="go_type" class="form-control">
                                                             <option grade="1" value="1">全部</option>
                                                             <option grade="1" value="2">待审核</option>
                                                             <option grade="1" value="3">审核通过</option>
@@ -223,11 +227,6 @@
                                                        aria-describedby="DataTables_Table_0_info">
                                                     <thead>
                                                     <tr role="row">
-                                                        <th class="sorting_asc" tabindex="0"
-                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                                            aria-sort="ascending" aria-label=""
-                                                        >序号
-                                                        </th>
                                                         <th class="sorting" tabindex="0"
                                                             aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
                                                             aria-label="">订单号
@@ -267,77 +266,37 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-
-                                                    <tr class="gradeA even">
-                                                        <td class="sorting_1">1</td>
-                                                        <td class=" ">12345678944</td>
-                                                        <td class=" ">张三</td>
-                                                        <td class=" ">除草剂</td>
-                                                        <td class=" ">1</td>
-                                                        <td class=" ">8999</td>
-                                                        <td class=" ">买多了</td>
-                                                        <td class=" ">审核通过</td>
-                                                        <td class=" ">2018-12-01</td>
-                                                        <td class=" "><a href="" class="btn btn-info">查看</a></td>
-                                                    </tr>
-                                                    <tr class="gradeA even">
-                                                        <td class="sorting_1">1</td>
-                                                        <td class=" ">12345678944</td>
-                                                        <td class=" ">张三</td>
-                                                        <td class=" ">除草剂</td>
-                                                        <td class=" ">1</td>
-                                                        <td class=" ">8999</td>
-                                                        <td class=" ">买多了</td>
-                                                        <td class=" ">用户取消</td>
-                                                        <td class=" ">2018-12-01</td>
-                                                        <td class=" "><a href="" class="btn btn-info">查看</a></td>
-                                                    </tr>
-                                                    <tr class="gradeA even">
-                                                        <td class="sorting_1">1</td>
-                                                        <td class=" ">12345678944</td>
-                                                        <td class=" ">张三</td>
-                                                        <td class=" ">除草剂</td>
-                                                        <td class=" ">1</td>
-                                                        <td class=" ">8999</td>
-                                                        <td class=" ">买多了</td>
-                                                        <td class=" ">待处理</td>
-                                                        <td class=" ">2018-12-01</td>
-                                                        <td class=" ">
-                                                            <a href="" class="btn btn-primary">处理</a>
-                                                        </td>
+                                                    <tr class="gradeA" th:each="customer : ${customers}" style="min-width:986">
+                                                        <td th:text="${customer.cuOrderId}"></td>
+                                                        <td th:text="${customer.cuUserId}">张三</td>
+                                                        <td th:text="${customer.cuOrderId}">除草剂</td>
+                                                        <td th:text="${customer.cuOrderId}">1</td>
+                                                        <td th:text="${customer.cuOrderId}">8999</td>
+                                                        <td th:text="${customer.cuOrderId}">买多了</td>
+                                                        <td th:text="${customer.cuOrderId}">审核通过</td>
+                                                        <td th:text="${customer.cuOrderId}">2018-12-01</td>
+                                                        <td th:text="${customer.cuOrderId}"><a href="" class="btn btn-info">查看</a></td>
                                                     </tr>
                                                     </tbody>
                                                 </table>
                                                 <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="dataTables_info" id="DataTables_Table_0_info"
-                                                             role="alert" aria-live="polite" aria-relevant="all">显示 1 到
-                                                            10 项，共 11 项
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="dataTables_paginate paging_simple_numbers"
-                                                             id="DataTables_Table_0_paginate">
-                                                            <ul class="pagination">
-                                                                <li class="paginate_button previous disabled"
-                                                                    aria-controls="DataTables_Table_0" tabindex="0"
-                                                                    id="DataTables_Table_0_previous"><a href="#"
-                                                                                                        style="width: 70px;height: 30px">上一页</a>
-                                                                </li>
-                                                                <li class="paginate_button"
-                                                                    aria-controls="DataTables_Table_0" tabindex="0"><a
-                                                                        href="#">1</a></li>
-                                                                <li class="paginate_button "
-                                                                    aria-controls="DataTables_Table_0" tabindex="0"><a
-                                                                        href="#">2</a></li>
-                                                                <li class="paginate_button next"
-                                                                    aria-controls="DataTables_Table_0" tabindex="0"
-                                                                    id="DataTables_Table_0_next"><a href="#"
-                                                                                                    style="width: 70px;height: 30px">下一页</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
+
+							                    <span style="float: left; padding: 5px">
+                                                    总共&nbsp;<b th:text="${total}"></b>&nbsp;条
+                                                </span>
+                                                    <span style="float: left; padding: 5px">
+								当前&nbsp;<span style="color: red;" th:text="${page}">1</span>
+                                &nbsp;/&nbsp; <b th:text="${totalPage}">1</b>&nbsp;页&nbsp;&nbsp;
+                            </span>
+                                                    <nav aria-label="Page navigation"
+                                                         style="margin: 0 auto; width: 240px">
+                                                        <ul class="pagination" style="margin: 0;">
+                                                            <li th:each="array:${arr}">
+                                                                <a th:href="@{orderservice(pageNo=${array})}"
+                                                                   th:text="${array}">view</a>
+                                                            </li>
+                                                        </ul>
+                                                    </nav>
                                                 </div>
                                             </div>
                                         </div>
@@ -345,38 +304,40 @@
                                 </div>
                             </div>
                         </div>
-
-
-                        <!--模板开始222222-->
                     </div>
                 </div>
+
+
+                <!--模板开始222222-->
             </div>
         </div>
     </div>
-    <script src="/static/vendor/jquery/jquery.min.js"></script>
-    <script src="/static/vendor/popper.js/popper.min.js"></script>
-    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/static/js/carbon.js"></script>
+</div>
+</div>
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/vendor/popper.js/popper.min.js"></script>
+<script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/js/carbon.js"></script>
 </div>
 </body>
 <script type="text/javascript" src="/static/js/adminjq.js"></script>
 <script type="text/javascript" src="/static/js/admin.js"></script>
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
-        var local_username=localStorage.getItem("login_username");
-        var e=document.getElementById("loginname");
-        console.log("local_username:"+local_username);
-        e.innerText=local_username;
+        var local_username = localStorage.getItem("login_username");
+        var e = document.getElementById("loginname");
+        console.log("local_username:" + local_username);
+        e.innerText = local_username;
 
         var login_username = [[${login_username}]];
-        console.log("login_username:"+login_username);
-        if(login_username!=undefined){
-            localStorage.setItem("login_username",login_username);
-            e.innerText=login_username;
+        console.log("login_username:" + login_username);
+        if (login_username != undefined) {
+            localStorage.setItem("login_username", login_username);
+            e.innerText = login_username;
         }
-        var selfinfo=document.getElementById("selfinfo");
-        selfinfo.href="/admin/selfinfo?str="+e.innerText;
-        console.log("selfinfo.href"+selfinfo.href)
+        var selfinfo = document.getElementById("selfinfo");
+        selfinfo.href = "/admin/selfinfo?str=" + e.innerText;
+        console.log("selfinfo.href" + selfinfo.href)
     }
 
 </script>

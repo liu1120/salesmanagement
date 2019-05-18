@@ -5,9 +5,7 @@ import com.zzlbe.core.response.AreaVO;
 import com.zzlbe.core.util.DateUtil;
 import com.zzlbe.dao.entity.*;
 import com.zzlbe.dao.mapper.*;
-import com.zzlbe.dao.search.GoodsSearch;
-import com.zzlbe.dao.search.Order2Search;
-import com.zzlbe.dao.search.OrderSearch;
+import com.zzlbe.dao.search.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +35,11 @@ public class TradeController {
     SellerMapper sellerMapper;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    CustomerMapper customerMapper;
+    @Autowired
+    GiftMapper giftMapper;
+
 
     @GetMapping("getAllgoods")//后台查看-商品列表
     public ModelAndView getAllgoods(Integer pageNo) {
@@ -111,7 +114,18 @@ public class TradeController {
         mv.setViewName("redirect:/admin/getAllgoods");
         return  mv;
     }
+    @RequestMapping("deleteGifts")//后台-下架礼品
+    public ModelAndView deleteGifts(@RequestParam("id") long id) {
+        ModelAndView mv=new ModelAndView();
+        GiftEntity giftEntity=giftMapper.selectById(id);
 
+        int flag=giftEntity.getIsshow();
+        if(flag==0){ giftEntity.setIsshow(1); }else{ giftEntity.setIsshow(0); }
+        giftMapper.update(giftEntity);
+        mv.addObject("message",giftEntity.getName()+":下架成功");
+        mv.setViewName("redirect:/admin/getGiftList");
+        return  mv;
+    }
     @RequestMapping("selectGoodsById")//后台查看-具体某一商品
     public ModelAndView selectGoodsById(@RequestParam("id") long id) {
         ModelAndView mv=new ModelAndView();
@@ -195,10 +209,68 @@ public class TradeController {
     @GetMapping("orderservice")//后台查看-订单售后
     public ModelAndView orderservice() {
         ModelAndView mv=new ModelAndView();
+        CustomerSearch customerSearch=new CustomerSearch();
+        List<CustomerEntity> customerEntity=customerMapper.selectByPage(customerSearch);
 
 
-
+        Integer total=customerMapper.selectByPageTotal(customerSearch);
+        int size=customerSearch.getSize();//页码大小
+        int page=customerSearch.getPage();//当前页
+        int totalPage=total/size+1;
+        int[] arr=new int[totalPage];
+        for(int i=0;i<arr.length;i++){
+            arr[i]=i+1;
+        }
+        mv.addObject("totalPage",totalPage);
+        mv.addObject("arr",arr);
+        mv.addObject("total",total);
+        mv.addObject("page",page);
+        mv.addObject("size",size);
+        mv.addObject("customers",customerEntity);
+        System.out.println(customerEntity);
         mv.setViewName("admin/se_list.html");
+        return  mv;
+    }
+
+    @GetMapping("getGiftList")//后台查看-礼品列表
+    public ModelAndView getGiftList(Integer pageNo) {
+        GiftSearch giftSearch=new GiftSearch();
+        if (pageNo!=null){giftSearch.setPage(pageNo);}
+        System.out.println("pageNo:"+giftSearch.getPage());
+        ModelAndView mv=new ModelAndView();
+        List<GiftEntity> giftEntities=giftMapper.selectByPage(giftSearch);
+
+        Integer total=giftMapper.selectByPageTotal(giftSearch);
+        int page=giftSearch.getPage();//当前页
+        int size=giftSearch.getSize();//页码大小
+
+        int totalPage=total/size+1;
+        int[] arr=new int[totalPage];
+        for(int i=0;i<arr.length;i++){
+            arr[i]=i+1;
+        }
+
+        mv.addObject("totalPage",totalPage);
+        mv.addObject("total",total);
+        mv.addObject("arr",arr);
+        mv.addObject("page",page);
+        mv.addObject("size",size);
+        mv.addObject("giftEntities",giftEntities);
+        mv.setViewName("admin/gift_list.html");
+        System.out.println("mv:"+mv);
+        return  mv;
+    }
+    @RequestMapping("selectGiftById")//后台查看-具体某一礼品
+    public ModelAndView selectGiftById(@RequestParam("id") long id) {
+        ModelAndView mv=new ModelAndView();
+        GoodsEntity goodsEntity=goodsMapper.selectById(id);
+
+        mv.addObject("goods",goodsEntity);
+        Date date=goodsEntity.getUpdateTime();
+        DateUtil du=new DateUtil();
+        String dateStr=du.getDateTime(date);
+        mv.addObject("time",dateStr);
+        mv.setViewName("admin/gift_infoLook.html");
         return  mv;
     }
     @GetMapping("orderInfo")//后台查看-订单查看
@@ -227,4 +299,5 @@ public class TradeController {
         mv.setViewName("admin/or_send.html");
         return  mv;
     }
+
 }

@@ -20,6 +20,7 @@
         <result column="sg_id" property="id"/>
         <result column="sg_gift_id" property="giftId"/>
         <result column="gi_name" property="gname"/>
+        <result column="sg_address" property="address"/>
         <result column="sg_fromid" property="fromid"/>
         <result column="sg_toid" property="toid"/>
         <result column="u_name" property="uname"/>

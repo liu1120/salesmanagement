@@ -154,7 +154,8 @@ public class UserBusinessImpl extends BaseBusinessImpl implements UserBusiness {
     @Override
     public GenericResponse creditGet(Long userId) {
         // 只统计完成交易和完成评价的积分记录 (7完成交易，8已完成评价)
-        List<Integer> orderStatusList = Arrays.asList(7, 8);
+//        List<Integer> orderStatusList = Arrays.asList(7, 8);
+        List<Integer> orderStatusList = Arrays.asList(8);
         List<CreditGetByOrderVO> list = orderMapper.selectCreditByUser(userId, orderStatusList);
 
         return new GenericResponse<>(list);

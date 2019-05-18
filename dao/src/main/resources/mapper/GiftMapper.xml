@@ -96,5 +96,33 @@
         #{imgpath}
         )
     </insert>
-
+    <update id="update">
+        UPDATE
+        <include refid="tableName"/>
+        <set>
+            <if test="name != null">
+                gi_name = #{name},
+            </if>
+            <if test="describe != null">
+                gi_describe = #{describe},
+            </if>
+            <if test="credit != null">
+                gi_credit = #{credit},
+            </if>
+            <if test="num != null">
+                gi_num = #{num},
+            </if>
+            <if test="isshow != null">
+                gi_isshow = #{isshow},
+            </if>
+            <if test="endtime != null">
+                gi_endtime = #{endtime},
+            </if>
+            <if test="imgpath != null">
+                gi_imgpath = #{imgpath},
+            </if>
+        </set>
+        WHERE
+        gi_id = #{id}
+    </update>
 </mapper>

@@ -11,6 +11,8 @@ public interface GiftMapper {
 
     void insert(GiftEntity giftEntity);
 
+    void update(GiftEntity giftEntity);
+
     GiftEntity selectById(Long id);
 
     List<GiftEntity> selectAll();

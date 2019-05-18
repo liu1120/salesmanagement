@@ -9,10 +9,7 @@ import com.zzlbe.core.response.AreaVO;
 import com.zzlbe.core.util.DateUtil;
 import com.zzlbe.dao.entity.*;
 import com.zzlbe.dao.mapper.*;
-import com.zzlbe.dao.search.CreditConsumeBySendGiftVO;
-import com.zzlbe.dao.search.GoodsSearch;
-import com.zzlbe.dao.search.OrderSearch;
-import com.zzlbe.dao.search.UserSearch;
+import com.zzlbe.dao.search.*;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
@@ -112,6 +109,14 @@ public class UserController {
     @GetMapping(value = "getGifts")//查找全部礼品
     public List<GiftEntity> getGifts() {
         List<GiftEntity> list = giftMapper.selectAll();
+        return list;
+    }
+    @GetMapping(value = "getGiftsByUid")//查找用户兑换全部礼品
+    public List<SentgiftSearch> getGiftsByUid(@RequestParam("uid") long uid) {
+        GiftSearch giftSearch=new GiftSearch();
+        giftSearch.setToid(uid);
+
+        List<SentgiftSearch> list = sentgiftMapper.select2ByPage(giftSearch);
         return list;
     }
 
@@ -373,7 +378,18 @@ public class UserController {
         }
         return list;
     }
+    @GetMapping(value = "getAddressById")//得到地址
+    public String getAddressById(@RequestParam("adid") long adid) {
+        AddressEntity addressEntity=addressMapper.selectById(adid);
 
+
+        AreaVO areavo = JSON.parseObject(addressEntity.getAddress(), AreaVO.class);
+        AreaEntity areaEntity = areaMapper.select2One(areavo.getCountycode());
+        String str = areaEntity.getProvincename() + "-" + areaEntity.getCityname() + "-" + areaEntity.getCountyname();
+
+
+        return str+" "+addressEntity.getInfo();
+    }
     @GetMapping(value = "delectAddresByid")//删除地址。（隐藏地址）
     public int delectAddresByid(@RequestParam("id") long id) {
         AddressEntity addressEntity = addressMapper.selectById(id);

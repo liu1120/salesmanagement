@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/stylesOA.css">
 </head>
-<body class="sidebar-fixed header-fixed" onload="writeLoginInfo()">
+<body class="sidebar-fixed header-fixed" onload="writeLoginInfo();alertMessage();">
 <div class="page-wrapper">
     <nav class="navbar page-header" style="padding-top: 0px">
         <a href="" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
@@ -42,7 +42,7 @@
 
                 <div class="dropdown-menu dropdown-menu-right">
 
-                    <a href="/admin/selfinfo" id="selfinfo" class="dropdown-item">
+                    <a href="/admin/selfinfo" id="selfinfo"  class="dropdown-item">
                         <i class="fa fa-user"></i> 个人信息
                     </a>
 
@@ -99,7 +99,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/admin/getGiftList" class="nav-link">
+                                    <a href="/admin/getGiftList" class="nav-link active">
                                         <i class="icon icon-target"></i>&nbsp;&nbsp;礼品列表
                                     </a>
                                 </li>
@@ -120,7 +120,7 @@
 
                         <ul class="nav-dropdown-items">
                             <li class="nav-item">
-                                <a href="/admin/getAllgoods?pageNo=1" class="nav-link">
+                                <a href="/admin/getAllgift?pageNo=1" class="nav-link">
                                     <i class="icon icon-energy"></i> &nbsp;&nbsp;农产品列表
                                 </a>
                             </li>
@@ -133,6 +133,7 @@
                                 <a href="/admin/order" class="nav-link">
                                     <i class="icon icon-energy"></i> &nbsp;&nbsp;订单列表
                                 </a>
+
                             </li>
                             <li class="nav-item">
                                 <a href="/admin/orderservice" class="nav-link">
@@ -169,7 +170,7 @@
                     </li>
                     <li class="nav-title">More</li>
                     <li class="nav-item">
-                        <a href="/admin/suggest" class="nav-link  active">
+                        <a href="/admin/suggest" class="nav-link">
                             <i class="icon icon-grid"></i>意见反馈
                         </a>
                     </li>
@@ -179,10 +180,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/admin/notice" class="nav-link" active>
+                        <a href="/admin/notice" class="nav-link">
                             <i class="icon icon-grid"></i> 公告
                         </a>
                     </li>
+
                 </ul>
             </nav>
         </div>
@@ -191,104 +193,74 @@
                 <div class="row">
                     <div class="col-md-12">
                         <!--模板结束11111-->
-
-                        <div class="container-fluid">
+                        <div class="wrapper wrapper-content animated fadeInRight">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="card">
-                                        <div class="card-header bg-light">
-                                            技术咨询
+                                <div class="col-sm-12">
+                                    <div class="ibox float-e-margins">
+                                        <div class="ibox-title">
+                                            <h5>礼品农产品展示列表</h5>
                                         </div>
+                                        <div class="ibox-content">
+                                            <table class="table table-striped table-bordered table-hover dataTables-example"  style="TABLE-LAYOUT: fixed">
+                                                <thead>
+                                                <tr>
+                                                    <th>名称</th>
+                                                    <th>图片</th>
+                                                    <th>积分</th>
+                                                    <th>库存</th>
+                                                    <th>是否展示</th>
+                                                    <th>库存</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
 
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-10">
-                                                    <div class="form-group">
-                                                        <label for="disabled-input"
-                                                               class="form-control-label">投诉或建议对象</label>
-                                                        <input id="disabled-input" class="form-control"
-                                                               value="" th:field="*{suggestEntity.goodsName}"
-                                                               disabled="">
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                <tr class="gradeA" th:each="gift : ${giftEntities}" style="min-width:986">
+                                                    <!--<td>1</td>-->
+                                                    <td th:text="${gift.name}" style="WORD-WRAP: break-word"></td>
+                                                    <td>
+                                                        <img th:src="@{${gift.imgpath}}"
+                                                             style="width: 35px;height: 45px"/>
+                                                    </td>
+                                                    <td th:text="${gift.credit}"></td>
+                                                    <td th:text="${gift.num}">74.91</td>
 
-                                            <div class="col-md-10">
-                                                <div class="form-group">
-                                                    <label class="form-control-label"
-                                                           th:text="|咨询时间:${date}|"></label><br>
-                                                    <label class="form-control-label"
-                                                           th:if="${suggestEntity.status==0}">咨询状态：处理中</label><br>
-                                                    <label class="form-control-label"
-                                                           th:if="${suggestEntity.status==1}">咨询状态：处理中</label><br>
-                                                    <label class="form-control-label"
-                                                           th:if="${suggestEntity.status==2}">咨询状态：已解决</label><br>
-                                                    <label class="form-control-label">咨询内容：</label>
-                                                    <div>
-                                                        <p class="form-control-plaintext"
-                                                           style="background-color: whitesmoke"
-                                                           th:text="${suggestEntity.content}">
-                                                        </p>
-                                                    </div>
+                                                    <td th:if="${gift.isshow} eq 1">展示</td>
+                                                    <td th:if="${gift.isshow} ne 1">不展示</td>
+                                                    <td th:text="${gift.num}" class="datetime"></td>
+                                                    <td id="@{${gift.id}}">
+                                                        <a th:href="@{selectGiftById(id=${gift.id})}" class="btn btn-info">查看</a>&nbsp;&nbsp;
+                                                        <a th:href="@{updateGift(id=${gift.id})}" class="btn btn-primary">修改</a>&nbsp;&nbsp;
+                                                        <a th:href="@{deleteGifts(id=${gift.id})}" onclick="return(confirm('确定下架?'))" class="btn btn-danger delete" th:if="${gift.isshow} eq 1">下架</a>
+                                                        <a th:href="@{deleteGifts(id=${gift.id})}" class="btn btn-warning delete" th:if="${gift.isshow} eq 0">上架</a>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
 
-                                                    <div th:each="suggestTopic:${suggestTopicEntities}">
-                                                        <!--不相等  左边-->
-                                                        <div th:if="${suggestTopic.userId} ne ${suggestEntity.sellerId}"
-                                                             th:text="|${suggestTopic.userName}  ${suggestTopic.createTime}|">
-                                                            <br><br>
-                                                        </div>
-                                                        <p class="form-control-plaintext"
-                                                           th:if="${suggestTopic.userId} ne ${suggestEntity.sellerId}"
-                                                           style="background-color: whitesmoke;"
-                                                           th:text="${suggestTopic.content}">
-                                                        </p>
-
-                                                        <!--相等  右边-->
-                                                        <div style="margin-left: 200px"
-                                                             th:text="|${suggestTopic.userName}  ${suggestTopic.createTime}|"
-                                                             th:if="${suggestTopic.userId} eq ${suggestEntity.sellerId}">
-                                                            <br><br>
-                                                        </div>
-
-                                                        <p class="form-control-plaintext"
-                                                           th:if="${suggestTopic.userId} eq ${suggestEntity.sellerId}"
-                                                           style="background-color: whitesmoke;margin-left: 200px"
-                                                           th:text="${suggestTopic.content}">
-                                                        </p>
-                                                    </div>
-                                                </div>
+                                            <div>
+							                    <span style="float: left; padding: 5px">
+                                                    总共&nbsp;<b th:text="${total}"></b>&nbsp;条
+                                                </span>
+                                                <span style="float: left; padding: 5px">
+								当前&nbsp;<span style="color: red;" th:text="${page}">1</span>
+                                &nbsp;/&nbsp; <b th:text="${totalPage}">1</b>&nbsp;页&nbsp;&nbsp;
+                            </span>
+                                                <nav aria-label="Page navigation" style="margin: 0 auto; width: 240px">
+                                                    <ul class="pagination" style="margin: 0;">
+                                                        <li th:each="array:${arr}">
+                                                            <a th:href="@{getGiftList(pageNo=${array})}"
+                                                               th:text="${array}">view</a>
+                                                        </li>
+                                                    </ul>
+                                                </nav>
                                             </div>
                                         </div>
-                                        <form action="sendSuggestInfo" name="suggestInfo" id="suggestInfo"
-                                              method="post">
-                                            <div class="row mt-10">
-                                                <div class="col-md-10">
-                                                    <div class="form-group">
-                                                        <label for="textarea">填写回复消息：</label>
-                                                        <textarea id="textarea" name="info" class="form-control"
-                                                                  rows=" 6" onblur="refresh()"></textarea>
-                                                        <input name="name" type="hidden" id="sellerId" value=""
-                                                               th:field="*{suggestEntity.sellerId}">
-                                                        <input name="id" type="hidden" value=""
-                                                               th:field="*{suggestEntity.id}">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="single-select">问题查处理结果：</label>
-                                                <select id="single-select" name="result" class="form-control">
-                                                    <option value="1">正在解决中......</option>
-                                                    <option value="2">已完成，解决</option>
-                                                </select>
-                                            </div>
-                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-info" th:href="@{suggest}">返回</a>
-                        <button class="btn btn-success" onclick="document:suggestInfo.submit()">发送</button>
+
                         <!--模板开始222222-->
                     </div>
                 </div>
@@ -298,12 +270,20 @@
     <script src="/static/vendor/jquery/jquery.min.js"></script>
     <script src="/static/vendor/popper.js/popper.min.js"></script>
     <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--<script src="/static/vendor/Chart.js/chart.min.js"></script>-->
     <script src="/static/js/carbon.js"></script>
 </div>
 </body>
 <script type="text/javascript" src="/static/js/adminjq.js"></script>
 <script type="text/javascript" src="/static/js/admin.js"></script>
 <script type="text/javascript" th:inline="javascript">
+    function alertMessage() {
+        var message = [[${message}]];
+        console.log("message:"+message);
+        if(message!=null){
+            alert(message);
+        }
+    }
     function writeLoginInfo() {
         var local_username = localStorage.getItem("login_username");
         var e = document.getElementById("loginname");
@@ -316,20 +296,11 @@
             localStorage.setItem("login_username", login_username);
             e.innerText = login_username;
         }
-        var selfinfo = document.getElementById("selfinfo");
-        selfinfo.href = "/admin/selfinfo?str=" + e.innerText;
-        console.log("selfinfo.href" + selfinfo.href);
-        var se = document.getElementById("sellerId");
-        se.value = e.innerText;
+        var selfinfo=document.getElementById("selfinfo");
+        selfinfo.href="/admin/selfinfo?str="+e.innerText;
+        console.log("selfinfo.href"+selfinfo.href)
     }
 
-    function refresh() {
-        function test() {
-            document:suggestInfo.submit()
-        }
-
-        setInterval(test, 5000);
-    }
 
 </script>
 </html>
