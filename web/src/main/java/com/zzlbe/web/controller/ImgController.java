@@ -29,7 +29,7 @@ public class ImgController {
     GoodsMapper goodsMapper;
 
 //    private String localPath="E:/Photos"; // 要上传的目标文件存放路径
-    private String localPath="/opt/nginx/3d-curtain/img/Photos"; // 要上传的目标文件存放路径
+    private String localPath="/opt/nginx/static/Photos"; // 要上传的目标文件存放路径
 
     @Autowired
     public ImgController(ResourceLoader resourceLoader) {
