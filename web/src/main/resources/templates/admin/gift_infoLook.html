@@ -210,7 +210,7 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <img th:src="@{${goods.newImgPath}}"
+                                                            <img th:src="@{${gift.imgpath}}"
                                                                  style="height: 100px;width: 100px"/>
                                                         </div>
                                                     </div>
@@ -219,36 +219,16 @@
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label class="form-control-label">商品名</label>
+                                                            <label class="form-control-label">礼品名</label>
                                                             <input id="go_name" class="form-control"
-                                                                   value="" th:field="*{goods.name}" readonly>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="form-control-label">分类</label>
-                                                            <input class="form-control" id="goodsSort"
-                                                                   value="" th:field="*{goods.sort}" readonly>
+                                                                   value="" th:field="*{gift.name}" readonly>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label
-                                                                    class="form-control-label">品牌</label>
-                                                            <input class="form-control"
-                                                                   value="" th:field="*{goods.version}" readonly>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label
-                                                                    class="form-control-label">点击量</label>
-                                                            <input id="go_point" class="form-control"
-                                                                   value="" th:field="*{goods.point}" readonly>
+                                                            <label class="form-control-label">积分</label>
+                                                            <input id="go_price" class="form-control"
+                                                                   value="" th:field="*{gift.credit}" readonly>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
@@ -256,8 +236,15 @@
                                                             <label
                                                                     class="form-control-label">库存</label>
                                                             <input id="go_num" class="form-control"
-                                                                   value="" th:field="*{goods.num}" readonly>
+                                                                   value="" th:field="*{gift.num}" readonly>
                                                         </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                    </div>
+                                                    <div class="col-md-4">
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
@@ -267,38 +254,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label
-                                                                    class="form-control-label">销售价格</label>
-                                                            <input id="go_price" class="form-control"
-                                                                   value="" th:field="*{goods.price}" readonly>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label
-                                                                    class="form-control-label">销售底价</label>
-                                                            <input id="go_minprice" class="form-control"
-                                                                   value="" th:field="*{goods.minPrice}" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label
-                                                                    class="form-control-label">是否上架展示？</label>
-                                                            <input id="go_isshow" class="form-control"
-                                                                   th:if="${goods.isShow} eq 1" value="展示" readonly>
-                                                            <input id="go_isshow" class="form-control"
-                                                                   th:if="${goods.isShow} eq 0" value="不展示" readonly>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
                                                 <div class="row">
                                                     <div class="col-md-10">
                                                         <h3>产品介绍</h3>
@@ -306,17 +261,18 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-10">
-                                                        <div class="form-group" value="" th:utext="${goods.introduce}">
+                                                        <div class="form-group" value="" th:utext="${gift.describe}">
 
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="hr-line-dashed"></div>
-                                                <div class="form-group">
-                                                    <div class="col-sm-4 col-sm-offset-8">
-                                                        <a th:href="@{updateGoods(id=${goods.id})}"
-                                                           class="btn btn-primary">修&nbsp;&nbsp;改</a>&nbsp;&nbsp;
-                                                        <a th:href="@{getAllgoods}"
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <a th:href="@{getGiftList}"
                                                            class="btn btn-info">返&nbsp;&nbsp;回</a>
                                                     </div>
                                                 </div>
@@ -359,20 +315,4 @@
     }
 
 </script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        var value = $('#goodsSort').val();
-        $.ajax({//转换商品分类id->name
-            url: '/user/getGoodsSortName',
-            type: "get",
-            data: {id: value},
-            dataType: 'text',
-        }).done(function (results) {
-            console.log("results:" + results);
-            $('#goodsSort').val(results);
-        }).fail(function (error) {
-        });
-    });
-</script>
-
 </html>
