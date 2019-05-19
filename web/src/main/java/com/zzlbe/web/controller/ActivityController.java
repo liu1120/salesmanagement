@@ -105,7 +105,7 @@ public class ActivityController {
     }
 
     @ResponseBody
-    @PostMapping("findAllByCounty/{countyCode}")
+    @GetMapping("findAllByCounty/{countyCode}")
     public GenericResponse findAllByCounty(@PathVariable("countyCode") Long countyCode) {
         if (countyCode == null) {
             return GenericResponse.ERROR;
