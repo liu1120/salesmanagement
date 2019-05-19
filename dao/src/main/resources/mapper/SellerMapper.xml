@@ -40,19 +40,19 @@
     <sql id="condition">
         <where>
             <if test="name != null">
-                AND sp_name = #{name}
+                AND sp_name REGEXP #{name}
             </if>
             <if test="wechat != null">
-                AND sp_wechat = #{wechat}
+                AND sp_wechat REGEXP #{wechat}
             </if>
             <if test="phone != null">
-                AND sp_phone = #{phone}
+                AND sp_phone REGEXP #{phone}
             </if>
             <if test="rank != null">
-                AND sp_rank = #{rank}
+                AND sp_rank REGEXP #{rank}
             </if>
             <if test="realname != null">
-                AND sp_realname = #{realname}
+                AND sp_realname REGEXP #{realname}
             </if>
         </where>
     </sql>

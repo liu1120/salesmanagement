@@ -2,6 +2,7 @@ package com.zzlbe.core.business.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.zzlbe.core.business.ActivityBusiness;
 import com.zzlbe.core.business.OrderBusiness;
 import com.zzlbe.core.common.ErrorCodeEnum;
 import com.zzlbe.core.common.GenericResponse;
@@ -47,6 +48,8 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
     private AddressMapper addressMapper;
     @Resource
     private AreaMapper areaMapper;
+    @Resource
+    private ActivityBusiness activityBusiness;
 
     /**
      * 订单审核状态
@@ -79,7 +82,6 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         OrderEntity orderEntity = new OrderEntity();
         BeanUtils.copyProperties(orderForm, orderEntity);
         orderEntity.setOrUserId(userEntity.getId());
-        orderEntity.setOrSay("0");
         orderEntity.setOrDatetime(new Date());
 
         // 安全起见：重新设置金额(单价 * 数量)
@@ -114,7 +116,19 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         // 订单状态：0未付款,1已付款，2待发货,3已发货,4已签收,5退货中,6已退货，7完成交易
         orderEntity.setOrStatus(OrderStatusEnum.UN_PAID.getCode());
 
-        return new GenericResponse<>(orderEntity);
+        Long activityId = orderEntity.getOrSay();
+        if (activityId == null) {
+            return new GenericResponse<>(orderEntity);
+        }
+
+        GenericResponse<BigDecimal> joinActivityResponse = activityBusiness.joinActivity(orderEntity.getOrTotalAmount(), activityId);
+        if (joinActivityResponse.successful()) {
+            orderEntity.setOrTotalAmount(joinActivityResponse.getBody());
+            orderEntity.setOrSay(activityId);
+            return new GenericResponse<>(orderEntity);
+        }
+
+        return joinActivityResponse;
     }
 
     @Override
@@ -505,7 +519,7 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         }
         String address = addressEntity.getAddress();
         JSONObject jsonObject = JSON.parseObject(address);
-        Long townCode = jsonObject.getLong("town_code");
+        Long townCode = jsonObject.getLong("towncode");
         AreaEntity areaEntity = areaMapper.selectOne(townCode);
         if (areaEntity == null) {
             return null;

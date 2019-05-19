@@ -14,6 +14,8 @@
         <result column="sg_credit" property="credit"/>
         <result column="sg_status" property="status"/>
         <result column="sg_date" property="date"/>
+        <!-- 附加字段, u_name属于用户表 -->
+        <result column="u_name" property="userName"/>
     </resultMap>
 
     <resultMap id="SentgiftSearch" type="com.zzlbe.dao.search.SentgiftSearch">
@@ -111,8 +113,10 @@
     <select id="selectByPage" resultMap="BaseMap">
         SELECT
         <include refid="columns"/>
+        ,u_name
         FROM
         <include refid="tableName"/>
+        LEFT JOIN tb_user ON sg_toid = u_id
         <include refid="condition"/>
         LIMIT #{firstIndex}, #{size}
     </select>

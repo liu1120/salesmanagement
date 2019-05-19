@@ -2,8 +2,10 @@ package com.zzlbe.dao.search;
 
 import com.zzlbe.dao.page.BasePageRequest;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class SuggestTopicQuerySearch extends BasePageRequest {//查询-日期转换使用
 

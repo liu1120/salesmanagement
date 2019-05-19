@@ -17,6 +17,8 @@ import com.zzlbe.dao.mapper.VacationMapper;
 import com.zzlbe.dao.search.AttendanceSearch;
 import com.zzlbe.dao.search.TripSearch;
 import com.zzlbe.dao.search.VacationSearch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
@@ -34,6 +36,8 @@ import java.util.List;
  */
 @Component("attendanceBusiness")
 public class AttendanceBusinessImpl extends BaseBusinessImpl implements AttendanceBusiness {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AttendanceBusinessImpl.class);
 
     /**
      * 上班时间 && 下班时间 && 加班开始时间
@@ -58,8 +62,10 @@ public class AttendanceBusinessImpl extends BaseBusinessImpl implements Attendan
         Long sellerId = punchForm.getAtSellerId();
         AttendanceSearch attendanceSearch = new AttendanceSearch();
         attendanceSearch.setAtSellerId(sellerId);
-        attendanceSearch.setAtDay(DateUtil.getDateStr(punchLocalDateTime));
+        attendanceSearch.setAtDay(DateUtil.getDateStr(punchDate));
         AttendanceEntity attendanceEntity = attendanceMapper.selectByExample(attendanceSearch);
+
+        LOGGER.info(">>>>>>>>>>>>>>>> [{} 打卡] Date: {}, LocalDateTime: {}", sellerId, punchDate, punchLocalDateTime);
 
         // insert or update
         boolean doInsert = attendanceEntity == null;
@@ -74,24 +80,32 @@ public class AttendanceBusinessImpl extends BaseBusinessImpl implements Attendan
             attendanceEntity.setAtStart(punchDate);
             if (punchStart(punchLocalDateTime)) {
                 attendanceEntity.setAtStartType(AttendanceConstant.PUNCH_TYPE_START_NORMAL);
+                LOGGER.info(">>>>>>>>>>>>>>>> {} 上班打卡 >>>>> [正常]", sellerId);
             } else {
                 attendanceEntity.setAtStartType(AttendanceConstant.PUNCH_TYPE_START_LATE);
+                LOGGER.info(">>>>>>>>>>>>>>>> {} 上班打卡 >>>>> [迟到]", sellerId);
             }
             attendanceEntity.setAtType(AttendanceConstant.PUNCH_TYPE_NORMAL);
+            LOGGER.info(">>>>>>>>>>>>>>>> {} 上班打卡 >>>>> [今天打卡状态：正常打卡]", sellerId);
         } else {
             // 下班打卡
             attendanceEntity.setAtEnd(punchDate);
             if (punchEnd(punchLocalDateTime)) {
                 attendanceEntity.setAtEndType(AttendanceConstant.PUNCH_TYPE_END_NORMAL);
+                LOGGER.info(">>>>>>>>>>>>>>>> {} 下班打卡 >>>>> [正常]", sellerId);
             } else {
                 attendanceEntity.setAtEndType(AttendanceConstant.PUNCH_TYPE_END_EARLY);
+                LOGGER.info(">>>>>>>>>>>>>>>> {} 下班打卡 >>>>> [早退]", sellerId);
             }
             if (attendanceEntity.getAtStart() == null) {
                 attendanceEntity.setAtType(AttendanceConstant.PUNCH_TYPE_EXCEPTION);
+                LOGGER.info(">>>>>>>>>>>>>>>> {} 下班打卡 >>>>> [今天打卡状态：异常, 未签入]", sellerId);
             } else if (punchOvertime(punchLocalDateTime)) {
                 attendanceEntity.setAtType(AttendanceConstant.PUNCH_TYPE_OVERTIME);
+                LOGGER.info(">>>>>>>>>>>>>>>> {} 下班打卡 >>>>> [今天打卡状态：正常, 加班]", sellerId);
             } else {
                 attendanceEntity.setAtType(AttendanceConstant.PUNCH_TYPE_NORMAL);
+                LOGGER.info(">>>>>>>>>>>>>>>> {} 下班打卡 >>>>> [今天打卡状态：正常]", sellerId);
             }
         }
 
