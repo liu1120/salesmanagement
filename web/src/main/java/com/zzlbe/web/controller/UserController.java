@@ -63,6 +63,8 @@ public class UserController {
     @GetMapping(value = "getGoodsInfo")
     public GoodsEntity getGoodsInfo(@RequestParam("goodsid") long goodsid) {
         GoodsEntity goodsEntity = goodsMapper.selectById(goodsid);
+        goodsEntity.setPoint(goodsEntity.getNum()+1);
+        goodsMapper.update(goodsEntity);
         return goodsEntity;
     }
 
@@ -78,7 +80,7 @@ public class UserController {
         return list;
     }
 
-    @GetMapping(value = "getGoodsList")//查找全部商品
+    @GetMapping(value = "getGoodsList")//查找全部商品 需要展示的
     public List<GoodsEntity> getGoodsList() {
         List<GoodsEntity> list = goodsMapper.selectAll();
         return list;
@@ -386,9 +388,15 @@ public class UserController {
         AreaVO areavo = JSON.parseObject(addressEntity.getAddress(), AreaVO.class);
         AreaEntity areaEntity = areaMapper.select2One(areavo.getCountycode());
         String str = areaEntity.getProvincename() + "-" + areaEntity.getCityname() + "-" + areaEntity.getCountyname();
-
-
-        return str+" "+addressEntity.getInfo();
+        str+=" "+addressEntity.getInfo();
+        System.out.println("addressEntity:"+addressEntity);
+        if(addressEntity.getUname()!=null){
+            str+=" "+addressEntity.getUname();
+        }
+        if(addressEntity.getPhone()!=null){
+            str+=" "+addressEntity.getPhone();
+        }
+        return str;
     }
     @GetMapping(value = "delectAddresByid")//删除地址。（隐藏地址）
     public int delectAddresByid(@RequestParam("id") long id) {
@@ -505,5 +513,4 @@ public class UserController {
 
         return userBusiness.fixCredit(userId);
     }
-
 }

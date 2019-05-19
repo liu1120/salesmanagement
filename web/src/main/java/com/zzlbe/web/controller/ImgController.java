@@ -6,7 +6,6 @@ import com.zzlbe.dao.mapper.GoodsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +28,8 @@ public class ImgController {
     @Autowired
     GoodsMapper goodsMapper;
 
+//    private String localPath="E:/Photos"; // 要上传的目标文件存放路径
+    private String localPath="/opt/nginx/3d-curtain/img/Photos"; // 要上传的目标文件存放路径
 
     @Autowired
     public ImgController(ResourceLoader resourceLoader) {
@@ -43,10 +44,8 @@ public class ImgController {
     @PostMapping("fileUpload")
     @ResponseBody
     public String fileUpload(@RequestParam("fileName") MultipartFile file, Map<String, Object> map){
-        // 要上传的目标文件存放路径
-        String localPath = "E:/Files/Photos";
-        // 上传成功或者失败的提示
-        String msg = "";
+
+        String msg = "";// 上传成功或者失败的提示
         if (FileUtils.upload(file, localPath, file.getOriginalFilename())){
             // 上传成功，给出页面提示
             msg = "上传成功！";
@@ -58,15 +57,12 @@ public class ImgController {
         map.put("fileName", file.getOriginalFilename());
         map.put("filePath", "/Photos/"+file.getOriginalFilename());
         String str=JSON.toJSONString(map);
-        System.out.println("strstrstrstr:"+str);
         return str;
     }
 
     @PostMapping("fileUpload2")
     @ResponseBody
     public String fileUpload2(@RequestParam("fileName") MultipartFile file, Map<String, Object> map){
-        // 要上传的目标文件存放路径
-        String localPath = "E:/Files/Photos";
         System.out.println("file2:"+file);
         // 上传成功或者失败的提示
         String msg = "";
@@ -80,20 +76,6 @@ public class ImgController {
     }
 
     /**
-     * 显示单张图片
-     * @return
-     */
-    @RequestMapping("show")
-    public ResponseEntity showPhotos(String fileName){
-        try {
-            // 由于是读取本机的文件，file是一定要加上的， path是在application配置文件中的路径
-            return ResponseEntity.ok(resourceLoader.getResource("file:" + path + fileName));
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    /**
      * ue 图片上传
      */
     @RequestMapping(value = "/fileUpload3")
@@ -101,7 +83,6 @@ public class ImgController {
     public String fileUpload3(MultipartFile upfile) {
         String path = this.fileUpload2(upfile,null);
         System.out.println("path333:"+path);
-//        path="/Photos/"+path;
         String config =
                 "{\n" +
                         "            \"state\": \"SUCCESS\",\n" +
@@ -111,5 +92,4 @@ public class ImgController {
                         "        }";
         return config;
     }
-
 }

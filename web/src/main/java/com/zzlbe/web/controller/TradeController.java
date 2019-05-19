@@ -263,16 +263,51 @@ public class TradeController {
     @RequestMapping("selectGiftById")//后台查看-具体某一礼品
     public ModelAndView selectGiftById(@RequestParam("id") long id) {
         ModelAndView mv=new ModelAndView();
-        GoodsEntity goodsEntity=goodsMapper.selectById(id);
+        GiftEntity giftEntity=giftMapper.selectById(id);
 
-        mv.addObject("goods",goodsEntity);
-        Date date=goodsEntity.getUpdateTime();
+        mv.addObject("gift",giftEntity);
+        Date date=giftEntity.getEndtime();
         DateUtil du=new DateUtil();
         String dateStr=du.getDateTime(date);
         mv.addObject("time",dateStr);
         mv.setViewName("admin/gift_infoLook.html");
         return  mv;
     }
+
+
+
+
+    @RequestMapping("addGift")//后台-增加礼品
+    public ModelAndView addGift() {
+        ModelAndView mv=new ModelAndView();
+        mv.setViewName("admin/gift_infoAdd.html");
+        return  mv;
+    }
+
+    @RequestMapping("saveGiftInfo")//后台-增加礼品 进行保存
+    public ModelAndView saveGiftInfo(String path, String name, Long credit,Long num, String ueInfo, Integer isshow) {
+        ModelAndView mv=new ModelAndView();
+        GiftEntity giftEntity=new GiftEntity();
+        giftEntity.setImgpath("/Photos/"+path);
+        System.out.println(giftEntity.getImgpath());
+        giftEntity.setName(name);
+        giftEntity.setIsshow(isshow);
+        giftEntity.setDescribe(ueInfo);
+        giftEntity.setCredit(credit);
+        giftEntity.setNum(num);
+        giftEntity.setEndtime(new Date());
+        giftMapper.insert(giftEntity);
+        mv.addObject("message","礼品"+giftEntity.getName()+"添加成功");
+        mv.setViewName("redirect:/admin/getGiftList");
+        return  mv;
+    }
+
+
+
+
+
+
+
     @GetMapping("orderInfo")//后台查看-订单查看
     public ModelAndView orderInfo(@RequestParam("id") long orid) {
         ModelAndView mv=new ModelAndView();

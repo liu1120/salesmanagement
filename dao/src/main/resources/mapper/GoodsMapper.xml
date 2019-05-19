@@ -110,6 +110,7 @@
         <include refid="columns"/>
         FROM
         <include refid="tableName"/>
+        where go_isshow= 1
     </select>
 
     <select id="selectByExample" resultMap="BaseMap">

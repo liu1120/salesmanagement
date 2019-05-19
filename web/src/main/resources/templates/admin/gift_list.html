@@ -194,11 +194,15 @@
                     <div class="col-md-12">
                         <!--模板结束11111-->
                         <div class="wrapper wrapper-content animated fadeInRight">
+
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="ibox float-e-margins">
                                         <div class="ibox-title">
                                             <h5>礼品农产品展示列表</h5>
+                                        </div>
+                                        <div style="margin-bottom: 8px">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<a href="/admin/addGift" class="btn btn-success">添加礼品</a>
                                         </div>
                                         <div class="ibox-content">
                                             <table class="table table-striped table-bordered table-hover dataTables-example"  style="TABLE-LAYOUT: fixed">
@@ -230,7 +234,7 @@
                                                     <td th:text="${gift.num}" class="datetime"></td>
                                                     <td id="@{${gift.id}}">
                                                         <a th:href="@{selectGiftById(id=${gift.id})}" class="btn btn-info">查看</a>&nbsp;&nbsp;
-                                                        <a th:href="@{updateGift(id=${gift.id})}" class="btn btn-primary">修改</a>&nbsp;&nbsp;
+                                                        <!--<a th:href="@{updateGift(id=${gift.id})}" class="btn btn-primary">修改</a>&nbsp;&nbsp;-->
                                                         <a th:href="@{deleteGifts(id=${gift.id})}" onclick="return(confirm('确定下架?'))" class="btn btn-danger delete" th:if="${gift.isshow} eq 1">下架</a>
                                                         <a th:href="@{deleteGifts(id=${gift.id})}" class="btn btn-warning delete" th:if="${gift.isshow} eq 0">上架</a>
                                                     </td>
