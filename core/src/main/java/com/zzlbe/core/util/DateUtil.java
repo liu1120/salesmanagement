@@ -51,6 +51,7 @@ public class DateUtil {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(date);
     }
+
     /**
      * 根据 hour 获取 Date
      */
@@ -110,6 +111,22 @@ public class DateUtil {
     }
 
     /**
+     * date1 after date2
+     */
+    public static boolean after(Date date1, Date date2) {
+
+        return getLocalDateTimeByDate(date1).isAfter(getLocalDateTimeByDate(date2));
+    }
+
+    /**
+     * date1 before date2
+     */
+    public static boolean before(Date date1, Date date2) {
+
+        return getLocalDateTimeByDate(date1).isBefore(getLocalDateTimeByDate(date2));
+    }
+
+    /**
      * 上午 ? true : false
      */
     public static boolean isMorning(LocalDateTime localDateTime) {
@@ -144,17 +161,22 @@ public class DateUtil {
 
     public static String getDateByStr2(String date)//截图字符串、拼接
     {
-        return date.substring(0,19).replace("T"," ");
+        return date.substring(0, 19).replace("T", " ");
     }
 
-    public static String getDateByStr3(Date date){//时间格式转换 //Tue Apr 16 16:51:35 CST 2019
+    public static String getDateByStr3(Date date) {//时间格式转换 //Tue Apr 16 16:51:35 CST 2019
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String timeFormat = sdf.format(date);
         return timeFormat;
     }
 
 
-    public static void main(String[] args) {
-        System.out.println();
+    public static void main(String[] args) throws InterruptedException {
+        Date date1 = new Date();
+        Thread.sleep(1000);
+        Date date2 = new Date();
+
+        System.out.println(before(date1, date2));
+        System.out.println(after(date1, date2));
     }
 }

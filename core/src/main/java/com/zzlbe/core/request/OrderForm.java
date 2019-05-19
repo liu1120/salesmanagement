@@ -39,9 +39,9 @@ public class OrderForm {
     @Min(value = 1, message = "商品数量不能少于1")
     private Integer orCount;
     /**
-     * 0正常，满300减20：九折。。。
+     * 活动ID (正常/打折/满减)
      */
-    private String orSay;
+    private Long orSay;
     /**
      * 销售员编号getOrderList
      */

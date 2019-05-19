@@ -85,6 +85,9 @@ public enum ErrorCodeEnum {
     ACTIVITY_EXIST("8003", "相同活动已存在"),
     ACTIVITY_NOT_EXIST("8004", "活动不存在"),
     ACTIVITY_CHECKED("8005", "活动已审核完成"),
+    ACTIVITY_INVALID("8006", "活动无效"),
+    ACTIVITY_NOT_START("8007", "活动尚未开始"),
+    ACTIVITY_EXPIRED("8008", "活动已过期"),
 
     ;
 

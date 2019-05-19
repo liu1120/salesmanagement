@@ -34,9 +34,9 @@ public class OrderEntity {
      */
     private BigDecimal orPrice;
     /**
-     * 0正常，满300减20：九折。。。
+     * 活动ID (正常/打折/满减)
      */
-    private String orSay;
+    private Long orSay;
     /**
      * 交易总金额
      */
