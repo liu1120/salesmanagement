@@ -3,10 +3,7 @@ package com.zzlbe.core.util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.Date;
 
 /**
@@ -17,6 +14,8 @@ public class DateUtil {
     private static final LocalDateTime CLOCK_12 = getLocalDateTimeByHour(12);
     private static final ThreadLocal<DateFormat> FORMAT_YEAR_2_MIN =
             ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+    private static final ThreadLocal<DateFormat> FORMAT_YEAR_2_DAY =
+            ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd"));
 
 
     public String getTime() {
@@ -53,7 +52,7 @@ public class DateUtil {
     }
 
     /**
-     * 根据 hour 获取 Date
+     * yyyy-MM-dd
      */
     public static String getDateStr(LocalDateTime localDateTime) {
         StringBuilder sb = new StringBuilder();
@@ -64,6 +63,14 @@ public class DateUtil {
         sb.append(localDateTime.getDayOfMonth());
 
         return sb.toString();
+    }
+
+    /**
+     * yyyy-MM-dd
+     */
+    public static String getDateStr(Date date) {
+
+        return FORMAT_YEAR_2_DAY.get().format(date);
     }
 
     /**
@@ -99,7 +106,7 @@ public class DateUtil {
      */
     public static LocalDateTime getLocalDateTimeByHour(int hour) {
 
-        return LocalDateTime.now().withHour(hour).withMinute(0).withSecond(0).withNano(0);
+        return LocalDateTime.now(ZoneOffset.of("+8")).withHour(hour).withMinute(0).withSecond(0).withNano(0);
     }
 
     /**
