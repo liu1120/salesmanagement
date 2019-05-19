@@ -97,6 +97,77 @@ public class ActivityBusinessImpl extends BaseBusinessImpl implements ActivityBu
     }
 
     @Override
+    public GenericResponse update(SaleForm saleForm) {
+        if (saleForm.getId() == null) {
+            return new GenericResponse(ErrorCodeEnum.ACTIVITY_EXIST);
+        }
+        if (saleForm.getType().equals(2)) {
+            // 打折活动
+            if (saleForm.getDiscount() == null) {
+                return new GenericResponse(ErrorCodeEnum.ACTIVITY_DISCOUNT_NOT_NULL);
+            }
+        } else if (saleForm.getType().equals(3)) {
+            // 满减活动
+            if (saleForm.getReach() == null || saleForm.getMinus() == null) {
+                return new GenericResponse(ErrorCodeEnum.ACTIVITY_MINUS_NOT_NULL);
+            }
+        }
+
+        // 清除无效字段的值
+        clearSaleEntity(saleForm);
+
+        SaleEntity saleEntity = saleMapper.selectById(saleForm.getId());
+        if (saleEntity == null) {
+            return new GenericResponse(ErrorCodeEnum.ACTIVITY_EXIST);
+        }
+        // 销售员申请的，审核通过的不允许修改
+        if (saleEntity.getStart() == 1 && saleEntity.getStatus() != 0) {
+            return new GenericResponse(ErrorCodeEnum.ACTIVITY_NOT_MODIFY);
+        }
+
+        BeanUtils.copyProperties(saleForm, saleEntity);
+        // 默认全局有效
+        saleEntity.setStart(saleEntity.getStart() == null ? 0 : saleEntity.getStart());
+        // 管理员创建不用审核
+        saleEntity.setStatus(saleEntity.getStart() == 0 ? 1 : 0);
+        saleEntity.setUpdateTime(new Date());
+
+        saleMapper.update(saleEntity);
+
+        return GenericResponse.SUCCESS;
+    }
+
+    @Override
+    public GenericResponse delete(SaleForm saleForm) {
+        if (saleForm.getId() == null) {
+            return new GenericResponse(ErrorCodeEnum.ACTIVITY_EXIST);
+        }
+        SaleEntity saleEntity = saleMapper.selectById(saleForm.getId());
+        if (saleEntity == null) {
+            return new GenericResponse(ErrorCodeEnum.ACTIVITY_EXIST);
+        }
+        // 销售员申请的，审核通过的不允许修改
+        if (saleEntity.getStart() == 1 && saleEntity.getStatus() != 0) {
+            return new GenericResponse(ErrorCodeEnum.ACTIVITY_NOT_DELETE);
+        }
+
+        saleEntity.setStatus(3);
+
+        saleMapper.update(saleEntity);
+
+        return GenericResponse.SUCCESS;
+    }
+
+    @Override
+    public GenericResponse get(Long saleId) {
+        if (saleId == null) {
+            return new GenericResponse(ErrorCodeEnum.ACTIVITY_EXIST);
+        }
+
+        return new GenericResponse<>(saleMapper.selectById(saleId));
+    }
+
+    @Override
     public GenericResponse findAllByPage(SaleSearch saleSearch) {
         // 销售员编号
         Long sellerId = saleSearch.getSellerId();

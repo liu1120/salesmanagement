@@ -45,7 +45,7 @@ public class ActivityController {
 
 
     @ResponseBody
-    @RequestMapping("create")
+    @PostMapping("create")
     public GenericResponse create(@RequestBody @Valid SaleForm saleForm, BindingResult bindingResult) {
         // 参数校验
         if (bindingResult.hasErrors()) {
@@ -59,7 +59,7 @@ public class ActivityController {
     }
 
     @ResponseBody
-    @RequestMapping("check")
+    @PostMapping("check")
     public GenericResponse check(@RequestBody @Valid SaleCheckForm saleCheckForm, BindingResult bindingResult) {
         // 参数校验
         if (bindingResult.hasErrors()) {
@@ -70,14 +70,42 @@ public class ActivityController {
     }
 
     @ResponseBody
-    @RequestMapping("findAllByPage")
+    @PostMapping("update")
+    public GenericResponse update(@RequestBody @Valid SaleForm saleForm, BindingResult bindingResult) {
+        // 参数校验
+        if (bindingResult.hasErrors()) {
+            // bindingResult.getAllErrors().get(0) 获取Form中检测的
+            return GenericResponse.ERROR.setMessage(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
+        saleForm.setStartTime(DateUtil.getDateByStr(saleForm.getStartTimeStr()));
+        saleForm.setOverTime(DateUtil.getDateByStr(saleForm.getOverTimeStr()));
+
+        return activityBusiness.update(saleForm);
+    }
+
+    @ResponseBody
+    @PostMapping("delete")
+    public GenericResponse delete(@RequestBody SaleForm saleForm) {
+
+        return activityBusiness.delete(saleForm);
+    }
+
+    @ResponseBody
+    @GetMapping("get/{saleId}")
+    public GenericResponse get(@PathVariable("saleId") Long saleId) {
+
+        return activityBusiness.get(saleId);
+    }
+
+    @ResponseBody
+    @PostMapping("findAllByPage")
     public GenericResponse findAllByPage(@RequestBody SaleSearch saleSearch) {
 
         return activityBusiness.findAllByPage(saleSearch);
     }
 
     @ResponseBody
-    @RequestMapping("findAllByCounty/{countyCode}")
+    @PostMapping("findAllByCounty/{countyCode}")
     public GenericResponse findAllByCounty(@PathVariable("countyCode") Long countyCode) {
         if (countyCode == null) {
             return GenericResponse.ERROR;

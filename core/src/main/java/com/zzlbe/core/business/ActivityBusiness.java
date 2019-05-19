@@ -33,6 +33,30 @@ public interface ActivityBusiness {
     GenericResponse check(SaleCheckForm saleCheckForm);
 
     /**
+     * 更新
+     *
+     * @param saleForm 活动相关表单
+     * @return GenericResponse
+     */
+    GenericResponse update(SaleForm saleForm);
+
+    /**
+     * 删除
+     *
+     * @param saleForm 活动相关表单
+     * @return GenericResponse
+     */
+    GenericResponse delete(SaleForm saleForm);
+
+    /**
+     * 获取
+     *
+     * @param saleId 活动编号
+     * @return GenericResponse
+     */
+    GenericResponse get(Long saleId);
+
+    /**
      * 分页查询所有活动
      *
      * @param saleSearch SaleSearch

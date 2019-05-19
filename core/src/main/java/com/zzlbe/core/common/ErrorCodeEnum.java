@@ -88,6 +88,8 @@ public enum ErrorCodeEnum {
     ACTIVITY_INVALID("8006", "活动无效"),
     ACTIVITY_NOT_START("8007", "活动尚未开始"),
     ACTIVITY_EXPIRED("8008", "活动已过期"),
+    ACTIVITY_NOT_MODIFY("8009", "当前订单不允许修改"),
+    ACTIVITY_NOT_DELETE("8010", "当前订单不允许删除"),
 
     ;
 

@@ -15,6 +15,11 @@ import java.util.Date;
 public class SaleForm {
 
     /**
+     * 活动ID
+     */
+    private Long id;
+
+    /**
      * 销售类型：1正常（默认），2打折，3满减，4满送
      */
     @NotNull(message = "销售类型不能为空")
@@ -57,5 +62,8 @@ public class SaleForm {
      * 开启活动区域
      */
     private String areaIds;
-
+    /**
+     * 活动状态()
+     */
+    private Integer status;
 }
