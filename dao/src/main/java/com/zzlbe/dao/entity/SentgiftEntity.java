@@ -54,4 +54,9 @@ public class SentgiftEntity {
      * 发放日期
      */
     private Date date;
+
+    /**
+     * 用户名字（数据库无此字段）
+     */
+    private String userName;
 }

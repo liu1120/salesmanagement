@@ -66,4 +66,9 @@ public class GiftSendVO {
     private String giftName;
     private String giftImage;
 
+    /**
+     * 用户名字
+     */
+    private String userName;
+
 }

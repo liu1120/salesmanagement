@@ -33,16 +33,16 @@
     <sql id="condition">
         <where>
             <if test="name != null">
-                AND u_name = #{name}
+                AND u_name REGEXP #{name}
             </if>
             <if test="wechat != null">
-                AND u_wechat = #{wechat}
+                AND u_wechat REGEXP #{wechat}
             </if>
             <if test="phone != null">
-                AND u_phone = #{phone}
+                AND u_phone REGEXP #{phone}
             </if>
             <if test="realname != null">
-                AND u_realname = #{realname}
+                AND u_realname REGEXP #{realname}
             </if>
         </where>
     </sql>
