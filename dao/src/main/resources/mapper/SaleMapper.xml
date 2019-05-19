@@ -151,9 +151,11 @@
         FROM
         <include refid="tableName"/>
         WHERE
-        sa_status = 1
-        AND (sa_start = 0 AND sa_area_ids NOT REGEXP #{countyCode})
-        OR (sa_start = 1 AND sa_area_ids REGEXP #{countyCode})
+        SA_STATUS = 1
+        AND SA_START_TIME <![CDATA[ <= ]]> NOW()
+        AND SA_OVER_TIME <![CDATA[ >= ]]> NOW()
+        AND (SA_START = 0 AND SA_AREA_IDS NOT REGEXP #{countyCode})
+        OR (SA_START = 1 AND SA_AREA_IDS REGEXP #{countyCode})
     </select>
 
     <update id="update">

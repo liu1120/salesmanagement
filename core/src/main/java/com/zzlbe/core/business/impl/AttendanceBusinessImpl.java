@@ -65,7 +65,7 @@ public class AttendanceBusinessImpl extends BaseBusinessImpl implements Attendan
         attendanceSearch.setAtDay(DateUtil.getDateStr(punchDate));
         AttendanceEntity attendanceEntity = attendanceMapper.selectByExample(attendanceSearch);
 
-        LOGGER.debug(">>>>>>>>>>>>>>>> [{} 打卡] Date: {}, LocalDateTime: {}", sellerId, punchDate, punchLocalDateTime);
+        LOGGER.info(">>>>>>>>>>>>>>>> [{} 打卡] Date: {}, LocalDateTime: {}", sellerId, punchDate, punchLocalDateTime);
 
         // insert or update
         boolean doInsert = attendanceEntity == null;
@@ -80,32 +80,32 @@ public class AttendanceBusinessImpl extends BaseBusinessImpl implements Attendan
             attendanceEntity.setAtStart(punchDate);
             if (punchStart(punchLocalDateTime)) {
                 attendanceEntity.setAtStartType(AttendanceConstant.PUNCH_TYPE_START_NORMAL);
-                LOGGER.debug(">>>>>>>>>>>>>>>> {} 上班打卡 >>>>> [正常]", sellerId);
+                LOGGER.info(">>>>>>>>>>>>>>>> {} 上班打卡 >>>>> [正常]", sellerId);
             } else {
                 attendanceEntity.setAtStartType(AttendanceConstant.PUNCH_TYPE_START_LATE);
-                LOGGER.debug(">>>>>>>>>>>>>>>> {} 上班打卡 >>>>> [迟到]", sellerId);
+                LOGGER.info(">>>>>>>>>>>>>>>> {} 上班打卡 >>>>> [迟到]", sellerId);
             }
             attendanceEntity.setAtType(AttendanceConstant.PUNCH_TYPE_NORMAL);
-            LOGGER.debug(">>>>>>>>>>>>>>>> {} 上班打卡 >>>>> [今天打卡状态：正常打卡]", sellerId);
+            LOGGER.info(">>>>>>>>>>>>>>>> {} 上班打卡 >>>>> [今天打卡状态：正常打卡]", sellerId);
         } else {
             // 下班打卡
             attendanceEntity.setAtEnd(punchDate);
             if (punchEnd(punchLocalDateTime)) {
                 attendanceEntity.setAtEndType(AttendanceConstant.PUNCH_TYPE_END_NORMAL);
-                LOGGER.debug(">>>>>>>>>>>>>>>> {} 下班打卡 >>>>> [正常]", sellerId);
+                LOGGER.info(">>>>>>>>>>>>>>>> {} 下班打卡 >>>>> [正常]", sellerId);
             } else {
                 attendanceEntity.setAtEndType(AttendanceConstant.PUNCH_TYPE_END_EARLY);
-                LOGGER.debug(">>>>>>>>>>>>>>>> {} 下班打卡 >>>>> [早退]", sellerId);
+                LOGGER.info(">>>>>>>>>>>>>>>> {} 下班打卡 >>>>> [早退]", sellerId);
             }
             if (attendanceEntity.getAtStart() == null) {
                 attendanceEntity.setAtType(AttendanceConstant.PUNCH_TYPE_EXCEPTION);
-                LOGGER.debug(">>>>>>>>>>>>>>>> {} 下班打卡 >>>>> [今天打卡状态：异常, 未签入]", sellerId);
+                LOGGER.info(">>>>>>>>>>>>>>>> {} 下班打卡 >>>>> [今天打卡状态：异常, 未签入]", sellerId);
             } else if (punchOvertime(punchLocalDateTime)) {
                 attendanceEntity.setAtType(AttendanceConstant.PUNCH_TYPE_OVERTIME);
-                LOGGER.debug(">>>>>>>>>>>>>>>> {} 下班打卡 >>>>> [今天打卡状态：正常, 加班]", sellerId);
+                LOGGER.info(">>>>>>>>>>>>>>>> {} 下班打卡 >>>>> [今天打卡状态：正常, 加班]", sellerId);
             } else {
                 attendanceEntity.setAtType(AttendanceConstant.PUNCH_TYPE_NORMAL);
-                LOGGER.debug(">>>>>>>>>>>>>>>> {} 下班打卡 >>>>> [今天打卡状态：正常]", sellerId);
+                LOGGER.info(">>>>>>>>>>>>>>>> {} 下班打卡 >>>>> [今天打卡状态：正常]", sellerId);
             }
         }
 
