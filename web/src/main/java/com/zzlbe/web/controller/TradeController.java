@@ -205,7 +205,7 @@ public class TradeController {
         return  mv;
     }
 
-    @GetMapping("orderservice")//后台查看-订单售后
+    @GetMapping("orderservice")//后台查看-订单售后查询
     public ModelAndView orderservice() {
         ModelAndView mv=new ModelAndView();
         CustomerSearch customerSearch=new CustomerSearch();

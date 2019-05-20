@@ -40,7 +40,7 @@ public class CustomerSearch extends BasePageRequest {
     /**
      * 1退货
      */
-    private Integer cuReason;
+    private String cuReason;
     /**
      * 操作类型：1业务操作人员申请提交、2业务操作人员审核通过、3业务操作人员审核拒绝
      */

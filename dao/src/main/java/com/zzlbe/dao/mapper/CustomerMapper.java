@@ -25,6 +25,8 @@ public interface CustomerMapper {
 
     CustomerEntity selectByOrder(@Param("orderId") Long orderId, @Param("reason") Integer reason);
 
+    CustomerEntity selectByOrderId(@Param("orderId") Long orderId);
+
     List<CustomerEntity> selectByPage(CustomerSearch customerSearch);
 
     Integer selectByPageTotal(CustomerSearch customerSearch);
