@@ -288,6 +288,7 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
             case AFTER_SALE:
                 GenericResponse afterSale = afterSale(orderEntity);
                 if (afterSale.successful()) {
+                    orderEntity.setOldStatus(orderEntity.getOrStatus());
                     orderEntity.setOrStatus(OrderStatusEnum.AFTER_SALE.getCode());
                     orderEntity.setOrWords(orderProcessForm.getSaleMessage());
                     tempId = (Long) afterSale.getBody();
@@ -298,11 +299,14 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
 
             case AFTER_SALE_FINISH:
                 // 售后完成
-                GenericResponse saleFinish = saleFinish(orderEntity,
+                GenericResponse<Boolean> saleFinish = saleFinish(orderEntity,
                         orderProcessForm.getAfterSaleType(), orderProcessForm.getSaleMessage());
                 if (saleFinish.successful()) {
                     orderEntity.setOrStatus(OrderStatusEnum.AFTER_SALE_FINISH.getCode());
                     orderEntity.setOrWords(orderProcessForm.getSaleMessage());
+                    if (!saleFinish.getBody()) {
+                        orderEntity.setOrStatus(orderEntity.getOldStatus());
+                    }
                     break;
                 } else {
                     return saleFinish;
@@ -695,7 +699,7 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         customerEntity.setCuGoodsId(orderEntity.getOrGoodsId());
         customerEntity.setCuGoodsCount(orderEntity.getOrCount());
         // 售后原因
-        customerEntity.setCuReason(reason+"");
+        customerEntity.setCuReason(reason + "");
         // 操作类型：1申请提交 | 2申请通过 | 3申请拒绝
         customerEntity.setCuType(1);
         customerEntity.setCuTime(new Date());
@@ -712,7 +716,7 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
      * @param orderEntity OrderEntity
      * @return GenericResponse
      */
-    private GenericResponse saleFinish(OrderEntity orderEntity, Integer cuType, String description) {
+    private GenericResponse<Boolean> saleFinish(OrderEntity orderEntity, Integer cuType, String description) {
         // 售后原因：1退货（默认），2审核拒绝退款
         int reason = ORDER_SALE_RETURN;
         if (ORDER_AUDIT_FAIL.equals(orderEntity.getOrType())) {
@@ -720,16 +724,18 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         }
         CustomerEntity customerEntity = customerMapper.selectByOrder(orderEntity.getOrId(), reason);
         if (customerEntity == null) {
-            return new GenericResponse(ErrorCodeEnum.ORDER_AFTER_SALE_NOT_FOUND);
+            return new GenericResponse<>(ErrorCodeEnum.ORDER_AFTER_SALE_NOT_FOUND);
         }
         // 操作类型：1申请提交 | 2申请通过 | 3申请拒绝
         customerEntity.setCuType(cuType);
         customerEntity.setCuTime(new Date());
         customerEntity.setCuDescription(description);
 
+        boolean applySuccess = (cuType == 2);
+
         customerMapper.update(customerEntity);
 
-        return GenericResponse.SUCCESS;
+        return new GenericResponse<>(applySuccess);
     }
 
     /**

@@ -18,6 +18,7 @@
         <result column="or_status" property="orStatus"/>
         <result column="or_words" property="orWords"/>
         <result column="or_refuse" property="orRefuse"/>
+        <result column="or_old_status" property="oldStatus"/>
     </resultMap>
     <resultMap id="Order2Search" type="com.zzlbe.dao.search.Order2Search">
         <result column="or_id" property="orId"/>
@@ -111,7 +112,8 @@
         or_address,
         or_status,
         or_words,
-        or_refuse
+        or_refuse,
+        or_old_status
     </sql>
 
     <sql id="condition">
@@ -362,6 +364,9 @@
             <if test="orRefuse != null">
                 or_refuse = #{orRefuse},
             </if>
+            <if test="oldStatus != null">
+                or_old_status = #{oldStatus},
+            </if>
         </set>
         WHERE
         or_id = #{orId}
@@ -389,7 +394,8 @@
         #{orAddress},
         #{orStatus},
         #{orWords},
-        #{orRefuse}
+        #{orRefuse},
+        #{oldStatus}
         )
     </insert>
 

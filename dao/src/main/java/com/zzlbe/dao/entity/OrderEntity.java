@@ -78,4 +78,9 @@ public class OrderEntity {
      */
     private String orRefuse;
 
+    /**
+     * 历史状态
+     */
+    private Integer oldStatus;
+
 }
