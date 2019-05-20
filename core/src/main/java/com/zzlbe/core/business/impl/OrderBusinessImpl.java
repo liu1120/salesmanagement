@@ -303,7 +303,8 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
                         orderProcessForm.getAfterSaleType(), orderProcessForm.getSaleMessage());
                 if (saleFinish.successful()) {
                     orderEntity.setOrStatus(OrderStatusEnum.AFTER_SALE_FINISH.getCode());
-                    orderEntity.setOrWords(orderProcessForm.getSaleMessage());
+                    orderEntity.setOrRefuse(orderProcessForm.getSaleMessage());
+                    // 审核不通过,恢复原始状态
                     if (!saleFinish.getBody()) {
                         orderEntity.setOrStatus(orderEntity.getOldStatus());
                     }

@@ -20,6 +20,11 @@ public interface AreaMapper {
      */
     List<AreaEntity> selectBySpid(Long spid);
 
+    /**
+     * 根据销售员ID查询所有区域CODE
+     */
+    List<Long> selectCountyBySellerId(Long spid);
+
     List<AreaEntity> selectProvince();
 
     List<AreaEntity> selectCity(Long provincecode);

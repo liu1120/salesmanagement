@@ -43,6 +43,15 @@
         group by ar_countycode
     </select>
 
+    <select id="selectCountyBySellerId" resultType="long">
+        SELECT
+        ar_countycode
+        FROM
+        <include refid="tableName"/>
+        WHERE ar_sp_id = #{id}
+        LIMIT 100
+    </select>
+
     <select id="selectAll" resultMap="BaseMap">
         SELECT
         <include refid="columns"/>
