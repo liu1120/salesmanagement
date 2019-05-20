@@ -253,6 +253,8 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
             return new GenericResponse(ErrorCodeEnum.ORDER_TRANSFER);
         }
 
+        Long tempId = null;
+
         switch (orderStatusEnum) {
             // 发货/签收/售后
             case SHIPPED:
@@ -288,6 +290,7 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
                 if (afterSale.successful()) {
                     orderEntity.setOrStatus(OrderStatusEnum.AFTER_SALE.getCode());
                     orderEntity.setOrWords(orderProcessForm.getSaleMessage());
+                    tempId = (Long) afterSale.getBody();
                     break;
                 } else {
                     return afterSale;
@@ -309,6 +312,11 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         }
 
         orderMapper.update(orderEntity);
+
+        // 如果是售后返回售后ID
+        if (OrderStatusEnum.AFTER_SALE.equals(orderStatusEnum)) {
+            return new GenericResponse<>(tempId);
+        }
 
         return GenericResponse.SUCCESS;
     }
@@ -402,6 +410,12 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         Integer total = customerMapper.selectByPageTotal(customerSearch);
 
         return genericPageResponse(parseCustomerVOS(customerEntities), total);
+    }
+
+    @Override
+    public GenericResponse afterSaleDetail(Long id) {
+
+        return new GenericResponse<>(customerMapper.selectById(id));
     }
 
     /**
@@ -689,7 +703,7 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
 
         customerMapper.insert(customerEntity);
 
-        return GenericResponse.SUCCESS;
+        return new GenericResponse<>(customerEntity.getCuId());
     }
 
     /**
