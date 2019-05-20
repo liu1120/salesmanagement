@@ -55,7 +55,7 @@ public class ImgController {
         // 显示图片
         map.put("msg", msg);
         map.put("fileName", file.getOriginalFilename());
-        map.put("filePath", "/Photos/"+file.getOriginalFilename());
+        map.put("filePath", "https://api.anthub.top/Photos/"+file.getOriginalFilename());
         String str=JSON.toJSONString(map);
         return str;
     }

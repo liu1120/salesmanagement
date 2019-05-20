@@ -82,7 +82,7 @@ public class TradeController {
     public ModelAndView saveGoodsInfo(String path, String name, String sort, String version, Integer num, String ueInfo, BigDecimal price, BigDecimal minprice, Integer isshow, Integer credit) {
         ModelAndView mv=new ModelAndView();
         GoodsEntity goodsEntity=new GoodsEntity();
-        goodsEntity.setNewImgPath("/Photos/"+path);
+        goodsEntity.setNewImgPath("https://api.anthub.top/Photos/"+path);
         goodsEntity.setName(name);
         goodsEntity.setCredit(credit);
         goodsEntity.setSort(sort);
@@ -153,7 +153,6 @@ public class TradeController {
     public ModelAndView saveUpdateGoodsInfo(String name,@RequestParam("id") Long id, String sort, String version, Integer num, String introduce, BigDecimal price, BigDecimal minprice, Integer credit) {
         ModelAndView mv=new ModelAndView();
         GoodsEntity goodsEntity=new GoodsEntity();
-//        goodsEntity.setNewImgPath("/Photos/"+path);
         goodsEntity.setName(name);
         goodsEntity.setId(id);
         goodsEntity.setSort(sort);
@@ -288,7 +287,7 @@ public class TradeController {
     public ModelAndView saveGiftInfo(String path, String name, Long credit,Long num, String ueInfo, Integer isshow) {
         ModelAndView mv=new ModelAndView();
         GiftEntity giftEntity=new GiftEntity();
-        giftEntity.setImgpath("/Photos/"+path);
+        giftEntity.setImgpath("https://api.anthub.top/Photos/"+path);
         System.out.println(giftEntity.getImgpath());
         giftEntity.setName(name);
         giftEntity.setIsshow(isshow);
