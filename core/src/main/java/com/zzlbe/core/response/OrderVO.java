@@ -36,7 +36,7 @@ public class OrderVO {
     /**
      * 0正常，满300减20：九折。。。
      */
-    private String orSay;
+    private Long orSay;
     /**
      * 交易总金额
      */

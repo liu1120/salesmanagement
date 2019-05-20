@@ -11,7 +11,6 @@ import java.util.Date;
  */
 public class DateUtil {
 
-    private static final LocalDateTime CLOCK_12 = getLocalDateTimeByHour(12);
     private static final ThreadLocal<DateFormat> FORMAT_YEAR_2_MIN =
             ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
     private static final ThreadLocal<DateFormat> FORMAT_YEAR_2_DAY =
@@ -86,7 +85,7 @@ public class DateUtil {
     /**
      * 根据 LocalDateTime 获取 Date
      */
-    public static Date getDateByHour(LocalDateTime localDateTime) {
+    public static Date getDateByLocalDateTime(LocalDateTime localDateTime) {
         ZonedDateTime zdt = localDateTime.atZone(ZoneId.systemDefault());
 
         return Date.from(zdt.toInstant());
@@ -110,14 +109,6 @@ public class DateUtil {
     }
 
     /**
-     * 上午 ? true : false
-     */
-    public static boolean isMorning() {
-
-        return LocalDateTime.now().isBefore(CLOCK_12);
-    }
-
-    /**
      * date1 after date2
      */
     public static boolean after(Date date1, Date date2) {
@@ -136,25 +127,9 @@ public class DateUtil {
     /**
      * 上午 ? true : false
      */
-    public static boolean isMorning(LocalDateTime localDateTime) {
+    public static boolean isMorning(Date date) {
 
-        return localDateTime.isBefore(CLOCK_12);
-    }
-
-    /**
-     * 下午 ? true : false
-     */
-    public static boolean isAfternoon() {
-
-        return LocalDateTime.now().isAfter(CLOCK_12);
-    }
-
-    /**
-     * 下午 ? true : false
-     */
-    public static boolean isAfternoon(LocalDateTime localDateTime) {
-
-        return localDateTime.isAfter(CLOCK_12);
+        return date.before(getDateByHour(12));
     }
 
     public static Date getDateByStr(String date) {

@@ -23,7 +23,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -39,13 +38,6 @@ public class AttendanceBusinessImpl extends BaseBusinessImpl implements Attendan
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AttendanceBusinessImpl.class);
 
-    /**
-     * 上班时间 && 下班时间 && 加班开始时间
-     */
-    private static final LocalDateTime LOCAL_DATE_START = DateUtil.getLocalDateTimeByHour(8);
-    private static final LocalDateTime LOCAL_DATE_END = DateUtil.getLocalDateTimeByHour(17);
-    private static final LocalDateTime LOCAL_DATE_OVERTIME = DateUtil.getLocalDateTimeByHour(18);
-
     @Resource
     private AttendanceMapper attendanceMapper;
     @Resource
@@ -57,7 +49,6 @@ public class AttendanceBusinessImpl extends BaseBusinessImpl implements Attendan
     public GenericResponse punch(AttendancePunchForm punchForm) {
         // 两种格式的当前时间
         Date punchDate = new Date();
-        LocalDateTime punchLocalDateTime = DateUtil.getLocalDateTimeByDate(punchDate);
 
         Long sellerId = punchForm.getAtSellerId();
         AttendanceSearch attendanceSearch = new AttendanceSearch();
@@ -65,7 +56,7 @@ public class AttendanceBusinessImpl extends BaseBusinessImpl implements Attendan
         attendanceSearch.setAtDay(DateUtil.getDateStr(punchDate));
         AttendanceEntity attendanceEntity = attendanceMapper.selectByExample(attendanceSearch);
 
-        LOGGER.info(">>>>>>>>>>>>>>>> [{} 打卡] Date: {}, LocalDateTime: {}", sellerId, punchDate, punchLocalDateTime);
+        LOGGER.info(">>>>>>>>>>>>>>>> [{} 打卡] Date: {}", sellerId, punchDate);
 
         // insert or update
         boolean doInsert = attendanceEntity == null;
@@ -75,10 +66,10 @@ public class AttendanceBusinessImpl extends BaseBusinessImpl implements Attendan
             attendanceEntity.setAtDay(punchDate);
         }
 
-        if (DateUtil.isMorning(punchLocalDateTime)) {
+        if (DateUtil.isMorning(punchDate)) {
             // 上班打卡
             attendanceEntity.setAtStart(punchDate);
-            if (punchStart(punchLocalDateTime)) {
+            if (punchStart(punchDate)) {
                 attendanceEntity.setAtStartType(AttendanceConstant.PUNCH_TYPE_START_NORMAL);
                 LOGGER.info(">>>>>>>>>>>>>>>> {} 上班打卡 >>>>> [正常]", sellerId);
             } else {
@@ -90,7 +81,7 @@ public class AttendanceBusinessImpl extends BaseBusinessImpl implements Attendan
         } else {
             // 下班打卡
             attendanceEntity.setAtEnd(punchDate);
-            if (punchEnd(punchLocalDateTime)) {
+            if (punchEnd(punchDate)) {
                 attendanceEntity.setAtEndType(AttendanceConstant.PUNCH_TYPE_END_NORMAL);
                 LOGGER.info(">>>>>>>>>>>>>>>> {} 下班打卡 >>>>> [正常]", sellerId);
             } else {
@@ -100,7 +91,7 @@ public class AttendanceBusinessImpl extends BaseBusinessImpl implements Attendan
             if (attendanceEntity.getAtStart() == null) {
                 attendanceEntity.setAtType(AttendanceConstant.PUNCH_TYPE_EXCEPTION);
                 LOGGER.info(">>>>>>>>>>>>>>>> {} 下班打卡 >>>>> [今天打卡状态：异常, 未签入]", sellerId);
-            } else if (punchOvertime(punchLocalDateTime)) {
+            } else if (punchOvertime(punchDate)) {
                 attendanceEntity.setAtType(AttendanceConstant.PUNCH_TYPE_OVERTIME);
                 LOGGER.info(">>>>>>>>>>>>>>>> {} 下班打卡 >>>>> [今天打卡状态：正常, 加班]", sellerId);
             } else {
@@ -278,22 +269,22 @@ public class AttendanceBusinessImpl extends BaseBusinessImpl implements Attendan
     /**
      * 正常上班时间 ? true : false
      */
-    private static boolean punchStart(LocalDateTime localDateTime) {
-        return localDateTime.isBefore(LOCAL_DATE_START);
+    private static boolean punchStart(Date date) {
+        return date.before(DateUtil.getDateByHour(8));
     }
 
     /**
      * 正常下班时间 ? true : false
      */
-    private static boolean punchEnd(LocalDateTime localDateTime) {
-        return localDateTime.isAfter(LOCAL_DATE_END);
+    private static boolean punchEnd(Date date) {
+        return date.after(DateUtil.getDateByHour(17));
     }
 
     /**
      * 加班 ? true : false
      */
-    private static boolean punchOvertime(LocalDateTime localDateTime) {
-        return localDateTime.isAfter(LOCAL_DATE_OVERTIME);
+    private static boolean punchOvertime(Date date) {
+        return date.after(DateUtil.getDateByHour(18));
     }
 
 }
