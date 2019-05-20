@@ -82,7 +82,13 @@
         <include refid="tableName"/>
         WHERE cu_order_id = #{orderId} AND cu_reason = #{reason}
     </select>
-
+    <select id="selectByOrderId" resultMap="BaseMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE cu_order_id = #{orderId}
+    </select>
     <select id="selectByPage" resultMap="BaseMap">
         SELECT
         <include refid="columns"/>

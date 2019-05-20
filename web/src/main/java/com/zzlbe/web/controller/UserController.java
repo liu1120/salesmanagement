@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 
 import static com.zzlbe.core.util.DateUtil.getDateByStr;
@@ -49,7 +50,8 @@ public class UserController {
     private GoodssortMapper goodssortMapper;
     @Resource
     private UserBusiness userBusiness;
-
+    @Resource
+    private CustomerMapper customerMapper;
     //依赖注入
 
     @GetMapping(value = "login")
@@ -212,6 +214,38 @@ public class UserController {
         return list;
     }
 
+    @GetMapping(value = "getCustomerOrder")//查找某用户售后、退货退款记录
+    public List<CustomerEntity> getCustomerOrder(@RequestParam("uid") long uid) {
+        CustomerSearch customerSearch=new CustomerSearch();
+        customerSearch.setCuUserId(uid);
+        List<CustomerEntity> list = customerMapper.selectByPage(customerSearch);
+        return list;
+    }
+
+    @PostMapping(value = "CustomerOrderDetail")//提交退款申请
+    public String CustomerOrderDetail(@RequestParam("orid") long orid,String reasion) {
+        String rea="";
+        OrderEntity orderEntity=orderMapper.selectById(orid);
+        if(orderEntity.getOrStatus()<7){//允许退款
+            if(customerMapper.selectByOrderId(orid)==null){//若无退款记录，新增退款
+                CustomerEntity customerEntity=new CustomerEntity();
+                customerEntity.setCuUserId(orid);
+                customerEntity.setCuSellerId(orderEntity.getOrSellerId());
+                customerEntity.setCuOrderId(orid);
+                customerEntity.setCuGoodsCount(orderEntity.getOrCount());
+                customerEntity.setCuGoodsId(orderEntity.getOrGoodsId());
+                customerEntity.setCuMoney(orderEntity.getOrTotalAmount());
+                customerEntity.setCuReason(reasion);
+                customerEntity.setCuTime(new Date());
+                customerMapper.insert(customerEntity);
+            }else {
+                rea="已申请退款";
+            }
+        }else {
+            rea="不允许退款";
+        }
+        return rea;
+    }
     /**
      * 添加收货地址
      *

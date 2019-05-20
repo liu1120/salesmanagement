@@ -695,7 +695,7 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         customerEntity.setCuGoodsId(orderEntity.getOrGoodsId());
         customerEntity.setCuGoodsCount(orderEntity.getOrCount());
         // 售后原因
-        customerEntity.setCuReason(reason);
+        customerEntity.setCuReason(reason+"");
         // 操作类型：1申请提交 | 2申请通过 | 3申请拒绝
         customerEntity.setCuType(1);
         customerEntity.setCuTime(new Date());
