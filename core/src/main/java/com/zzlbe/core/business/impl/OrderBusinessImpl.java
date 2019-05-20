@@ -429,6 +429,9 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
 
         orderVOS.forEach(orderVO -> {
             GoodsEntity goodsEntity = goodsEntityMap.get(orderVO.getOrGoodsId());
+            if (goodsEntity == null) {
+                return;
+            }
             orderVO.setName(goodsEntity.getName());
             orderVO.setNewImgPath(goodsEntity.getNewImgPath());
         });
@@ -457,6 +460,9 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
 
         customerVOS.forEach(customerVO -> {
             GoodsEntity goodsEntity = goodsEntityMap.get(customerVO.getCuGoodsId());
+            if (goodsEntity == null) {
+                return;
+            }
             customerVO.setName(goodsEntity.getName());
             customerVO.setNewImgPath(goodsEntity.getNewImgPath());
         });
