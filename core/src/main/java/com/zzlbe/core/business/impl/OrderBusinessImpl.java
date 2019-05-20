@@ -116,19 +116,7 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
         // 订单状态：0未付款,1已付款，2待发货,3已发货,4已签收,5退货中,6已退货，7完成交易
         orderEntity.setOrStatus(OrderStatusEnum.UN_PAID.getCode());
 
-        Long activityId = orderEntity.getOrSay();
-        if (activityId == null) {
-            return new GenericResponse<>(orderEntity);
-        }
-
-        GenericResponse<BigDecimal> joinActivityResponse = activityBusiness.joinActivity(orderEntity.getOrTotalAmount(), activityId);
-        if (joinActivityResponse.successful()) {
-            orderEntity.setOrTotalAmount(joinActivityResponse.getBody());
-            orderEntity.setOrSay(activityId);
-            return new GenericResponse<>(orderEntity);
-        }
-
-        return joinActivityResponse;
+        return joinActivity(orderEntity);
     }
 
     @Override
@@ -629,7 +617,31 @@ public class OrderBusinessImpl extends BaseBusinessImpl implements OrderBusiness
          */
         BeanUtils.copyProperties(orderForm, orderEntity);
 
-        return new GenericResponse<>(orderEntity);
+        return joinActivity(orderEntity);
+    }
+
+    /**
+     * 参加活动
+     *
+     * @param orderEntity 订单信息
+     * @return 参加状态
+     */
+    private GenericResponse joinActivity(OrderEntity orderEntity) {
+        Long activityId = orderEntity.getOrSay();
+        // 没有传活动ID
+        if (activityId == null) {
+            return new GenericResponse<>(orderEntity);
+        }
+
+        // 根据活动ID、订单原价，获取活动价
+        GenericResponse<BigDecimal> joinActivityResponse = activityBusiness.joinActivity(orderEntity.getOrTotalAmount(), activityId);
+        if (joinActivityResponse.successful()) {
+            orderEntity.setOrTotalAmount(joinActivityResponse.getBody());
+            orderEntity.setOrSay(activityId);
+            return new GenericResponse<>(orderEntity);
+        }
+
+        return joinActivityResponse;
     }
 
     /**
