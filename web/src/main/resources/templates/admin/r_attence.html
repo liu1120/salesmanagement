@@ -42,7 +42,7 @@
 
                 <div class="dropdown-menu dropdown-menu-right">
 
-                    <a href="/admin/selfinfo" id="selfinfo"  class="dropdown-item">
+                    <a href="/admin/selfinfo" id="selfinfo" class="dropdown-item">
                         <i class="fa fa-user"></i> 个人信息
                     </a>
 
@@ -170,6 +170,11 @@
                                     <i class="icon icon-puzzle"></i>&nbsp;&nbsp; 出差审核
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="/admin/vacation" class="nav-link">
+                                    <i class="icon icon-puzzle"></i>&nbsp;&nbsp; 请假审核
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-title">More</li>
@@ -253,8 +258,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-
-                                            <tr class="gradeA odd" th:each="attend:${attendanSearches}">
+                                            <tr class="gradeA odd" th:each="attend:${attendanSearches}" th:if="${attend} ne null">
                                                 <td th:text="${attend.atSellerId}"></td>
                                                 <td th:text="${attend.name}"></td>
                                                 <td th:text="${attend.atDay}"></td>
@@ -264,8 +268,6 @@
                                                 <td th:if="${attend.atType} eq 3">加班</td>
                                                 <td th:if="${attend.atType} eq 4">请假</td>
                                                 <td th:if="${attend.atType} eq 5">出差</td>
-                                                <td th:if="${attend.atType} eq 5">出差</td>
-
 
                                                 <td th:text="${attend.atStart}"></td>
                                                 <td th:if="${attend.atStartType} eq 1">正常</td>
@@ -275,25 +277,27 @@
                                                 <td th:text="${attend.atEnd}"></td>
                                                 <td th:if="${attend.atEndType} eq 1">正常</td>
                                                 <td th:if="${attend.atEndType} eq 2">迟到</td>
-                                                <td th:if="${attend.atEndType} eq 3">未签到</td>                                            </tr>
+                                                <td th:if="${attend.atEndType} eq 3">未签到</td>
+                                            </tr>
+
                                             </tbody>
                                         </table>
                                         <div class="row">
                                                 <span style="float: left; padding: 5px">
 								                    总共&nbsp;<b th:text="${total}"></b>&nbsp;条
                                                 </span>
-                                                <span style="float: left; padding: 5px">
+                                            <span style="float: left; padding: 5px">
                                                     当前&nbsp;<span style="color: red;" th:text="${page}">1</span>
                                                     &nbsp;/&nbsp; <b th:text="${totalPage}">1</b>&nbsp;页&nbsp;&nbsp;
                                                 </span>
-                                                <nav aria-label="Page navigation" style="margin: 0 auto; width: 240px">
-                                                    <ul class="pagination" style="margin: 0;">
-                                                        <li th:each="array:${arr}">
-                                                            <a th:href="@{attendce(pageNo=${array})}"
-                                                               th:text="${array}">view</a>
-                                                        </li>
-                                                    </ul>
-                                                </nav>
+                                            <nav aria-label="Page navigation" style="margin: 0 auto; width: 240px">
+                                                <ul class="pagination" style="margin: 0;">
+                                                    <li th:each="array:${arr}">
+                                                        <a th:href="@{attendce(pageNo=${array})}"
+                                                           th:text="${array}">view</a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
                                         </div>
                                     </div>
                                 </div>
@@ -327,13 +331,14 @@
             localStorage.setItem("login_username", login_username);
             e.innerText = login_username;
         }
-        var selfinfo=document.getElementById("selfinfo");
-        selfinfo.href="/admin/selfinfo?str="+e.innerText;
-        console.log("selfinfo.href"+selfinfo.href)
+        var selfinfo = document.getElementById("selfinfo");
+        selfinfo.href = "/admin/selfinfo?str=" + e.innerText;
+        console.log("selfinfo.href" + selfinfo.href)
     }
+
     function ischeck() {
         var id = [[${id}]];
-        console.log("id---"+id);
+        console.log("id---" + id);
         var s1 = document.getElementById("single-seller");
         for (i = 0; i <= s1.options.length; i++) {
             if (s1.options[i].value == id) {
@@ -343,9 +348,9 @@
     }
 </script>
 <script>
-    $("#single-seller").change(function(){
-        var sellerid=$("#single-seller").val()
-        window.location.href="attendce?id="+sellerid;
+    $("#single-seller").change(function () {
+        var sellerid = $("#single-seller").val()
+        window.location.href = "attendce?id=" + sellerid;
     });
 
 </script>

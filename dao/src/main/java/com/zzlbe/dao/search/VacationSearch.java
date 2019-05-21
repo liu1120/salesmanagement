@@ -21,6 +21,10 @@ public class VacationSearch extends BasePageRequest {
      * 销售员编号
      */
     private Long vaSellerId;
+    private Long Id;
+
+    private String name;
+
     /**
      * 开始时间
      */

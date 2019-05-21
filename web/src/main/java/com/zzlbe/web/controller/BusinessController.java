@@ -5,10 +5,8 @@ import com.zzlbe.core.util.MD5Utils;
 import com.zzlbe.dao.entity.AreaEntity;
 import com.zzlbe.dao.entity.SellerEntity;
 import com.zzlbe.dao.entity.TripEntity;
-import com.zzlbe.dao.mapper.AreaMapper;
-import com.zzlbe.dao.mapper.AttendanceMapper;
-import com.zzlbe.dao.mapper.SellerMapper;
-import com.zzlbe.dao.mapper.TripMapper;
+import com.zzlbe.dao.entity.VacationEntity;
+import com.zzlbe.dao.mapper.*;
 import com.zzlbe.dao.search.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +26,8 @@ public class BusinessController {
     AttendanceMapper attendanceMapper;
     @Autowired
     TripMapper tripMapper;
+    @Autowired
+    VacationMapper vacationMapper;
 
     /**
      * R5.0
@@ -292,6 +292,57 @@ public class BusinessController {
         return  mv;
     }
 
+
+    /**
+     * 后台查看-请假审核
+     * @return
+     */
+    @GetMapping("vacationAgree")
+    public ModelAndView vacationAgree(Long id,Integer statu) {//传入请假的那条信息id
+        ModelAndView mv=new ModelAndView();
+        VacationEntity vacationEntity=new VacationEntity();
+        vacationEntity.setVaId(id);//获得那条假条
+        if(statu!=null){
+            vacationEntity.setVaStatus(statu);//有状态，则传入状态
+        }
+        System.out.println("vacationEntity:"+vacationEntity);
+        vacationMapper.update(vacationEntity);
+        mv.setViewName("redirect:/admin/vacation");
+        return  mv;
+    }
+    /**
+     * 后台查看-请假审核
+     * @return
+     */
+    @GetMapping("vacation")
+    public ModelAndView vacation(Integer pageNo,Integer type) {
+        ModelAndView mv=new ModelAndView();
+        VacationSearch vacationSearch=new VacationSearch();
+        if(pageNo!=null)vacationSearch.setPage(pageNo);
+        if(type!=null&&type!=0){
+            vacationSearch.setVaType(type);
+        }
+        mv.addObject("type",type);
+
+        List<VacationSearch> vacationSearches= vacationMapper.select2ByPage(vacationSearch);
+        Integer total=vacationMapper.selectByPageTotal(vacationSearch);
+        //页码大小
+        int size=vacationSearch.getSize();
+        int page=vacationSearch.getPage();//当前页
+        int totalPage=total/size+1;
+        int[] arr=new int[totalPage];
+        for(int i=0;i<arr.length;i++){
+            arr[i]=i+1;
+        }
+        mv.addObject("size",size);
+        mv.addObject("total",total);
+        mv.addObject("totalPage",totalPage);
+        mv.addObject("page",page);
+        mv.addObject("arr",arr);
+        mv.addObject("vacationSearches",vacationSearches);
+        mv.setViewName("admin/r_vacation.html");
+        return  mv;
+    }
     @GetMapping("leftAgree")
     public ModelAndView leftAgree(Long id,Integer type) {//传入请假的那条信息id
         ModelAndView mv=new ModelAndView();

@@ -431,7 +431,7 @@ public class AdminController {
         return mv;
     }
 
-    @GetMapping("/activity")
+    @GetMapping("/activity")//农产品活动列表
     public ModelAndView activity(Integer pageNo, Integer type) {
         ModelAndView mv = new ModelAndView();
         SaleSearch saleSearch = new SaleSearch();

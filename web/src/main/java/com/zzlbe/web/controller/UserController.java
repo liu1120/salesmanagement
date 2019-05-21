@@ -409,7 +409,7 @@ public class UserController {
             if (areaEntity == null) {
                 continue;
             }
-            String str = areaEntity.getProvincename() + "-" + areaEntity.getCityname() + "-" + areaEntity.getCountyname();
+            String str = areaEntity.getProvincename() + "-" + areaEntity.getCityname() + "-" + areaEntity.getCountyname()+","+areaEntity.getCountycode();
             list.get(i).setAddress(str);
         }
         return list;

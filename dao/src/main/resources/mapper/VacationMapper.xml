@@ -13,7 +13,18 @@
         <result column="va_status" property="vaStatus"/>
         <result column="va_notes" property="vaNotes"/>
     </resultMap>
-
+    <resultMap id="VacationSearch" type="com.zzlbe.dao.search.VacationSearch">
+        <result column="va_seller_id" property="vaSellerId"/>
+        <result column="va_id" property="id"/>
+        <result column="va_start" property="vaStartStr"/>
+        <result column="va_end" property="vaEndStr"/>
+        <result column="va_days" property="vaDays"/>
+        <result column="sp_realname" property="name"/>
+        <result column="va_reason" property="vaReason"/>
+        <result column="va_type" property="vaType"/>
+        <result column="va_status" property="vaStatus"/>
+        <result column="va_notes" property="vaNotes"/>
+    </resultMap>
     <sql id="tableName">tb_vacation</sql>
 
     <sql id="columns">
@@ -65,7 +76,15 @@
         <include refid="condition"/>
         LIMIT #{firstIndex}, #{size}
     </select>
-
+    <select id="select2ByPage" resultMap="VacationSearch">
+        select *
+        from tb_vacation t1
+        left join tb_seller t2
+        on t1.va_seller_id = t2.sp_id
+        <include refid="condition"/>
+        GROUP BY va_id
+        LIMIT #{firstIndex}, #{size}
+    </select>
     <select id="selectByPageTotal" resultType="java.lang.Integer">
         SELECT
         COUNT(*)

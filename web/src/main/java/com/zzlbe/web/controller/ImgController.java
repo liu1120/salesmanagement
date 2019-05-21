@@ -28,8 +28,8 @@ public class ImgController {
     @Autowired
     GoodsMapper goodsMapper;
 
-//    private String localPath="E:/Photos"; // 要上传的目标文件存放路径
-    private String localPath="/opt/nginx/static/Photos"; // 要上传的目标文件存放路径
+    private String localPath="E:/Files/Photos"; // 要上传的目标文件存放路径
+//    private String localPath="/opt/nginx/static/Photos"; // 要上传的目标文件存放路径
 
     @Autowired
     public ImgController(ResourceLoader resourceLoader) {
@@ -44,6 +44,7 @@ public class ImgController {
     @PostMapping("fileUpload")
     @ResponseBody
     public String fileUpload(@RequestParam("fileName") MultipartFile file, Map<String, Object> map){
+        System.out.println("fileUpload:"+file);
 
         String msg = "";// 上传成功或者失败的提示
         if (FileUtils.upload(file, localPath, file.getOriginalFilename())){
@@ -55,15 +56,17 @@ public class ImgController {
         // 显示图片
         map.put("msg", msg);
         map.put("fileName", file.getOriginalFilename());
-        map.put("filePath", "https://api.anthub.top/Photos/"+file.getOriginalFilename());
+//        map.put("filePath", "https://api.anthub.top/Photos/"+file.getOriginalFilename());
+        map.put("filePath", "/Photos/"+file.getOriginalFilename());
         String str=JSON.toJSONString(map);
+        System.out.println("str"+str);
         return str;
     }
 
     @PostMapping("fileUpload2")
     @ResponseBody
     public String fileUpload2(@RequestParam("fileName") MultipartFile file, Map<String, Object> map){
-        System.out.println("file2:"+file);
+        System.out.println("fileUpload2:"+file);
         // 上传成功或者失败的提示
         String msg = "";
         if (FileUtils.upload(file, localPath, file.getOriginalFilename())){

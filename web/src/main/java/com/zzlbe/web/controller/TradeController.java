@@ -82,7 +82,8 @@ public class TradeController {
     public ModelAndView saveGoodsInfo(String path, String name, String sort, String version, Integer num, String ueInfo, BigDecimal price, BigDecimal minprice, Integer isshow, Integer credit) {
         ModelAndView mv=new ModelAndView();
         GoodsEntity goodsEntity=new GoodsEntity();
-        goodsEntity.setNewImgPath("https://api.anthub.top/Photos/"+path);
+//        goodsEntity.setNewImgPath("https://api.anthub.top/Photos/"+path);
+        goodsEntity.setNewImgPath(path);
         goodsEntity.setName(name);
         goodsEntity.setCredit(credit);
         goodsEntity.setSort(sort);
@@ -226,7 +227,6 @@ public class TradeController {
         mv.addObject("page",page);
         mv.addObject("size",size);
         mv.addObject("customers",customerEntity);
-        System.out.println(customerEntity);
         mv.setViewName("admin/se_list.html");
         return  mv;
     }
@@ -287,8 +287,8 @@ public class TradeController {
     public ModelAndView saveGiftInfo(String path, String name, Long credit,Long num, String ueInfo, Integer isshow) {
         ModelAndView mv=new ModelAndView();
         GiftEntity giftEntity=new GiftEntity();
-        giftEntity.setImgpath("https://api.anthub.top/Photos/"+path);
-        System.out.println(giftEntity.getImgpath());
+//        giftEntity.setImgpath("https://api.anthub.top/Photos/"+path);
+        giftEntity.setImgpath(path);
         giftEntity.setName(name);
         giftEntity.setIsshow(isshow);
         giftEntity.setDescribe(ueInfo);

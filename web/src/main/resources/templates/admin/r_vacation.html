@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/stylesOA.css">
 </head>
-<body class="sidebar-fixed header-fixed" onload="writeLoginInfo()">
+<body class="sidebar-fixed header-fixed" onload="writeLoginInfo();ischeck()">
 <div class="page-wrapper">
     <nav class="navbar page-header" style="padding-top: 0px">
         <a href="" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
@@ -83,11 +83,6 @@
                                     <i class="icon icon-graph"></i>&nbsp;&nbsp;销售员业绩
                                 </a>
                             </li>
-                            <!--<li class="nav-item">-->
-                            <!--<a href="/admin/areavolume" class="nav-link">-->
-                            <!--<i class="icon icon-graph"></i>&nbsp;&nbsp;地区销量-->
-                            <!--</a>-->
-                            <!--</li>-->
                         </ul>
                     </li>
                     <!--活动管理模块-->
@@ -113,6 +108,7 @@
                                         <i class="icon icon-target"></i>&nbsp;&nbsp;礼品领取记录
                                     </a>
                                 </li>
+
 
                             </ul>
                         </ul>
@@ -154,7 +150,7 @@
 
                         <ul class="nav-dropdown-items">
                             <li class="nav-item">
-                                <a href="/admin/info" class="nav-link active">
+                                <a href="/admin/info" class="nav-link">
                                     <i class="icon icon-puzzle"></i> &nbsp;&nbsp;信息管理
                                 </a>
                             </li>
@@ -171,7 +167,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/admin/vacation" class="nav-link">
+                                <a href="/admin/vacation" class="nav-link active">
                                     <i class="icon icon-puzzle"></i>&nbsp;&nbsp; 请假审核
                                 </a>
                             </li>
@@ -207,55 +203,112 @@
                                 <div class="col-sm-12">
                                     <div class="ibox float-e-margins">
                                         <div class="ibox-title">
-                                            <h5>在职员工列表</h5>
+                                            <h5>请假列表</h5>
                                         </div>
                                         <div class="ibox-content">
-                                            <div style="margin-bottom: 8px">
-                                                <a href="/admin/infoAdd" class="btn btn-success">添加员工</a>
-                                            </div>
-                                            <table class="table table-striped table-bordered table-hover dataTables-example">
-                                                <thead>
-                                                <tr>
-                                                    <th>工号</th>
-                                                    <th>姓名</th>
-                                                    <th>用户名</th>
-                                                    <th>微信号</th>
-                                                    <th>手机号</th>
-                                                    <th>职位</th>
-                                                    <th>操作</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr class="gradeA" th:each="seller : ${sellerEntities}">
-                                                    <td th:text="${seller.id}"></td>
-                                                    <td th:text="${seller.realname}"></td>
-                                                    <td th:text="${seller.name}"></td>
-                                                    <td th:text="${seller.wechat}"></td>
-                                                    <td th:text="${seller.phone}"></td>
-                                                    <td th:if="${seller.rank} eq 1">管理员</td>
-                                                    <td th:if="${seller.rank} ne 1">销售员</td>
-                                                    <td id="@{${seller.id}}">
-                                                        <a th:href="@{infoLook(id=${seller.id})}" class="btn btn-info">查看</a>&nbsp;&nbsp;
-                                                        <a th:href="@{infoUpdate(id=${seller.id})}" class="btn btn-primary">修改</a>&nbsp;&nbsp;
-                                                        <a th:href="@{infoAssign(id=${seller.id})}" class="btn btn-danger">划区</a>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                            <div>
+                                            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline"
+                                                 role="grid">
+                                                <div class="row">
+
+                                                    <!--<div class="col-sm-6">-->
+                                                        <!--&nbsp;&nbsp;选择&nbsp;<select id="select-type"-->
+                                                                                    <!--class="form-control"-->
+                                                                                    <!--style="width:100px">-->
+                                                        <!--<option value="1">全部</option>-->
+                                                        <!--<option value="1">待处理</option>-->
+                                                        <!--<option value="2">同意</option>-->
+                                                        <!--<option value="3">拒绝</option>-->
+                                                    <!--</select>-->
+                                                    <!--</div>-->
+
+                                                </div>
+                                                <table class="table table-striped table-bordered table-hover dataTables-example dataTable no-footer"
+                                                       id="DataTables_Table_0"
+                                                       aria-describedby="DataTables_Table_0_info">
+                                                    <thead>
+                                                    <tr role="row">
+                                                        <th class="sorting" tabindex="0"
+                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                                            aria-label="工号：" style="width: 71px;">工号
+                                                        </th>
+                                                        <th class="sorting" tabindex="0"
+                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                                            aria-label="姓名：" style="width: 71px;">姓名
+                                                        </th>
+                                                        <th class="sorting" tabindex="0"
+                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                                            aria-label="开始日期：" style="width: 131px;">开始日期
+                                                        </th>
+                                                        <th class="sorting" tabindex="0"
+                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                                            aria-label="结束日期：" style="width: 131px;">结束日期
+                                                        </th>
+                                                        <th class="sorting" tabindex="0"
+                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                                             style="width: 72px;">天数
+                                                        </th>
+                                                        <th class="sorting" tabindex="0"
+                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                                            style="width: 241px;">出差原因
+                                                        </th>
+                                                        <th class="sorting" tabindex="0"
+                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                                             style="width: 119px;">请假类型
+                                                        </th>
+                                                        <th class="sorting" tabindex="0"
+                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                                            aria-label="">状态
+                                                        </th>
+                                                        <th class="sorting" tabindex="0"
+                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                                            aria-label="">操作
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                    <tr class="gradeA odd" th:each="vacation:${vacationSearches}">
+                                                        <td th:text="${vacation.vaSellerId}"></td>
+                                                        <td th:text="${vacation.name}"></td>
+                                                        <td th:text="${vacation.vaStartStr}"></td>
+                                                        <td th:text="${vacation.vaEndStr}"></td>
+
+                                                        <td th:text="${vacation.vaDays}"></td>
+                                                        <td th:text="${vacation.vaReason}"></td>
+                                                        <!--请假类型 1事假;2病假;3调休-->
+                                                        <td th:if="${vacation.vaType} eq 0">事假</td>
+                                                        <td th:if="${vacation.vaType} eq 1">病假</td>
+                                                        <td th:if="${vacation.vaType} eq 2">调休</td>
+                                                        <!--请假状态 0待审核，1批准，2不批准,默认0-->
+                                                        <td th:if="${vacation.vaStatus} eq 0">待处理</td>
+                                                        <td th:if="${vacation.vaStatus} eq 1">已同意</td>
+                                                        <td th:if="${vacation.vaStatus} eq 2">拒绝</td>
+
+                                                        <td>
+                                                            <!--<a th:href="@{leftInfo(id=${trip.trId})}" class="btn btn-info">查看</a>-->
+                                                            <a class="btn btn-success" th:href="@{vacationAgree(id=${vacation.id},statu=1)}"  th:if="${vacation.vaStatus} eq 0" onclick="return(confirm('确定批准?'))">批准</a>
+                                                            <a class="btn btn-primary" th:href="@{vacationAgree(id=${vacation.id},statu=2)}"  th:if="${vacation.vaStatus} eq 0" onclick="return(confirm('确定拒绝?'))">拒绝</a>
+                                                        </td>
+                                                    </tbody>
+                                                </table>
+                                                <div class="row">
                                                 <span style="float: left; padding: 5px">
-								总共&nbsp;<b th:text="${total}"></b>&nbsp;条</span>
-                                                <span style="float: left; padding: 5px">
-								当前&nbsp;<span style="color: red;" th:text="${page}">1</span>&nbsp;/&nbsp;
-                                                    <b th:text="${totalPage}">1</b>&nbsp;页&nbsp;&nbsp;
-                                                    </span>
-                                                <nav aria-label="Page navigation" style="margin: 0 auto; width: 240px">
-                                                    <ul class="pagination" style="margin: 0;">
-                                                        <li th:each="array:${arr}">
-                                                            <a th:href="@{info(pageNo=${array})}"  th:text="${array}">view</a>
-                                                        </li>
-                                                    </ul>
-                                                </nav>
+								                    总共&nbsp;<b th:text="${total}"></b>&nbsp;条
+                                                </span>
+                                                    <span style="float: left; padding: 5px">
+                                                    当前&nbsp;<span style="color: red;" th:text="${page}">1</span>
+                                                    &nbsp;/&nbsp; <b th:text="${totalPage}">1</b>&nbsp;页&nbsp;&nbsp;
+                                                </span>
+                                                    <nav aria-label="Page navigation" style="margin: 0 auto; width: 240px">
+                                                        <ul class="pagination" style="margin: 0;">
+                                                            <li th:each="array:${arr}">
+                                                                <a th:href="@{vacation(pageNo=${array})}"
+                                                                   th:text="${array}">view</a>
+                                                            </li>
+                                                        </ul>
+                                                    </nav>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -284,7 +337,6 @@
         var e=document.getElementById("loginname");
         console.log("local_username:"+local_username);
         e.innerText=local_username;
-
         var login_username = [[${login_username}]];
         console.log("login_username:"+login_username);
         if(login_username!=undefined){
@@ -295,6 +347,20 @@
         selfinfo.href="/admin/selfinfo?str="+e.innerText;
         console.log("selfinfo.href"+selfinfo.href)
     }
-
+    function ischeck() {
+        var id = [[${type}]];
+        var s1 = document.getElementById("select-type");
+        for (i = 0; i <= s1.options.length; i++) {
+            if (s1.options[i].value == id) {
+                s1.options[i].selected = true;
+            }
+        }
+    }
+</script>
+<script>
+    $("#select-type").change(function(){
+        var type=$("#select-type").val()
+        window.location.href="vacation?type="+type;
+    });
 </script>
 </html>

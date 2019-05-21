@@ -16,15 +16,17 @@ import java.util.List;
 @Repository
 public interface VacationMapper {
 
-    void insert(VacationEntity userEntity);
+    void insert(VacationEntity vacationEntity);
 
-    void update(VacationEntity userEntity);
+    void update(VacationEntity vacationEntity);
 
     void delete(Long id);
 
     VacationEntity selectById(Long id);
 
     List<VacationEntity> selectByPage(VacationSearch vacationSearch);
+
+    List<VacationSearch> select2ByPage(VacationSearch vacationSearch);
 
     Integer selectByPageTotal(VacationSearch search);
 }
