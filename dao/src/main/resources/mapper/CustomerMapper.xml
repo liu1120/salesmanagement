@@ -15,6 +15,22 @@
         <result column="cu_description" property="cuDescription"/>
         <result column="cu_money" property="cuMoney"/>
     </resultMap>
+    <resultMap id="Customer2Search" type="com.zzlbe.dao.search.Customer2Search">
+        <result column="cu_id" property="cuId"/>
+        <result column="cu_order_id" property="cuOrderId"/>
+        <result column="cu_user_id" property="cuUserId"/>
+        <result column="u_realname" property="cuUserName"/>
+        <result column="cu_seller_id" property="cuSellerId"/>
+        <!--<result column="cu_seller_id" property="cuSellerId"/>-->
+        <result column="cu_goods_id" property="cuGoodsId"/>
+        <result column="go_name" property="cuGoodsName"/>
+        <result column="cu_goods_count" property="cuGoodsCount"/>
+        <result column="cu_reason" property="cuReason"/>
+        <result column="cu_type" property="cuType"/>
+        <result column="cu_time" property="cuTime"/>
+        <result column="cu_description" property="cuDescription"/>
+        <result column="cu_money" property="cuMoney"/>
+    </resultMap>
 
     <sql id="tableName">tb_customer</sql>
 
@@ -95,6 +111,14 @@
         FROM
         <include refid="tableName"/>
         <include refid="condition"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
+    <select id="select2ByPage" resultMap="Customer2Search">
+        select * from
+        (tb_customer t1 left join tb_user t2 on t1.cu_user_id = t2.u_id)
+        left join tb_goods t3 on t1.cu_goods_id=t3.go_id
+        <include refid="condition"/>
+        GROUP BY cu_id
         LIMIT #{firstIndex}, #{size}
     </select>
 

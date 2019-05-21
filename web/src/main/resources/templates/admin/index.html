@@ -292,12 +292,11 @@
 <script type="text/javascript" src="/static/js/chartdemo.js" th:inline="javascript"></script>
 <script type="text/javascript" th:inline="javascript">
     function writeLoginInfo() {
-        var local_username = localStorage.getItem("login_username");
+        var local_username = localStorage.getItem("login_username");//本地获取
         var e = document.getElementById("loginname");
-        console.log("local_username:" + local_username);
         e.innerText = local_username;
 
-        var login_username = [[${login_username}]];
+        var login_username = [[${login_username}]];//后台获取
         console.log("login_username:" + login_username);
         if (login_username != undefined) {
             localStorage.setItem("login_username", login_username);

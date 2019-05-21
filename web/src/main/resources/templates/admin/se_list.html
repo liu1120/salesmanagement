@@ -214,8 +214,7 @@
                                                  role="grid">
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label
-                                                                class="form-control-label">状态</label>
+                                                        <label class="form-control-label">状态</label>
                                                         <select id="go_type" class="form-control">
                                                             <option grade="1" value="1">全部</option>
                                                             <option grade="1" value="2">待审核</option>
@@ -264,23 +263,26 @@
                                                             aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
                                                             aria-label="">操作时间
                                                         </th>
-                                                        <th class="sorting" tabindex="0"
-                                                            aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                                            aria-label="">操作
-                                                        </th>
+                                                        <!--<th class="sorting" tabindex="0"-->
+                                                            <!--aria-controls="DataTables_Table_0" rowspan="1" colspan="1"-->
+                                                            <!--aria-label="">操作-->
+                                                        <!--</th>-->
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     <tr class="gradeA" th:each="customer : ${customers}" style="min-width:986">
                                                         <td th:text="${customer.cuOrderId}"></td>
-                                                        <td th:text="${customer.cuUserId}">张三</td>
-                                                        <td th:text="${customer.cuOrderId}">除草剂</td>
-                                                        <td th:text="${customer.cuOrderId}">1</td>
-                                                        <td th:text="${customer.cuOrderId}">8999</td>
-                                                        <td th:text="${customer.cuOrderId}">买多了</td>
-                                                        <td th:text="${customer.cuOrderId}">审核通过</td>
-                                                        <td th:text="${customer.cuOrderId}">2018-12-01</td>
-                                                        <td th:text="${customer.cuOrderId}"><a href="" class="btn btn-info">查看</a></td>
+                                                        <td th:text="${customer.cuUserName}">张三</td>
+                                                        <td th:text="${customer.cuGoodsName}">除草剂</td>
+                                                        <td th:text="${customer.cuGoodsCount}">1</td>
+                                                        <td th:text="${customer.cuMoney}">8999</td>
+                                                        <td th:text="${customer.cuReason}">买多了</td>
+                                                        <td th:if="${customer.cuType} eq 1">用户申请提交</td>
+                                                        <td th:if="${customer.cuType} eq 2">销售员审核通过</td>
+                                                        <td th:if="${customer.cuType} eq 3">销售审核拒绝</td>
+                                                        <td th:if="${customer.cuType} eq 4">用户主动取消</td>
+                                                        <td th:text="${customer.cuTime}">2018-12-01</td>
+                                                        <!--<td><a href="seDetil" class="btn btn-info">查看</a></td>-->
                                                     </tr>
                                                     </tbody>
                                                 </table>

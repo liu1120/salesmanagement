@@ -83,7 +83,8 @@ public class TradeController {
         ModelAndView mv=new ModelAndView();
         GoodsEntity goodsEntity=new GoodsEntity();
 //        goodsEntity.setNewImgPath("https://api.anthub.top/Photos/"+path);
-        goodsEntity.setNewImgPath(path);
+        goodsEntity.setNewImgPath("/Photos/"+path);
+//        goodsEntity.setNewImgPath(path);
         goodsEntity.setName(name);
         goodsEntity.setCredit(credit);
         goodsEntity.setSort(sort);
@@ -210,8 +211,7 @@ public class TradeController {
     public ModelAndView orderservice() {
         ModelAndView mv=new ModelAndView();
         CustomerSearch customerSearch=new CustomerSearch();
-        List<CustomerEntity> customerEntity=customerMapper.selectByPage(customerSearch);
-
+        List<Customer2Search> customer2Search=customerMapper.select2ByPage(customerSearch);
 
         Integer total=customerMapper.selectByPageTotal(customerSearch);
         int size=customerSearch.getSize();//页码大小
@@ -226,7 +226,7 @@ public class TradeController {
         mv.addObject("total",total);
         mv.addObject("page",page);
         mv.addObject("size",size);
-        mv.addObject("customers",customerEntity);
+        mv.addObject("customers",customer2Search);
         mv.setViewName("admin/se_list.html");
         return  mv;
     }
@@ -272,6 +272,20 @@ public class TradeController {
         mv.setViewName("admin/gift_infoLook.html");
         return  mv;
     }
+    @RequestMapping("seDetil")//后台查看-具体某一订单
+    public ModelAndView seDetil(@RequestParam("id") long id) {
+        ModelAndView mv=new ModelAndView();
+        GiftEntity giftEntity=giftMapper.selectById(id);
+
+        mv.addObject("gift",giftEntity);
+        Date date=giftEntity.getEndtime();
+        DateUtil du=new DateUtil();
+        String dateStr=du.getDateTime(date);
+        mv.addObject("time",dateStr);
+        mv.setViewName("admin/gift_infoLook.html");
+        return  mv;
+    }
+
 
 
 
@@ -288,6 +302,7 @@ public class TradeController {
         ModelAndView mv=new ModelAndView();
         GiftEntity giftEntity=new GiftEntity();
 //        giftEntity.setImgpath("https://api.anthub.top/Photos/"+path);
+        giftEntity.setImgpath("/Photos/"+path);
         giftEntity.setImgpath(path);
         giftEntity.setName(name);
         giftEntity.setIsshow(isshow);

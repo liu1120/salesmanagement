@@ -464,7 +464,6 @@ public class AdminController {
         mv.addObject("arr", arr);
         mv.addObject("goodsSale", goodsSaleSearch);
         mv.setViewName("admin/ac_list");
-        System.out.println("mv:" + mv.toString());
         return mv;
     }
 

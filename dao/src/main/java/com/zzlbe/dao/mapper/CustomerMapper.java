@@ -1,6 +1,7 @@
 package com.zzlbe.dao.mapper;
 
 import com.zzlbe.dao.entity.CustomerEntity;
+import com.zzlbe.dao.search.Customer2Search;
 import com.zzlbe.dao.search.CustomerSearch;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -28,6 +29,7 @@ public interface CustomerMapper {
     CustomerEntity selectByOrderId(@Param("orderId") Long orderId);
 
     List<CustomerEntity> selectByPage(CustomerSearch customerSearch);
+    List<Customer2Search> select2ByPage(CustomerSearch customerSearch);//多表联查
 
     Integer selectByPageTotal(CustomerSearch customerSearch);
 
