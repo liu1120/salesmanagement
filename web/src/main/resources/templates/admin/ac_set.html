@@ -207,76 +207,17 @@
                                             <h5>农产品活动信息</h5>
                                         </div>
                                         <div class="ibox-content">
-
-                                            <form method="post" id="formInfo" class="form-horizontal" action="saveActivityInfo">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <img th:src="@{${goodsSale.newImgPath}}"
-                                                                 style="height: 100px;width: 100px"/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label
-                                                                    class="form-control-label">商品名</label>
-                                                            <input id="go_name" class="form-control"
-                                                                   value="" th:field="*{goodsSale.name}" readonly>
-                                                            <input type="hidden" class="form-control" name="said"
-                                                                   value="" th:field="*{goodsSale.id}">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="form-control-label">品牌</label>
-                                                            <input id="go_brand" class="form-control"
-                                                                   value="" th:field="*{goodsSale.version}" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label
-                                                                    class="form-control-label">型号</label>
-                                                            <input id="go_isshow" class="form-control"
-                                                                   th:if="${goodsSale.isShow} eq 1" value="展示" readonly>
-                                                            <input id="go_isshow" class="form-control"
-                                                                   th:if="${goodsSale.isShow} eq 0" value="不展示"
-                                                                   readonly>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="form-control-label">销售底价</label>
-                                                            <input id="go_minprice" class="form-control"
-                                                                   value="" th:field="*{goodsSale.minPrice}" readonly>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="form-control-label">销售价格</label>
-                                                            <input id="go_price" class="form-control"
-                                                                   value="" th:field="*{goodsSale.price}" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label
-                                                                    class="form-control-label">库存</label>
-                                                            <input id="go_num" class="form-control"
-                                                                   value="" th:field="*{goodsSale.num}" readonly>
-                                                        </div>
+                                            <form method="post" id="formInfo" class="form-horizontal"
+                                                  action="saveActivityInfo">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="form-control-label">活动id</label>
+                                                        <input type="hidden" name="id" value="" th:field="*{goodsSale.id}" >
+                                                        <input class="form-control"
+                                                               value="" th:field="*{goodsSale.id}" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="row">
-
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label class="form-control-label">促销类型</label>
@@ -284,7 +225,6 @@
                                                                 <option grade="1" value="1">正常</option>
                                                                 <option grade="1" value="2">打折</option>
                                                                 <option grade="1" value="3">满减</option>
-                                                                <option grade="1" value="4">满送</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -379,7 +319,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div><br><br>
+                                                </div>
+                                                <br><br>
                                                 <div class="card" th:if="${provincename} ne null">
                                                     <div class="card-header"
                                                          th:text="|促销活动申请区域:${provincename}-${cityname}|">
@@ -410,16 +351,18 @@
                                 </div>
                             </div>
                         </div>
-                        <!--模板开始222222-->
                     </div>
+
+                    <!--模板开始222222-->
                 </div>
             </div>
         </div>
     </div>
-    <script src="/static/vendor/jquery/jquery.min.js"></script>
-    <script src="/static/vendor/popper.js/popper.min.js"></script>
-    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/static/js/carbon.js"></script>
+</div>
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/vendor/popper.js/popper.min.js"></script>
+<script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/js/carbon.js"></script>
 </div>
 </body>
 <script type="text/javascript" src="/static/date/demo.js"></script>

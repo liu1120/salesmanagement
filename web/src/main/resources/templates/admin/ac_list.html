@@ -215,52 +215,56 @@
                                                     <option value="1">无活动</option>
                                                     <option value="2">打折</option>
                                                     <option value="3">满减</option>
-                                                    <option value="4">满送</option>
+                                                    <!--<option value="4">满送</option>-->
                                                 </select>
                                             </div>
                                             <table class="table table-striped table-bordered table-hover dataTables-example">
                                                 <thead>
                                                 <tr>
-                                                    <th>名称</th>
-                                                    <th>图片</th>
-                                                    <th>点击量</th>
-                                                    <th>底价</th>
-                                                    <th>价格</th>
-                                                    <th>库存</th>
-                                                    <th>促销类型</th>
-                                                    <th>更新时间</th>
+                                                    <th>活动id</th>
+                                                    <th>活动类型</th>
+                                                    <th>范围</th>
+                                                    <th>折扣</th>
+                                                    <th>满</th>
+                                                    <th>减</th>
+                                                    <th>活动开始</th>
+                                                    <th>活动结束</th>
+                                                    <th>创建时间</th>
                                                     <th>操作</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
 
                                                 <tr class="gradeA" th:each="sale : ${goodsSale}" style="min-width:986">
-                                                    <td th:text="${sale.name}"></td>
-                                                    <td>
-                                                        <img th:src="@{${sale.newImgPath}}"
-                                                             style="width: 35px;height: 45px"/>
-                                                    </td>
-                                                    <td th:text="${sale.point}"></td>
-                                                    <td th:text="${sale.minPrice}"></td>
-                                                    <td th:text="${sale.price}"></td>
-                                                    <td th:text="${sale.num}"></td>
+                                                    <td th:text="${sale.id}"></td>
 
-                                                    <td th:if="${sale.type} eq 1"> 无</td>
-                                                    <td th:if="${sale.type} eq 2"> 打折</td>
-                                                    <td th:if="${sale.type} eq 3"> 满减</td>
-                                                    <td th:if="${sale.type} eq 4"> 满送</td>
-                                                    <td th:if="${sale.type} eq null">无</td>
-                                                    <td th:text="${sale.time}"></td>
-                                                    <td>
-                                                        <!--<a th:href="@{activityInfo(id=${sale.said})}"-->
-                                                           <!--class="btn btn-success">修改</a>&nbsp;&nbsp;-->
+                                                    <td th:if="${sale.type} eq null">正常</td>
+                                                    <td th:if="${sale.type} eq 1">正常</td>
+                                                    <td th:if="${sale.type} eq 2">打折</td>
+                                                    <td th:if="${sale.type} eq 3">满减</td>
 
-                                                        <a th:href="@{activityInfo(said=${sale.id})}" th:if="${sale.start} eq 1"
-                                                           class="btn btn-warning">查看申请</a>
-                                                        <a th:href="@{activityInfo(said=${sale.id})}" th:if="${sale.start} eq null"
-                                                           class="btn btn-success">添&nbsp;&nbsp;加</a>
-                                                        <a th:href="@{activityInfo(said=${sale.id})}" th:if="${sale.start} eq 0"
-                                                           class="btn btn-primary">修&nbsp;&nbsp;改</a>
+                                                    <td th:if="${sale.start} eq 0">全局</td>
+                                                    <td th:if="${sale.start} eq 1">局部</td>
+
+                                                    <td th:text="${sale.discount}" th:if="${sale.discount} ne null"></td>
+                                                    <td th:if="${sale.discount} eq null">&nbsp;</td>
+
+                                                    <td th:text="${sale.reach}" th:if="${sale.reach} ne null"></td>
+                                                    <td th:if="${sale.reach} eq null">&nbsp;</td>
+
+                                                    <td th:text="${sale.minus}" th:if="${sale.minus} ne null"></td>
+                                                    <td th:if="${sale.minus} eq null">&nbsp;</td>
+
+                                                    <td th:text="${sale.startTime}"></td>
+                                                    <td th:text="${sale.overTime}"></td>
+                                                    <td th:text="${sale.createTime}"></td>
+                                                    <td>
+                                                        <a th:href="@{activityInfo(id=${sale.id})}"
+                                                           class="btn btn-warning">查看</a>
+                                                        <!--<a th:href="@{activityInfo}" th:if="${sale.start} eq null"-->
+                                                           <!--class="btn btn-success">添&nbsp;&nbsp;加</a>-->
+                                                        <!--<a th:href="@{activityInfo(said=${sale.id})}" th:if="${sale.start} eq 0"-->
+                                                           <!--class="btn btn-primary">修&nbsp;&nbsp;改</a>-->
                                                         &nbsp;&nbsp;
                                                     </td>
                                                 </tr>

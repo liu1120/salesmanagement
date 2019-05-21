@@ -431,6 +431,41 @@ public class AdminController {
         return mv;
     }
 
+    //    @GetMapping("/activity")//农产品活动列表
+//    public ModelAndView activity(Integer pageNo, Integer type) {
+//        ModelAndView mv = new ModelAndView();
+//        SaleSearch saleSearch = new SaleSearch();
+//        if (pageNo != null) {
+//            saleSearch.setPage(pageNo);
+//        }
+//        if (type != null) {
+//            mv.addObject("type", type);
+//            if (type != 8) {
+//                saleSearch.setType(type);
+//            }
+//        } else {
+//            type = new Integer(8);
+//            mv.addObject("type", type);
+//        }
+//        List<GoodsSaleSearch> goodsSaleSearch = saleMapper.select2ByPage(saleSearch);
+//
+//        Integer total = saleMapper.select2ByPageTotal(saleSearch);
+//        mv.addObject("total", total);
+//        int size = saleSearch.getSize(); //页码大小
+//        mv.addObject("size", size);
+//        int page = saleSearch.getPage();
+//        mv.addObject("page", page);
+//        int totalPage = total / size + 1;
+//        mv.addObject("totalPage", totalPage);
+//        int[] arr = new int[totalPage];
+//        for (int i = 0; i < arr.length; i++) {
+//            arr[i] = i + 1;
+//        }
+//        mv.addObject("arr", arr);
+//        mv.addObject("goodsSale", goodsSaleSearch);
+//        mv.setViewName("admin/ac_list");
+//        return mv;
+//    }
     @GetMapping("/activity")//农产品活动列表
     public ModelAndView activity(Integer pageNo, Integer type) {
         ModelAndView mv = new ModelAndView();
@@ -447,9 +482,9 @@ public class AdminController {
             type = new Integer(8);
             mv.addObject("type", type);
         }
-        List<GoodsSaleSearch> goodsSaleSearch = saleMapper.select2ByPage(saleSearch);
+        List<SaleAreaSearch> saleAreaSearches = saleMapper.select3ByPage(saleSearch);
 
-        Integer total = saleMapper.select2ByPageTotal(saleSearch);
+        Integer total = saleMapper.selectByPageTotal(saleSearch);
         mv.addObject("total", total);
         int size = saleSearch.getSize(); //页码大小
         mv.addObject("size", size);
@@ -462,41 +497,33 @@ public class AdminController {
             arr[i] = i + 1;
         }
         mv.addObject("arr", arr);
-        mv.addObject("goodsSale", goodsSaleSearch);
+        mv.addObject("goodsSale", saleAreaSearches);
         mv.setViewName("admin/ac_list");
         return mv;
     }
 
     @GetMapping("/activityInfo")
-    public ModelAndView activityInfo(@RequestParam("said") long id) {
+    public ModelAndView activityInfo(long id) {
         ModelAndView mv = new ModelAndView();
-        GoodsSaleSearch goodsSaleSearch = saleMapper.select2ById(id);
-        if (goodsSaleSearch == null) {//若sale表无goods数据则插入数据
-            SaleEntity saleEntity = new SaleEntity();
-            saleEntity.setId(id);
-            saleEntity.setCreateTime(new Date());
-            saleMapper.insert(saleEntity);
-            goodsSaleSearch = saleMapper.select2ById(id);
+        SaleAreaSearch saleAreaSearch = saleMapper.select3ById(id);
+//        if (saleAreaSearch.getStart() != null) {//若为销售员申请，就加载区域
+        String str = saleAreaSearch.getAreaIds();
+        String[] areaid = str.split(";");
+        Map<Long, String> map = new HashMap<Long, String>();
+        AreaEntity areaEntity = null;
+        for (int i = 0; i < areaid.length; i++) {
+            areaEntity = areaMapper.select2One(Long.parseLong(areaid[i]));
+            map.put(areaEntity.getCountycode(), areaEntity.getCountyname());
         }
-        if (goodsSaleSearch.getStart() != null && goodsSaleSearch.getStart() == 1) {//若为销售员申请，就加载区域
-            String str = goodsSaleSearch.getAreaIds();
-            String[] areaid = str.split(";");
-            Map<Long, String> map = new HashMap<Long, String>();
-            AreaEntity areaEntity = null;
-            for (int i = 0; i < areaid.length; i++) {
-                areaEntity = areaMapper.select2One(Long.parseLong(areaid[i]));
-                map.put(areaEntity.getCountycode(), areaEntity.getCountyname());
-            }
-            if (areaid.length > 0) {
-                mv.addObject("map", map);
-                mv.addObject("provincename", areaEntity.getProvincename());
-                mv.addObject("cityname", areaEntity.getCityname());
-                System.out.println("map:" + map.toString());
-            }
+        if (areaid.length > 0) {
+            mv.addObject("map", map);
+            mv.addObject("provincename", areaEntity.getProvincename());
+            mv.addObject("cityname", areaEntity.getCityname());
+            System.out.println("map:" + map.toString());
         }
-        mv.addObject("goodsSale", goodsSaleSearch);
+        mv.addObject("goodsSale", saleAreaSearch);
+        System.out.println("saleAreaSearch:"+saleAreaSearch);
         mv.setViewName("admin/ac_set.html");
-        System.out.println("mv" + mv);
         return mv;
     }
 
@@ -521,7 +548,7 @@ public class AdminController {
         }
         saleEntity.setUpdateTime(new Date());
         saleMapper.update(saleEntity);
-        mv.addObject("said", id);
+        mv.addObject("id", id);
         mv.setViewName("redirect:/admin/activityInfo");
         System.out.println("mv" + mv);
         return mv;
@@ -556,36 +583,39 @@ public class AdminController {
 
     @GetMapping("noticeDelete")//后台-公告删除
     public ModelAndView noticeDelete(@RequestParam("id") Integer id) {
-        int result=noticeMapper.delete(id);
-        ModelAndView mv=new ModelAndView();
+        int result = noticeMapper.delete(id);
+        ModelAndView mv = new ModelAndView();
         mv.setViewName("redirect:/admin/notice");
         return mv;
     }
+
     @GetMapping("noticeInfo")//后台-公告删除
     public ModelAndView noticeInfo(@RequestParam("id") Integer id) {
-        NoticeEntity noticeEntity=noticeMapper.selectById(id);
+        NoticeEntity noticeEntity = noticeMapper.selectById(id);
 
-        ModelAndView mv=new ModelAndView();
+        ModelAndView mv = new ModelAndView();
         mv.addObject("notice", noticeEntity);
-        System.out.println("noticeEntity:"+noticeEntity);
+        System.out.println("noticeEntity:" + noticeEntity);
         mv.setViewName("admin/z_noticeInfo.html");
         return mv;
     }
+
     @GetMapping("noticeAdd")//后台-公告添加
     public ModelAndView noticeAdd() {
-        ModelAndView mv=new ModelAndView();
+        ModelAndView mv = new ModelAndView();
         mv.setViewName("admin/z_noticeDetail.html");
         return mv;
     }
+
     @PostMapping("noticeSave")//后台-公告添加
-    public ModelAndView noticeSave(String title,String ueInfo) {
-        ModelAndView mv=new ModelAndView();
-        NoticeEntity noticeEntity=new NoticeEntity();
+    public ModelAndView noticeSave(String title, String ueInfo) {
+        ModelAndView mv = new ModelAndView();
+        NoticeEntity noticeEntity = new NoticeEntity();
         noticeEntity.setContent(ueInfo);
         noticeEntity.setTitle(title);
         noticeEntity.setTime(new Date());
         noticeEntity.setNum(new Long(0));
-        System.out.println("noticeEntity:"+noticeEntity);
+        System.out.println("noticeEntity:" + noticeEntity);
         noticeMapper.insert(noticeEntity);
         mv.setViewName("redirect:/admin/notice");
         return mv;

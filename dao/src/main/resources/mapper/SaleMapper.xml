@@ -44,6 +44,21 @@
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
     </resultMap>
+
+    <resultMap id="SaleAreaSearch" type="com.zzlbe.dao.search.SaleAreaSearch">
+        <result column="sa_id" property="id"/>
+        <result column="sa_type" property="type"/>
+        <result column="sa_discount" property="discount"/>
+        <result column="sa_start" property="start"/>
+        <result column="sa_reach" property="reach"/>
+        <result column="sa_minus" property="minus"/>
+        <result column="sa_start_time" property="startTime"/>
+        <result column="sa_over_time" property="overTime"/>
+        <result column="sa_area_ids" property="areaIds"/>
+        <result column="sa_status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
     <sql id="tableName">tb_sale</sql>
 
     <sql id="columns">
@@ -113,7 +128,14 @@
         <include refid="condition"/>
         LIMIT #{firstIndex}, #{size}
     </select>
-
+    <select id="select3ByPage" resultMap="SaleAreaSearch">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="condition"/>
+        LIMIT #{firstIndex}, #{size}
+    </select>
     <select id="selectByPageTotal" resultType="java.lang.Integer">
         SELECT
         COUNT(*)
@@ -144,7 +166,13 @@
         WHERE sa_id = #{id}
         GROUP BY t1.go_id
     </select>
-
+    <select id="select3ById" resultMap="SaleAreaSearch">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE sa_id = #{id}
+    </select>
     <select id="selectByCounty" resultMap="BaseMap">
         SELECT
         <include refid="columns"/>
