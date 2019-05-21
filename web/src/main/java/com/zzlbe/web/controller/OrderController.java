@@ -117,6 +117,14 @@ public class OrderController {
     /**
      * 售后列表
      */
+    @GetMapping("afterSaleDetail/{id}")
+    public GenericResponse afterSaleDetail(@PathVariable("id") Long id) {
+        return orderBusiness.afterSaleDetail(id);
+    }
+
+    /**
+     * 售后详情
+     */
     @RequestMapping("afterSalePage")
     public GenericResponse afterSalePage(@RequestBody CustomerSearch customerSearch) {
         return orderBusiness.afterSalePage(customerSearch);

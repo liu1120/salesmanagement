@@ -66,4 +66,8 @@ public class SaleForm {
      * 活动状态()
      */
     private Integer status;
+    /**
+     * 销售员编号
+     */
+    private Long sellerId;
 }

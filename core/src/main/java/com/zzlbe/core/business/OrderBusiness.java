@@ -115,4 +115,12 @@ public interface OrderBusiness {
      * @return GenericResponse
      */
     GenericResponse afterSalePage(CustomerSearch customerSearch);
+
+    /**
+     * 售后详情接口
+     *
+     * @param id 售后单号ID
+     * @return 售后详情
+     */
+    GenericResponse afterSaleDetail(Long id);
 }

@@ -67,6 +67,11 @@ public class ActivityBusinessImpl extends BaseBusinessImpl implements ActivityBu
             return new GenericResponse(ErrorCodeEnum.ACTIVITY_EXIST);
         }
 
+        StringBuilder sb = new StringBuilder();
+        List<Long> countyList = areaMapper.selectCountyBySellerId(saleForm.getSellerId());
+        countyList.forEach(countyId -> sb.append(countyId).append(";"));
+        String areaIds = sb.toString().substring(0, sb.length() - 1);
+
         SaleEntity saleEntity = new SaleEntity();
         BeanUtils.copyProperties(saleForm, saleEntity);
         // 默认全局有效
@@ -74,6 +79,7 @@ public class ActivityBusinessImpl extends BaseBusinessImpl implements ActivityBu
         // 管理员创建不用审核
         saleEntity.setStatus(saleEntity.getStart() == 0 ? 1 : 0);
         saleEntity.setCreateTime(new Date());
+        saleEntity.setAreaIds(areaIds);
 
         saleMapper.insert(saleEntity);
 

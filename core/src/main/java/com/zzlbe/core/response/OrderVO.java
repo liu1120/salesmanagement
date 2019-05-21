@@ -88,4 +88,9 @@ public class OrderVO {
      */
     private String newImgPath;
 
+    /**
+     * 申请售后之前的历史状态
+     */
+    private Integer oldStatus;
+
 }
